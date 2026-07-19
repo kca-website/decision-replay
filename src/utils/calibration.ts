@@ -1,54 +1,66 @@
+import type { TFunction } from 'i18next';
 import type { DecisionSnapshot, DecisionReplay } from '../db/db';
 
 export interface CalibrationStats {
   count: number;
   averageConfidence: number;
-  confirmedRate: number;
+  averageMatch: number;
   hasEnoughData: boolean;
 }
+
+const matchScore = (match: DecisionReplay['expectationMatch']): number | null => {
+  if (match === 'yes') return 100;
+  if (match === 'partial') return 50;
+  if (match === 'no') return 0;
+  return null;
+};
 
 export const computeCalibration = (
   decisions: DecisionSnapshot[],
   replays: DecisionReplay[]
 ): CalibrationStats => {
-  const replayed = replays.map((r) => {
-    const dec = decisions.find((d) => d.id === r.decisionId);
-    return dec ? { dec, rep: r } : null;
-  }).filter((x): x is { dec: DecisionSnapshot; rep: DecisionReplay } => x !== null);
+  const replayed = replays
+    .map((replay) => {
+      const decision = decisions.find((item) => item.id === replay.decisionId);
+      const score = matchScore(replay.expectationMatch);
+      return decision && score !== null ? { decision, score } : null;
+    })
+    .filter((item): item is { decision: DecisionSnapshot; score: number } => item !== null);
 
   if (replayed.length === 0) {
-    return { count: 0, averageConfidence: 0, confirmedRate: 0, hasEnoughData: false };
+    return { count: 0, averageConfidence: 0, averageMatch: 0, hasEnoughData: false };
   }
 
-  const avgConf = replayed.reduce((sum, { dec }) => sum + dec.confidence, 0) / replayed.length;
-  // "Confirmed" = rating 3 or 4 (good or great) — a soft proxy
-  const confirmed = replayed.filter(({ rep }) => rep.rating >= 3).length;
-  const confirmedRate = (confirmed / replayed.length) * 100;
+  const averageConfidence = replayed.reduce((sum, item) => sum + item.decision.confidence, 0) / replayed.length;
+  const averageMatch = replayed.reduce((sum, item) => sum + item.score, 0) / replayed.length;
 
   return {
     count: replayed.length,
-    averageConfidence: Math.round(avgConf),
-    confirmedRate: Math.round(confirmedRate),
+    averageConfidence: Math.round(averageConfidence),
+    averageMatch: Math.round(averageMatch),
     hasEnoughData: replayed.length >= 5,
   };
 };
 
 export const getObservation = (
   confidence: number,
-  rating: number,
-  hadRisks: boolean,
-  t: (key: string, opts?: any) => string
+  expectationMatch: DecisionReplay['expectationMatch'],
+  t: TFunction
 ): string[] => {
+  if (!expectationMatch) return [];
+
   const observations: string[] = [];
-  // Rating: 1-4. Confidence: 0-100. Confirmed if rating >= 3.
-  const confirmed = rating >= 3;
-  if (confirmed && confidence >= 55 && confidence <= 85) {
+  if (expectationMatch === 'yes' && confidence >= 55 && confidence <= 90) {
     observations.push(t('comparison.observationCalibratedGood', { c: confidence }));
-  } else if (!confirmed && confidence >= 75) {
-    observations.push(t('comparison.observationOveroptimistic'));
   }
-  if (hadRisks) {
-    observations.push(t('comparison.observationRiskCaught'));
+  if (expectationMatch === 'no' && confidence >= 70) {
+    observations.push(t('comparison.observationOverconfident', { c: confidence }));
+  }
+  if (expectationMatch === 'yes' && confidence <= 40) {
+    observations.push(t('comparison.observationUnderconfident', { c: confidence }));
+  }
+  if (expectationMatch === 'partial') {
+    observations.push(t('comparison.observationPartial'));
   }
   return observations;
 };
