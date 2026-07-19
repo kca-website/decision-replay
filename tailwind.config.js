@@ -18,16 +18,16 @@ export default {
           hover: '#9C4E33',
           soft: '#F2E1D6',
         },
-        success: '#6E8E4C',
-        warning: '#C88A3D',
-        danger: '#B54A3D',
+        success: '#5F7F43',
+        warning: '#A96F24',
+        danger: '#A43F34',
       },
       borderColor: {
         DEFAULT: '#E7DFD1',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Fraunces', 'Georgia', 'serif'],
+        sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        display: ['Georgia', 'Times New Roman', 'serif'],
       },
       borderRadius: {
         sm: '6px',
