@@ -1,9 +1,9 @@
 {
   "name": "decision-replay",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
-  "description": "Save how you were thinking when you made a decision, then compare it with what actually happened.",
+  "description": "A privacy-first decision journal that locks predictions and compares Then / Now when outcomes are known.",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
