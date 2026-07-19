@@ -8,69 +8,57 @@ import type { UserProfile } from '../db/db';
 
 export const Onboarding = () => {
   const { t } = useTranslation();
-  const nav = useNavigate();
-  const { setProfile, setOnboarded } = useProfile();
-  const [step, setStep] = useState<1 | 2>(1);
-  const [chosen, setChosen] = useState<UserProfile | null>(null);
+  const navigate = useNavigate();
+  const { profile, setProfile, setOnboarded } = useProfile();
+  const [chosen, setChosen] = useState<UserProfile>(profile ?? 'professional');
 
   const done = () => {
-    if (chosen) setProfile(chosen);
+    setProfile(chosen);
     setOnboarded(true);
-    nav('/app');
+    navigate('/app/decisions/new');
   };
-
-  if (step === 1) {
-    return (
-      <div className="min-h-screen bg-app flex items-center justify-center p-4">
-        <div className="max-w-md w-full">
-          <div className="text-xs text-ink-subtle mb-3">1 / 2</div>
-          <h1 className="font-display text-3xl md:text-4xl mb-3">{t('onboarding.step1Title')}</h1>
-          <p className="text-ink-muted mb-8">{t('onboarding.step1Sub')}</p>
-
-          <div className="space-y-3">
-            <ProfileButton icon={<Briefcase size={20} />} title={t('profile.professional')} desc={t('landing.profileProfDesc')} value="professional" chosen={chosen} onClick={setChosen} />
-            <ProfileButton icon={<BookOpen size={20} />} title={t('profile.student')} desc={t('landing.profileStudentDesc')} value="student" chosen={chosen} onClick={setChosen} />
-            <ProfileButton icon={<Compass size={20} />} title={t('profile.personal')} desc={t('landing.profilePersonalDesc')} value="personal" chosen={chosen} onClick={setChosen} />
-          </div>
-
-          <p className="text-xs text-ink-subtle mt-6">{t('onboarding.changeLater')}</p>
-
-          <div className="mt-8 flex justify-between items-center gap-3">
-            <Button variant="ghost" onClick={done}>{t('common.skip')}</Button>
-            <Button onClick={() => setStep(2)} disabled={!chosen}>
-              {t('common.next')} <ArrowRight size={16} />
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-app flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="text-xs text-ink-subtle mb-3">2 / 2</div>
-        <h1 className="font-display text-3xl mb-4">{t('brand')}</h1>
-        <div className="space-y-6 mb-10">
-          <div className="border-l-4 border-accent pl-4"><p className="text-lg">{t('onboarding.step2Title1')}</p></div>
-          <div className="border-l-4 border-accent pl-4"><p className="text-lg">{t('onboarding.step2Title2')}</p></div>
-          <div className="border-l-4 border-accent pl-4"><p className="text-lg">{t('onboarding.step2Title3')}</p></div>
+      <div className="max-w-xl w-full bg-card border rounded-xl p-6 md:p-10 shadow-sm">
+        <div className="text-xs uppercase tracking-[0.16em] text-accent font-semibold mb-3">{t('onboarding.eyebrow')}</div>
+        <h1 className="font-display text-3xl md:text-4xl mb-3">{t('onboarding.step1Title')}</h1>
+        <p className="text-ink-muted mb-8">{t('onboarding.step1Sub')}</p>
+
+        <div className="space-y-3">
+          <ProfileButton icon={<Briefcase size={20} />} title={t('profile.professional')} desc={t('onboarding.professionalDesc')} value="professional" chosen={chosen} onClick={setChosen} />
+          <ProfileButton icon={<BookOpen size={20} />} title={t('profile.student')} desc={t('onboarding.studentDesc')} value="student" chosen={chosen} onClick={setChosen} />
+          <ProfileButton icon={<Compass size={20} />} title={t('profile.personal')} desc={t('onboarding.personalDesc')} value="personal" chosen={chosen} onClick={setChosen} />
         </div>
-        <Button onClick={done} size="lg" className="w-full justify-center">
-          {t('onboarding.goToApp')} <ArrowRight size={18} />
-        </Button>
+
+        <p className="text-xs text-ink-subtle mt-6">{t('onboarding.changeLater')}</p>
+
+        <div className="mt-8 flex justify-end">
+          <Button onClick={done} size="lg">
+            {t('onboarding.continue')} <ArrowRight size={18} />
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
-interface PBProps { icon: JSX.Element; title: string; desc: string; value: UserProfile; chosen: UserProfile | null; onClick: (v: UserProfile) => void; }
-const ProfileButton = ({ icon, title, desc, value, chosen, onClick }: PBProps) => {
+interface ProfileButtonProps {
+  icon: JSX.Element;
+  title: string;
+  desc: string;
+  value: UserProfile;
+  chosen: UserProfile;
+  onClick: (value: UserProfile) => void;
+}
+
+const ProfileButton = ({ icon, title, desc, value, chosen, onClick }: ProfileButtonProps) => {
   const active = chosen === value;
   return (
     <button
       type="button"
       onClick={() => onClick(value)}
+      aria-pressed={active}
       className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
         active ? 'border-accent bg-accent-soft' : 'border-border hover:border-border-strong bg-card'
       }`}
