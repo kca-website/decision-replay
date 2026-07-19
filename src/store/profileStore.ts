@@ -12,7 +12,7 @@ interface ProfileState {
 export const useProfile = create<ProfileState>()(
   persist(
     (set) => ({
-      profile: null,
+      profile: 'professional',
       hasOnboarded: false,
       setProfile: (p) => set({ profile: p }),
       setOnboarded: (v) => set({ hasOnboarded: v }),
