@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useProfile } from './store/profileStore';
 import { AppShell } from './components/layout/AppShell';
 import { Landing } from './pages/Landing';
 import { About } from './pages/About';
@@ -15,12 +14,6 @@ import { ReplayFlow } from './pages/ReplayFlow';
 import { Comparison } from './pages/Comparison';
 import { Settings } from './pages/Settings';
 import { Challenge } from './pages/Challenge';
-
-const AppRoot = () => {
-  const { hasOnboarded } = useProfile();
-  if (!hasOnboarded) return <Navigate to="/onboarding" replace />;
-  return <AppShell />;
-};
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -36,7 +29,7 @@ const App = () => {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/challenge" element={<Challenge />} />
-      <Route path="/app" element={<AppRoot />}>
+      <Route path="/app" element={<AppShell />}>
         <Route index element={<Dashboard />} />
         <Route path="decisions" element={<DecisionsList />} />
         <Route path="decisions/new" element={<NewDecision />} />
