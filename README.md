@@ -1,162 +1,118 @@
+[README.md](https://github.com/user-attachments/files/30168897/README.md)
 # Decision Replay
 
-> **Μην καταγράφεις απλώς τις αποφάσεις σου. Μάθε από αυτές.**
-> Don't just track your decisions. Learn from them.
+**Lock what you expect. Return when reality is known.**
 
-Το Decision Replay αποθηκεύει το πώς σκεφτόσουν όταν πήρες μια απόφαση και επιστρέφει όταν φανεί το αποτέλεσμα, για να σε βοηθήσει να αναγνωρίσεις τα δικά σου μοτίβα.
+Το Decision Replay είναι ένα privacy-first εργαλείο για επαγγελματικές αποφάσεις, προβλέψεις και υποθέσεις. Ο χρήστης καταγράφει τι αποφασίζει, γιατί, τι περιμένει να συμβεί και πόσο βέβαιος είναι. Η αρχική σκέψη κλειδώνει. Αργότερα καταγράφεται το πραγματικό αποτέλεσμα και εμφανίζεται η σύγκριση **Τότε / Τώρα**.
 
-- **Δωρεάν, χωρίς λογαριασμό.**
-- **Τα δεδομένα μένουν στη συσκευή σου** (IndexedDB, no server).
-- **Δίγλωσσο** (Ελληνικά / English).
-- **Ανοιχτός κώδικας** (MIT).
+Δεν αποφασίζει αντί του χρήστη. Τον βοηθά να ελέγχει αν οι προβλέψεις του ήταν ακριβείς και να μεταφέρει συγκεκριμένα μαθήματα στην επόμενη απόφαση.
 
----
+## Βασικά χαρακτηριστικά
 
-## Τι είναι μέσα
+- Επαγγελματικό instant demo στην αρχική σελίδα.
+- Απλή καταγραφή με πέντε βασικές ερωτήσεις.
+- Προαιρετική ενότητα για κριτήρια επιτυχίας, εναλλακτικές, υποθέσεις και ρίσκα.
+- Κλειδωμένο αρχικό snapshot.
+- Υπενθύμιση μέσω Google Calendar, Outlook ή αρχείου `.ics`.
+- Replay που ξεχωρίζει δύο διαφορετικά πράγματα:
+  - αν η αρχική πρόβλεψη επαληθεύτηκε,
+  - αν το τελικό αποτέλεσμα ήταν καλό.
+- Καθαρή σύγκριση Τότε / Τώρα και στατιστικά βαθμονόμησης.
+- Ανώνυμη shareable κάρτα PNG, χωρίς ευαίσθητο περιεχόμενο από προεπιλογή.
+- Ελληνικά και αγγλικά.
+- Χωρίς λογαριασμό, backend, cookies ή analytics.
+- Τα δεδομένα αποθηκεύονται μόνο στον browser μέσω IndexedDB.
+
+## Τεχνολογία
 
 - React 18 + TypeScript + Vite
-- Tailwind CSS με τα custom design tokens
-- Dexie.js για local IndexedDB
-- react-i18next για EL/EN
-- react-router-dom για routing
-- Zustand για user profile state
-- Lucide-react για icons
+- Tailwind CSS
+- Dexie.js / IndexedDB
+- react-i18next
+- react-router-dom
+- Zustand
+- Lucide React
+- html2canvas, φορτωμένο δυναμικά μόνο όταν δημιουργείται share card
 
-Bundle target: ~180-220KB gzipped.
+Δεν χρησιμοποιούνται εξωτερικά web fonts ή επί πληρωμή υπηρεσίες.
 
----
+## Τοπική εκτέλεση
 
-## Πρώτη εγκατάσταση (τοπικά, στο μηχάνημά σου)
-
-### Προαπαιτούμενα
-- **Node.js 18+** και **npm** εγκατεστημένα.
-  Δες αν έχεις: `node --version` και `npm --version`.
-
-### Βήματα
+Απαιτείται Node.js 18 ή νεότερο.
 
 ```bash
-# 1. Πήγαινε στον φάκελο του project
-cd decision-replay
-
-# 2. Εγκατέστησε τα dependencies (μία φορά)
 npm install
-
-# 3. Ξεκίνα τον development server
 npm run dev
 ```
 
-Θα ανοίξει στο http://localhost:5173.
+Το development URL είναι συνήθως `http://localhost:5173`.
 
-### Άλλες εντολές
-
-```bash
-npm run build     # Παράγει το production build στο /dist
-npm run preview   # Preview του production build τοπικά
-```
-
----
-
-## Δημοσίευση στο Vercel (δωρεάν)
-
-### 1. Ανέβασμα στο GitHub
+### Έλεγχοι πριν από deploy
 
 ```bash
-# Στον φάκελο του project
-git init
-git add .
-git commit -m "Initial: Decision Replay MVP v0.1"
-git branch -M main
-
-# Δημιούργησε καινούριο repo στο github.com/new (π.χ. "decision-replay")
-# και μετά:
-git remote add origin git@github.com:USERNAME/decision-replay.git
-git push -u origin main
+npx tsc --noEmit
+npm run build
+npm run preview
 ```
 
-### 2. Σύνδεση με Vercel
+Το production build δημιουργείται στον φάκελο `dist/`.
 
-1. Πήγαινε στο https://vercel.com/new
-2. Κάνε **Import Git Repository** και διάλεξε το `decision-replay` repo.
-3. Framework Preset: **Vite** (θα αναγνωριστεί αυτόματα).
-4. Build Command: `npm run build`  (default)
-5. Output Directory: `dist`  (default)
-6. Πάτησε **Deploy**.
+## Deploy στο Vercel
 
-Σε ~30 δευτερόλεπτα θα έχεις live URL όπως `decision-replay-username.vercel.app`.
-Κάθε `git push` θα αναπτύσσει αυτόματα.
+1. Ανέβασε το project σε GitHub.
+2. Στο Vercel επίλεξε **Add New → Project** και κάνε import το repository.
+3. Framework preset: **Vite**.
+4. Build command: `npm run build`.
+5. Output directory: `dist`.
+6. Deploy.
 
-Το `vercel.json` που περιλαμβάνεται φροντίζει για το SPA routing (χωρίς 404 σε refresh εσωτερικών σελίδων).
+Το `vercel.json` περιλαμβάνει rewrite για το SPA routing, ώστε τα εσωτερικά routes να ανοίγουν σωστά και μετά από refresh.
 
----
+## Δομή
 
-## Πώς είναι οργανωμένος ο κώδικας
-
-```
+```text
 src/
-├── App.tsx                    # Router root
-├── main.tsx                   # Entry point
-├── index.css                  # Tailwind + globals
-├── i18n/
-│   ├── index.ts               # i18next setup
-│   └── locales/
-│       ├── el.json            # Ελληνικά
-│       └── en.json            # English
-├── db/
-│   └── db.ts                  # Dexie schema (decisions, replays, notes, meta)
-├── store/
-│   └── profileStore.ts        # Zustand: user profile + onboarding flag
-├── data/
-│   └── templates.ts           # Τα 6 decision templates
-├── utils/
-│   ├── date.ts                # Ημερομηνίες, greetings
-│   ├── backup.ts              # Export/import JSON
-│   └── calibration.ts         # Στατιστικά και observations
+├── App.tsx
 ├── components/
-│   ├── ui/                    # Button, Input, Card, Badge, Slider, etc.
-│   └── layout/
-│       ├── AppShell.tsx       # Sidebar + bottom nav
-│       └── LanguageToggle.tsx
-└── pages/
-    ├── Landing.tsx            # Public home
-    ├── About.tsx
-    ├── Privacy.tsx
-    ├── Onboarding.tsx
-    ├── Dashboard.tsx
-    ├── DecisionsList.tsx
-    ├── NewDecision.tsx        # Wizard 3 βημάτων
-    ├── DecisionDetail.tsx     # Locked snapshot view
-    ├── ReplayFlow.tsx         # 2-step replay form
-    ├── Comparison.tsx         # «Τότε vs Τώρα»
-    └── Settings.tsx           # Backup, restore, delete-all
+│   ├── layout/
+│   └── ui/
+├── data/
+├── db/
+├── i18n/
+│   └── locales/
+├── pages/
+├── store/
+└── utils/
 ```
 
----
+Κύρια flows:
 
-## Ιδιωτικότητα (design principle)
+```text
+Landing → New Decision → Locked Decision → Calendar Reminder
+        → Replay → Then / Now Comparison → Anonymous Share Card
+```
 
-- Κανένα δεδομένο δεν φεύγει από τη συσκευή του χρήστη.
-- Καμία αποστολή σε server, καμία τηλεμετρία, κανένα cookie.
-- Οι fonts (Fraunces + Inter) φορτώνονται από τα Google Fonts μόνο για rendering — αν θέλεις να τα κάνεις self-hosted για πλήρη offline λειτουργία, δες τα docs του Fontsource ή κατέβασε τα woff2.
+## Ιδιωτικότητα και περιορισμοί
 
----
+- Οι αποφάσεις και τα replays δεν αποστέλλονται σε server.
+- Η διαγραφή δεδομένων browser ή site storage διαγράφει και τις αποφάσεις. Χρησιμοποίησε export backup από τις Ρυθμίσεις.
+- Τα δεδομένα δεν συγχρονίζονται μεταξύ συσκευών.
+- Το προαιρετικό challenge link ενσωματώνει στοιχεία της απόφασης στο URL. Η εφαρμογή προειδοποιεί να μη χρησιμοποιείται με εμπιστευτικές πληροφορίες.
+- Οι calendar υπηρεσίες λαμβάνουν μόνο τα στοιχεία του reminder που επιλέγει να προσθέσει ο χρήστης.
 
-## Επόμενα βήματα (post-MVP, όχι στο v1.0)
+## Compatibility
 
-- Dark mode
-- .ics calendar export για να θυμάται ο χρήστης το replay
-- PDF export συγκρίσεων
-- Optional AI insights (opt-in, με ρητή συναίνεση)
-- Cross-device sync (θα απαιτεί backend — προαιρετικό)
+Τα υπάρχοντα δεδομένα της προηγούμενης έκδοσης παραμένουν αναγνώσιμα. Τα παλαιότερα replays που δεν περιέχουν το νέο πεδίο «συμφωνία πρόβλεψης» εμφανίζονται κανονικά, αλλά δεν υπολογίζονται στα νέα calibration metrics.
 
----
+## Έκδοση
+
+Current MVP: **0.3.0**
 
 ## License
 
-MIT — δες `LICENSE` (αν λείπει, πρόσθεσέ το από το GitHub UI όταν δημιουργείς το repo).
-
----
+MIT — δες το `LICENSE`.
 
 ## Made by
 
-Ένα portfolio project από τον Κώστα Κούστα.
-Product creator · Business operations · AI workflow designer.
+Konstantinos Koustas
+[LinkedIn](https://www.linkedin.com/in/kostaskoustas)
