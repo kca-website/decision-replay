@@ -14,6 +14,7 @@ export interface DecisionSnapshot {
   situation?: string;
   options: string[];
   choiceIndex: number;
+  choice?: string;
   reason: string;
   expected: string;
   successCriterion?: string;
@@ -32,6 +33,7 @@ export interface DecisionReplay {
   completedAt: number;
   outcome: string;
   rating: 1 | 2 | 3 | 4;
+  expectationMatch?: 'yes' | 'partial' | 'no';
   wentAsExpected?: string;
   wentDifferent?: string;
   unexpected?: string;
