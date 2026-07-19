@@ -2,80 +2,62 @@ import { useTranslation } from 'react-i18next';
 
 interface InsightChartProps {
   averageConfidence: number;
-  confirmedRate: number;
+  averageMatch: number;
   count: number;
 }
 
-export const InsightChart = ({ averageConfidence, confirmedRate, count }: InsightChartProps) => {
+export const InsightChart = ({ averageConfidence, averageMatch, count }: InsightChartProps) => {
   const { t } = useTranslation();
-  const gap = averageConfidence - confirmedRate;
-  const isOverconfident = gap > 5;
-  const isUnderconfident = gap < -5;
-  const isCalibrated = !isOverconfident && !isUnderconfident;
+  const gap = averageConfidence - averageMatch;
+  const isOverconfident = gap > 10;
+  const isUnderconfident = gap < -10;
+  const isAligned = !isOverconfident && !isUnderconfident;
 
-  const label = isCalibrated
-    ? t('insights.calibrated')
+  const label = isAligned
+    ? t('insights.aligned')
     : isOverconfident
-    ? t('insights.overconfident', { gap: Math.abs(gap) })
-    : t('insights.underconfident', { gap: Math.abs(gap) });
-
-  const barMax = Math.max(averageConfidence, confirmedRate, 1);
-  const confWidth = (averageConfidence / 100) * 100;
-  const accWidth = (confirmedRate / 100) * 100;
+      ? t('insights.overconfident', { gap: Math.abs(gap) })
+      : t('insights.underconfident', { gap: Math.abs(gap) });
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="font-display text-xl">{t('insights.title')}</h3>
-        <span className="text-xs text-ink-subtle">{t('insights.basedOn', { count })}</span>
+      <div className="flex items-start justify-between mb-5 gap-4">
+        <div>
+          <h3 className="font-display text-xl">{t('insights.title')}</h3>
+          <p className="text-sm text-ink-muted mt-1">{t('insights.subtitle')}</p>
+        </div>
+        <span className="text-xs text-ink-subtle whitespace-nowrap">{t('insights.basedOn', { count })}</span>
       </div>
 
-      {/* Visual bars */}
-      <div className="space-y-3 mb-4">
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-ink-muted">{t('insights.yourConfidence')}</span>
-            <span className="font-medium tabular-nums">{averageConfidence}%</span>
-          </div>
-          <div className="h-6 bg-ink/5 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-warning rounded-full transition-all duration-700"
-              style={{ width: `${confWidth}%` }}
-            />
-          </div>
-        </div>
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-ink-muted">{t('insights.yourAccuracy')}</span>
-            <span className="font-medium tabular-nums">{confirmedRate}%</span>
-          </div>
-          <div className="h-6 bg-ink/5 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-success rounded-full transition-all duration-700"
-              style={{ width: `${accWidth}%` }}
-            />
-          </div>
-        </div>
+      <div className="space-y-4 mb-5">
+        <MetricBar label={t('insights.yourConfidence')} value={averageConfidence} barClass="bg-warning" />
+        <MetricBar label={t('insights.predictionMatch')} value={averageMatch} barClass="bg-success" />
       </div>
 
-      {/* Gap indicator */}
       <div className={`rounded-lg p-4 text-center ${
-        isCalibrated ? 'bg-success/10' : isOverconfident ? 'bg-warning/15' : 'bg-info/10'
+        isAligned ? 'bg-success/10' : isOverconfident ? 'bg-warning/15' : 'bg-accent-soft/50'
       }`}>
         <div className={`font-display text-3xl font-medium mb-1 ${
-          isCalibrated ? 'text-success' : isOverconfident ? 'text-warning' : 'text-info'
+          isAligned ? 'text-success' : isOverconfident ? 'text-warning' : 'text-accent'
         }`}>
-          {isCalibrated ? '≈' : isOverconfident ? `+${gap}%` : `${gap}%`}
+          {isAligned ? '≈' : isOverconfident ? `+${gap}%` : `${gap}%`}
         </div>
         <p className="text-sm text-ink-muted">{label}</p>
       </div>
 
-      {/* Shareable one-liner */}
-      {count >= 3 && (
-        <p className="text-xs text-ink-subtle text-center mt-3 italic">
-          {t('insights.shareable', { confidence: averageConfidence, accuracy: confirmedRate, gap: Math.abs(gap) })}
-        </p>
-      )}
+      {count < 5 && <p className="text-xs text-ink-subtle text-center mt-3">{t('insights.earlyData')}</p>}
     </div>
   );
 };
+
+const MetricBar = ({ label, value, barClass }: { label: string; value: number; barClass: string }) => (
+  <div>
+    <div className="flex justify-between text-sm mb-1.5">
+      <span className="text-ink-muted">{label}</span>
+      <span className="font-medium tabular-nums">{value}%</span>
+    </div>
+    <div className="h-3 bg-ink/5 rounded-full overflow-hidden" aria-hidden="true">
+      <div className={`h-full rounded-full transition-all duration-700 ${barClass}`} style={{ width: `${value}%` }} />
+    </div>
+  </div>
+);
