@@ -18,7 +18,23 @@ export const daysUntil = (ts: number, now = Date.now()): number => {
 };
 
 export const addDays = (days: number, from = Date.now()): number => {
-  return from + days * 24 * 60 * 60 * 1000;
+  const date = new Date(from);
+  date.setHours(12, 0, 0, 0);
+  date.setDate(date.getDate() + days);
+  return date.getTime();
+};
+
+export const toDateInputValue = (ts: number): string => {
+  const date = new Date(ts);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+export const fromDateInputValue = (value: string): number => {
+  const [year, month, day] = value.split('-').map(Number);
+  return new Date(year, month - 1, day, 12, 0, 0, 0).getTime();
 };
 
 export const getTimeOfDayGreeting = (): 'greetMorning' | 'greetAfternoon' | 'greetEvening' | 'greetNight' => {
