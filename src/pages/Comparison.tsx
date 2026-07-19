@@ -2,18 +2,20 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Check, X, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Check, X, AlertTriangle, Share2 } from 'lucide-react';
 import { db } from '../db/db';
 import { getObservation } from '../utils/calibration';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { formatDate } from '../utils/date';
+import { ShareCard } from '../components/ShareCard';
 
 export const Comparison = () => {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
   const [lesson, setLesson] = useState('');
   const [saved, setSaved] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   const decision = useLiveQuery(() => (id ? db.decisions.get(id) : undefined), [id]);
   const replay = useLiveQuery(() => (id ? db.replays.where('decisionId').equals(id).first() : undefined), [id]);
@@ -36,7 +38,12 @@ export const Comparison = () => {
         <ArrowLeft size={16} /> {decision.title}
       </Link>
 
-      <h1 className="font-display text-3xl md:text-4xl mb-8">{t('comparison.title')}</h1>
+      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+        <h1 className="font-display text-3xl md:text-4xl">{t('comparison.title')}</h1>
+        <Button size="sm" variant="secondary" onClick={() => setShowShare(true)}>
+          <Share2 size={14} /> {t('share.shareButton')}
+        </Button>
+      </div>
 
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         <Card padding="lg" className="bg-subtle">
@@ -112,7 +119,12 @@ export const Comparison = () => {
         {saved ? (
           <>
             <p className="text-ink whitespace-pre-wrap mb-4">{replay.lesson || lesson}</p>
-            <div className="text-sm text-success font-medium">✓ {t('comparison.done')} — {t('comparison.doneSub')}</div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-success font-medium">✓ {t('comparison.done')} — {t('comparison.doneSub')}</div>
+              <Button size="sm" variant="secondary" onClick={() => setShowShare(true)}>
+                <Share2 size={14} /> {t('share.shareButton')}
+              </Button>
+            </div>
           </>
         ) : (
           <>
@@ -130,6 +142,8 @@ export const Comparison = () => {
           </>
         )}
       </Card>
+
+      <ShareCard decision={decision} replay={replay} open={showShare} onClose={() => setShowShare(false)} />
     </div>
   );
 };

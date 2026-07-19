@@ -10,6 +10,7 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { InsightChart } from '../components/ui/InsightChart';
 
 export const Dashboard = () => {
   const { t, i18n } = useTranslation();
@@ -87,29 +88,36 @@ export const Dashboard = () => {
         <KPI label={t('dashboard.kpiCompleted')} value={counts.completed} />
       </div>
 
-      {cal.count > 0 && (
+      {/* Insight Statistics — the new calibration visualization */}
+      {cal.count >= 2 && (
+        <Card className="mb-8" padding="lg">
+          <InsightChart
+            averageConfidence={cal.averageConfidence}
+            confirmedRate={cal.confirmedRate}
+            count={cal.count}
+          />
+        </Card>
+      )}
+
+      {/* Simple calibration bars for early users */}
+      {cal.count > 0 && cal.count < 2 && (
         <Card className="mb-8" padding="lg">
           <h3 className="font-display text-xl mb-1">{t('dashboard.calibrationTitle')}</h3>
           <p className="text-ink-muted text-sm mb-5">{t('dashboard.calibrationSub')}</p>
-
           <div className="flex justify-between items-center text-sm mb-2">
             <span className="text-ink-muted">{t('dashboard.confirmedPredictions')}</span>
             <span className="font-medium tabular-nums">{cal.confirmedRate}%</span>
           </div>
           <ProgressBar value={cal.confirmedRate} />
-
           <div className="flex justify-between items-center text-sm mt-5 mb-2">
             <span className="text-ink-muted">{t('dashboard.averageConfidence')}</span>
             <span className="font-medium tabular-nums">{cal.averageConfidence}%</span>
           </div>
           <ProgressBar value={cal.averageConfidence} color="warning" />
-
-          {!cal.hasEnoughData && (
-            <div className="mt-5 pt-4 border-t flex items-start gap-2 text-sm text-ink-muted">
-              <Info size={16} className="flex-shrink-0 mt-0.5 text-ink-subtle" />
-              {t('dashboard.calibrationNoData')}
-            </div>
-          )}
+          <div className="mt-5 pt-4 border-t flex items-start gap-2 text-sm text-ink-muted">
+            <Info size={16} className="flex-shrink-0 mt-0.5 text-ink-subtle" />
+            {t('dashboard.calibrationNoData')}
+          </div>
         </Card>
       )}
 

@@ -1,17 +1,33 @@
 {
   "brand": "Decision Replay",
   "common": {
-    "next": "Next", "back": "Back", "skip": "Skip", "save": "Save",
-    "cancel": "Cancel", "delete": "Delete", "confirm": "Confirm", "close": "Close",
-    "yes": "Yes", "no": "No", "maybe": "Maybe",
-    "required": "Required", "optional": "Optional", "loading": "Loading...",
-    "notFound": "Not found", "language": "Language"
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "maybe": "Maybe",
+    "required": "Required",
+    "optional": "Optional",
+    "loading": "Loading...",
+    "notFound": "Not found",
+    "language": "Language"
   },
   "nav": {
-    "howItWorks": "How it works", "about": "About", "privacy": "Privacy",
-    "dashboard": "Dashboard", "decisions": "My decisions",
-    "newDecision": "New decision", "settings": "Settings",
-    "feedback": "Feedback", "github": "GitHub"
+    "howItWorks": "How it works",
+    "about": "About",
+    "privacy": "Privacy",
+    "dashboard": "Dashboard",
+    "decisions": "My decisions",
+    "newDecision": "New decision",
+    "settings": "Settings",
+    "feedback": "Feedback",
+    "github": "GitHub"
   },
   "landing": {
     "heroTitle1": "Don't just track your decisions.",
@@ -75,8 +91,11 @@
   },
   "list": {
     "title": "My decisions",
-    "filterAll": "All", "filterActive": "Active", "filterCheckin": "Check-in",
-    "filterReplay": "Replay", "filterCompleted": "Completed",
+    "filterAll": "All",
+    "filterActive": "Active",
+    "filterCheckin": "Check-in",
+    "filterReplay": "Replay",
+    "filterCompleted": "Completed",
     "empty": "No decisions here.",
     "statusActive": "Active",
     "statusCheckin": "Check-in",
@@ -144,7 +163,18 @@
     "addNote": "Add note",
     "notePlaceholder": "Write your note...",
     "deleteDecision": "Delete decision",
-    "deleteConfirm": "This will be deleted permanently. It can't be undone."
+    "deleteConfirm": "This will be deleted permanently. It can't be undone.",
+    "challenge": "Challenge a friend",
+    "reminder": "Reminder",
+    "challengeTitle": "Challenge a friend to predict",
+    "challengeDesc": "Send this link to someone. They'll see the question, make their own prediction, and then both answers will be revealed.",
+    "challengeName": "Your name (optional)",
+    "challengeNamePlaceholder": "e.g. Kostas",
+    "challengeCopy": "Copy challenge link",
+    "challengeCopied": "Copied!",
+    "reminderTitle": "Add a reminder",
+    "reminderDesc": "Add a calendar event so you remember to do your replay.",
+    "downloadICS": "Download .ics file"
   },
   "replay": {
     "step": "Replay — Step {{n}} of 2",
@@ -153,8 +183,10 @@
     "step1Title": "What actually happened?",
     "outcome": "What was the actual outcome?",
     "outcomeRating": "How would you rate the outcome?",
-    "ratingBad": "Bad", "ratingNeutral": "Neutral",
-    "ratingGood": "Good", "ratingGreat": "Great",
+    "ratingBad": "Bad",
+    "ratingNeutral": "Neutral",
+    "ratingGood": "Good",
+    "ratingGreat": "Great",
     "wentAsExpected": "What went as expected?",
     "wentDifferent": "What went differently?",
     "unexpected": "Was there anything unexpected?",
@@ -224,7 +256,10 @@
     "sensitiveTitle": "For student decisions",
     "sensitive": "Don't write names, health info or sensitive details. Use general descriptions."
   },
-  "confirmDialog": { "cancel": "Cancel", "confirm": "Confirm" },
+  "confirmDialog": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
   "sensitiveWarning": "Better not to write names, health info or sensitive details. Use general descriptions if unsure.",
   "templates": {
     "professional-general": {
@@ -251,5 +286,55 @@
       "name": "Big purchase",
       "desc": "For purchases you'd like to evaluate later."
     }
+  },
+  "challenge": {
+    "invalidTitle": "Invalid link",
+    "invalidDesc": "This challenge link is invalid or has expired.",
+    "goHome": "Go to home",
+    "title": "Challenge",
+    "from": "{{name}} challenges you!",
+    "yourName": "Your name",
+    "namePlaceholder": "e.g. Maria",
+    "yourPrediction": "What do you think will happen?",
+    "predictionPlaceholder": "Write your prediction...",
+    "yourConfidence": "How sure are you?",
+    "reveal": "Reveal predictions!",
+    "revealTitle": "Reveal!",
+    "said": "predicted:",
+    "you": "You",
+    "prediction": "Prediction",
+    "choice": "Choice",
+    "confidence": "Confidence",
+    "confidenceGap": "Confidence gap",
+    "gapClose": "You're thinking almost the same!",
+    "gapModerate": "Interesting confidence difference.",
+    "gapLarge": "Very different confidence levels!",
+    "ctaDesc": "Want to track your own decisions?",
+    "tryApp": "Try Decision Replay",
+    "anonymous": "Someone"
+  },
+  "insights": {
+    "title": "Insight",
+    "basedOn": "Based on {{count}} replays",
+    "yourConfidence": "Your confidence",
+    "yourAccuracy": "Your accuracy",
+    "calibrated": "Well calibrated! Your confidence matches your outcomes.",
+    "overconfident": "You overestimate yourself by {{gap}}%. Try being slightly more conservative.",
+    "underconfident": "You underestimate yourself by {{gap}}%! Trust your decisions more.",
+    "shareable": "My confidence: {{confidence}}% · My accuracy: {{accuracy}}% · Gap: {{gap}}%"
+  },
+  "share": {
+    "title": "Share",
+    "shareButton": "Share",
+    "predicted": "Predicted",
+    "actual": "Actual",
+    "confidence": "confidence",
+    "confirmed": "Confirmed",
+    "notConfirmed": "Not confirmed",
+    "lesson": "Lesson",
+    "cta": "Predict your next move too",
+    "downloadPng": "Download image",
+    "generating": "Generating...",
+    "tweet": "I was {{confidence}}% sure about \"{{title}}\". See what actually happened."
   }
 }

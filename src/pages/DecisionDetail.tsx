@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, Lock, Trash2, Plus } from 'lucide-react';
+import { ArrowLeft, Lock, Trash2, Plus, Swords, CalendarPlus, Copy, Check } from 'lucide-react';
 import { db, genId, computeDecisionStatus } from '../db/db';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -10,6 +10,8 @@ import { Button } from '../components/ui/Button';
 import { Textarea } from '../components/ui/Textarea';
 import { Modal } from '../components/ui/Modal';
 import { formatDate, daysUntil } from '../utils/date';
+import { buildChallengeUrl, type ChallengeData } from '../utils/challenge';
+import { buildGoogleCalendarUrl, buildOutlookCalendarUrl, downloadICS } from '../utils/reminder';
 
 export const DecisionDetail = () => {
   const { t, i18n } = useTranslation();
@@ -18,6 +20,10 @@ export const DecisionDetail = () => {
   const [noteText, setNoteText] = useState('');
   const [showAddNote, setShowAddNote] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showChallenge, setShowChallenge] = useState(false);
+  const [challengerName, setChallengerName] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
 
   const decision = useLiveQuery(() => (id ? db.decisions.get(id) : undefined), [id]);
   const replay = useLiveQuery(() => (id ? db.replays.where('decisionId').equals(id).first() : undefined), [id]);
@@ -45,6 +51,29 @@ export const DecisionDetail = () => {
     nav('/app/decisions');
   };
 
+  const getChallengeUrl = () => {
+    const data: ChallengeData = {
+      q: decision.title,
+      s: decision.situation,
+      o: decision.options,
+      ci: decision.choiceIndex,
+      p: decision.expected,
+      c: decision.confidence,
+      n: challengerName || t('challenge.anonymous'),
+      t: Date.now(),
+    };
+    return buildChallengeUrl(data);
+  };
+
+  const copyChallenge = async () => {
+    const url = getChallengeUrl();
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const appUrl = window.location.origin;
+
   return (
     <div className="container-app py-6 md:py-10 max-w-3xl">
       <Link to="/app/decisions" className="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink mb-6">
@@ -61,14 +90,28 @@ export const DecisionDetail = () => {
         </button>
       </div>
       <h1 className="font-display text-3xl md:text-4xl mb-2">{decision.title}</h1>
-      <p className="text-sm text-ink-muted mb-8">
+      <p className="text-sm text-ink-muted mb-6">
         {t('detail.lockedOn', { date: formatDate(decision.lockedAt, i18n.language) })}
         {' · '}
         {status === 'replay' ? t('detail.replayReady') : t('detail.replayIn', { days: Math.max(0, days) })}
       </p>
 
+      {/* Action buttons: Challenge + Reminder */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        {!replay && (
+          <Button size="sm" variant="secondary" onClick={() => setShowChallenge(true)}>
+            <Swords size={14} /> {t('detail.challenge')}
+          </Button>
+        )}
+        {!replay && status !== 'replay' && (
+          <Button size="sm" variant="secondary" onClick={() => setShowReminder(true)}>
+            <CalendarPlus size={14} /> {t('detail.reminder')}
+          </Button>
+        )}
+      </div>
+
       {readyForReplay && (
-        <Card className="mb-8 bg-[#EDE4C7] !border-[#E1CFA0]" padding="md">
+        <Card className="mb-6 bg-[#EDE4C7] !border-[#E1CFA0]" padding="md">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <p className="font-medium">{t('detail.replayReady')}</p>
             <Link to={`/app/decisions/${decision.id}/replay`}>
@@ -127,9 +170,7 @@ export const DecisionDetail = () => {
             </div>
           </div>
         )}
-        {notes.length === 0 && !showAddNote && (
-          <p className="text-sm text-ink-muted">—</p>
-        )}
+        {notes.length === 0 && !showAddNote && <p className="text-sm text-ink-muted">—</p>}
         <ul className="space-y-3">
           {notes.map((n) => (
             <li key={n.id} className="text-sm">
@@ -140,11 +181,53 @@ export const DecisionDetail = () => {
         </ul>
       </Card>
 
+      {/* Delete modal */}
       <Modal open={showDelete} onClose={() => setShowDelete(false)} title={t('detail.deleteDecision')}>
         <p className="text-ink-muted mb-6">{t('detail.deleteConfirm')}</p>
         <div className="flex justify-end gap-3">
           <Button variant="ghost" onClick={() => setShowDelete(false)}>{t('common.cancel')}</Button>
           <Button variant="danger" onClick={deleteDecision}>{t('common.delete')}</Button>
+        </div>
+      </Modal>
+
+      {/* Challenge modal */}
+      <Modal open={showChallenge} onClose={() => setShowChallenge(false)} title={t('detail.challengeTitle')}>
+        <p className="text-ink-muted text-sm mb-4">{t('detail.challengeDesc')}</p>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1.5">{t('detail.challengeName')}</label>
+          <input
+            type="text"
+            value={challengerName}
+            onChange={(e) => setChallengerName(e.target.value)}
+            placeholder={t('detail.challengeNamePlaceholder')}
+            className="w-full px-3.5 py-2.5 border rounded-md bg-card text-[15px] focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/15"
+          />
+        </div>
+        <Button onClick={copyChallenge} className="w-full justify-center">
+          {copied ? <><Check size={16} /> {t('detail.challengeCopied')}</> : <><Copy size={16} /> {t('detail.challengeCopy')}</>}
+        </Button>
+      </Modal>
+
+      {/* Reminder modal */}
+      <Modal open={showReminder} onClose={() => setShowReminder(false)} title={t('detail.reminderTitle')}>
+        <p className="text-ink-muted text-sm mb-4">{t('detail.reminderDesc')}</p>
+        <div className="space-y-3">
+          <a href={buildGoogleCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)} target="_blank" rel="noopener">
+            <Button variant="secondary" className="w-full justify-center">
+              📅 Google Calendar
+            </Button>
+          </a>
+          <a href={buildOutlookCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)} target="_blank" rel="noopener">
+            <Button variant="secondary" className="w-full justify-center">
+              📅 Outlook
+            </Button>
+          </a>
+          <Button variant="ghost" className="w-full justify-center" onClick={() => {
+            downloadICS(decision.title, decision.replayDate, appUrl, decision.id);
+            setShowReminder(false);
+          }}>
+            📥 {t('detail.downloadICS')}
+          </Button>
         </div>
       </Modal>
     </div>

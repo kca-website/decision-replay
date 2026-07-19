@@ -14,6 +14,7 @@ import { DecisionDetail } from './pages/DecisionDetail';
 import { ReplayFlow } from './pages/ReplayFlow';
 import { Comparison } from './pages/Comparison';
 import { Settings } from './pages/Settings';
+import { Challenge } from './pages/Challenge';
 
 const AppRoot = () => {
   const { hasOnboarded } = useProfile();
@@ -34,6 +35,7 @@ const App = () => {
       <Route path="/about" element={<About />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/challenge" element={<Challenge />} />
       <Route path="/app" element={<AppRoot />}>
         <Route index element={<Dashboard />} />
         <Route path="decisions" element={<DecisionsList />} />
