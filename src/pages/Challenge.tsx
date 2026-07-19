@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Swords, ArrowLeft, Copy, Check } from 'lucide-react';
 import { decodeChallenge, type ChallengeData } from '../utils/challenge';
 import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
+import { Button, buttonClasses } from '../components/ui/Button';
 import { Slider } from '../components/ui/Slider';
 import { Textarea } from '../components/ui/Textarea';
 
@@ -31,9 +31,7 @@ export const Challenge = () => {
         <Swords size={48} className="mx-auto text-ink-subtle mb-4" />
         <h1 className="font-display text-3xl mb-3">{t('challenge.invalidTitle')}</h1>
         <p className="text-ink-muted mb-6">{t('challenge.invalidDesc')}</p>
-        <Link to="/">
-          <Button>{t('challenge.goHome')}</Button>
-        </Link>
+        <Link to="/" className={buttonClasses()}>{t('challenge.goHome')}</Link>
       </div>
     );
   }
@@ -99,9 +97,7 @@ export const Challenge = () => {
 
         <div className="text-center">
           <p className="text-ink-muted text-sm mb-4">{t('challenge.ctaDesc')}</p>
-          <Link to="/">
-            <Button>{t('challenge.tryApp')}</Button>
-          </Link>
+          <Link to="/" className={buttonClasses()}>{t('challenge.tryApp')}</Link>
         </div>
       </div>
     );
