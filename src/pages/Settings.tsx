@@ -10,7 +10,7 @@ import { Modal } from '../components/ui/Modal';
 import { downloadBackup, readFileAsJson, validateBackup, restoreBackup, deleteAllData, type BackupPayload } from '../utils/backup';
 import type { UserProfile } from '../db/db';
 
-const VERSION = '0.1.0';
+const VERSION = '0.3.0';
 
 export const Settings = () => {
   const { t, i18n } = useTranslation();
