@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, Info, ChevronRight } from 'lucide-react';
+import { Plus, Info, ChevronRight, PlayCircle } from 'lucide-react';
 import { db, computeDecisionStatus } from '../db/db';
 import { computeCalibration } from '../utils/calibration';
 import { formatDate, getTimeOfDayGreeting } from '../utils/date';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
+import { buttonClasses } from '../components/ui/Button';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { InsightChart } from '../components/ui/InsightChart';
 
@@ -50,9 +50,14 @@ export const Dashboard = () => {
       <div className="container-app py-10 md:py-16 text-center max-w-2xl">
         <h1 className="font-display text-3xl md:text-4xl mb-3">{t('dashboard.emptyTitle')}</h1>
         <p className="text-ink-muted mb-8">{t('dashboard.emptyDesc')}</p>
-        <Link to="/app/decisions/new" className="inline-flex items-center gap-2 bg-accent text-white text-base px-7 py-3.5 rounded-md font-medium hover:bg-accent-hover transition-colors">
-          <Plus size={18} /> {t('nav.newDecision')}
-        </Link>
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
+          <Link to="/app/decisions/new" className="inline-flex items-center justify-center gap-2 bg-accent text-white text-base px-7 py-3.5 rounded-md font-medium hover:bg-accent-hover transition-colors">
+            <Plus size={18} /> {t('nav.newDecision')}
+          </Link>
+          <Link to="/#demo" className="inline-flex items-center justify-center gap-2 bg-card border border-border-strong text-ink text-base px-7 py-3.5 rounded-md font-medium hover:bg-subtle transition-colors">
+            <PlayCircle size={18} /> {t('landing.ctaDemo')}
+          </Link>
+        </div>
       </div>
     );
   }
@@ -75,8 +80,8 @@ export const Dashboard = () => {
             <div className="font-medium text-ink">{t('dashboard.alertReplayToday', { count: counts.replay })}</div>
             <div className="text-sm text-ink-muted mt-0.5">{replayReady.d.title}</div>
           </div>
-          <Link to={`/app/decisions/${replayReady.d.id}/replay`}>
-            <Button size="sm">{t('dashboard.startReplay')}</Button>
+          <Link to={`/app/decisions/${replayReady.d.id}/replay`} className={buttonClasses('primary', 'sm')}>
+            {t('dashboard.startReplay')}
           </Link>
         </div>
       )}
@@ -93,7 +98,7 @@ export const Dashboard = () => {
         <Card className="mb-8" padding="lg">
           <InsightChart
             averageConfidence={cal.averageConfidence}
-            confirmedRate={cal.confirmedRate}
+            averageMatch={cal.averageMatch}
             count={cal.count}
           />
         </Card>
@@ -105,10 +110,10 @@ export const Dashboard = () => {
           <h3 className="font-display text-xl mb-1">{t('dashboard.calibrationTitle')}</h3>
           <p className="text-ink-muted text-sm mb-5">{t('dashboard.calibrationSub')}</p>
           <div className="flex justify-between items-center text-sm mb-2">
-            <span className="text-ink-muted">{t('dashboard.confirmedPredictions')}</span>
-            <span className="font-medium tabular-nums">{cal.confirmedRate}%</span>
+            <span className="text-ink-muted">{t('dashboard.averageMatch')}</span>
+            <span className="font-medium tabular-nums">{cal.averageMatch}%</span>
           </div>
-          <ProgressBar value={cal.confirmedRate} />
+          <ProgressBar value={cal.averageMatch} />
           <div className="flex justify-between items-center text-sm mt-5 mb-2">
             <span className="text-ink-muted">{t('dashboard.averageConfidence')}</span>
             <span className="font-medium tabular-nums">{cal.averageConfidence}%</span>
