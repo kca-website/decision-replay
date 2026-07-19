@@ -47,13 +47,20 @@ export const AppShell = () => {
     <div className="min-h-screen bg-app md:grid md:grid-cols-[240px_1fr]">
       {/* Desktop sidebar */}
       <aside className="hidden md:flex flex-col bg-subtle border-r p-4">
-        <Brand />
+      <a href="/" className="block hover:opacity-80 transition-opacity">
+          <Brand />
+        </a>
         <nav className="flex flex-col gap-1">
           <NavItems />
         </nav>
         <div className="mt-auto p-4 text-xs text-ink-subtle leading-relaxed">
           <LanguageToggle />
-          <p className="mt-3">Δεδομένα μόνο στη συσκευή σου.</p>
+        <p className="mt-3">Δεδομένα μόνο στη συσκευή σου.</p>
+          <p className="mt-2">
+            <a href="https://www.linkedin.com/in/konstantinos-koustas/" target="_blank" rel="noopener noreferrer" className="text-ink-subtle hover:text-accent transition-colors">
+              Built by Konstantinos Koustas
+            </a>
+          </p>
         </div>
       </aside>
 
