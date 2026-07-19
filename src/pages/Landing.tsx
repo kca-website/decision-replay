@@ -69,8 +69,13 @@ export const Landing = () => {
         <div className="mt-3 flex justify-center gap-4">
           <Link to="/about" className="text-ink-muted hover:text-ink">{t('nav.about')}</Link>
           <Link to="/privacy" className="text-ink-muted hover:text-ink">{t('nav.privacy')}</Link>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-ink-muted hover:text-ink">{t('nav.github')}</a>
+       <a href="https://github.com/kca-website/decision-replay" target="_blank" rel="noopener noreferrer" className="text-ink-muted hover:text-ink">{t('nav.github')}</a>
         </div>
+        <p className="mt-4">
+          <a href="https://www.linkedin.com/in/kostaskoustas" target="_blank" rel="noopener noreferrer" className="text-ink-muted hover:text-accent transition-colors">
+            Built by Konstantinos Koustas
+          </a>
+        </p>
       </footer>
     </div>
   );
