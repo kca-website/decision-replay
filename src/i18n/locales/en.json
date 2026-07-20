@@ -95,7 +95,53 @@
     "useCase3Title": "Projects and priorities",
     "useCase3Desc": "See where confidence was too high and which information was missing.",
     "privacyTitle": "Privacy-first by design.",
-    "privacySub": "There is no account or decision-data server. Decisions stay in your browser and can be exported as a backup."
+    "privacySub": "There is no account or decision-data server. Decisions stay in your browser and can be exported as a backup.",
+    "demoTabsLabel": "Professional decision examples",
+    "fictionalLabel": "Illustrative example",
+    "demos": {
+      "marketing": {
+        "tab": "Marketing",
+        "title": "Should we change our Search Ads landing pages?",
+        "timeframe": "Replay in 30 days",
+        "thenDate": "Locked 30 days ago",
+        "choice": "Run a four-week test with category-specific product landing pages.",
+        "reason": "91% of clicks were landing on the homepage without matching search intent.",
+        "prediction": "Product-page engagement will increase by at least 18%.",
+        "confidence": "70%",
+        "nowDate": "Replay today",
+        "outcome": "Engagement rose by 23%, but checkout conversion stayed almost unchanged.",
+        "match": "Partly",
+        "lesson": "The landing page improved intent, but checkout friction remained the main constraint."
+      },
+      "ecommerce": {
+        "tab": "E-commerce",
+        "title": "Will a simpler checkout reduce abandonment?",
+        "timeframe": "Replay in 6 weeks",
+        "thenDate": "Locked 6 weeks ago",
+        "choice": "Remove one unnecessary step and show shipping costs earlier.",
+        "reason": "Most exits occurred after the total cost first became visible.",
+        "prediction": "Checkout completion will rise by 10% without increasing support requests.",
+        "confidence": "65%",
+        "nowDate": "Replay today",
+        "outcome": "Completion rose by 8% and support requests remained stable.",
+        "match": "Partly",
+        "lesson": "The direction was right, but the expected size of the improvement was too high."
+      },
+      "career": {
+        "tab": "Career",
+        "title": "Should I take a role with more responsibility?",
+        "timeframe": "Replay in 3 months",
+        "thenDate": "Locked 3 months ago",
+        "choice": "Accept the role with a defined learning plan and a 90-day review.",
+        "reason": "The role builds capabilities that are currently missing from my professional profile.",
+        "prediction": "I will handle the core responsibilities independently and the workload will be manageable.",
+        "confidence": "60%",
+        "nowDate": "Replay today",
+        "outcome": "The core responsibilities are under control, but the workload remains higher than expected.",
+        "match": "Partly",
+        "lesson": "The capability estimate was right; the available-time estimate was not."
+      }
+    }
   },
   "onboarding": {
     "step1Title": "Which examples should the app use?",
@@ -137,7 +183,14 @@
     "seeAll": "See all",
     "emptyTitle": "Start with one real decision.",
     "emptyDesc": "It takes about two minutes to lock the prediction and decide when you will review it.",
-    "averageMatch": "Average prediction match"
+    "averageMatch": "Average prediction match",
+    "returnPlanTitle": "Return plan",
+    "returnPlanMissing": "No calendar reminder is recorded for {{count}} decision",
+    "returnPlanMissing_plural": "No calendar reminder is recorded for {{count}} decisions",
+    "returnPlanDesc": "Without a return, there is no replay. Add a reminder to the next decision.",
+    "addReminder": "Add reminder",
+    "reminderAdded": "Reminder recorded",
+    "reminderMissing": "No reminder recorded"
   },
   "list": {
     "title": "My decisions",
@@ -260,7 +313,11 @@
     "missing": "Missing information",
     "secondOpinion": "Second or opposing view",
     "noNotes": "No later notes yet.",
-    "challengePrivacy": "The link contains the title, context, options and prediction you entered. Do not use it with confidential information."
+    "challengePrivacy": "The link stores decision data in the URL hash so it is not sent to a server as a query. Still, do not use it with confidential information.",
+    "returnRule": "Without a return, there is no replay.",
+    "reminderRecorded": "Your calendar choice was recorded. You can change it or add another reminder.",
+    "challengeShare": "Share link",
+    "challengeHidden": "Your prediction stays hidden until your colleague records their own."
   },
   "replay": {
     "step": "Replay — Step {{n}} of 2",
@@ -398,27 +455,29 @@
     "invalidTitle": "Invalid link",
     "invalidDesc": "This challenge link is invalid or has expired.",
     "goHome": "Go to home",
-    "title": "Challenge",
-    "from": "{{name}} challenges you!",
+    "title": "Independent prediction",
+    "from": "{{name}} is asking for your independent estimate.",
     "yourName": "Your name",
     "namePlaceholder": "e.g. Maria",
     "yourPrediction": "What do you think will happen?",
     "predictionPlaceholder": "Write your prediction...",
     "yourConfidence": "How sure are you?",
-    "reveal": "Reveal predictions!",
-    "revealTitle": "Reveal!",
+    "reveal": "Lock and compare",
+    "revealTitle": "Two independent predictions",
     "said": "predicted:",
     "you": "You",
     "prediction": "Prediction",
     "choice": "Choice",
     "confidence": "Confidence",
-    "confidenceGap": "Confidence gap",
-    "gapClose": "You're thinking almost the same!",
-    "gapModerate": "Interesting confidence difference.",
-    "gapLarge": "Very different confidence levels!",
+    "confidenceGap": "Original confidence gap",
+    "gapClose": "Similar confidence — compare whether you relied on the same evidence.",
+    "gapModerate": "There is a meaningful confidence difference. Compare the assumptions behind it.",
+    "gapLarge": "Very different estimates. The useful question is which evidence created the gap.",
     "ctaDesc": "Want to track your own decisions?",
     "tryApp": "Try Decision Replay",
-    "anonymous": "Someone"
+    "anonymous": "Someone",
+    "privateUntilSubmit": "The original prediction is hidden. It will appear only after you record your own.",
+    "completedNote": "This does not yet decide who was right. Reality will do that when the outcome is known."
   },
   "insights": {
     "title": "Confidence vs reality",
@@ -457,7 +516,18 @@
     "replayCompleted": "Replay complete",
     "copyText": "Copy post text",
     "copied": "Copied",
-    "postText": "I replayed a decision: original confidence {{confidence}}%, prediction result “{{match}}”."
+    "postText": "I replayed a professional decision. Original confidence: {{confidence}}%. Prediction match: {{match}}. Outcome quality: {{rating}}/4. The point is not to look right every time, but to see where judgment should improve.",
+    "includeLesson": "Include the lesson",
+    "includeLessonHint": "A lesson can contain internal or personal information. It is hidden by default.",
+    "singleReplayNote": "One replay result — not a lifetime accuracy score",
+    "calibrationSignal": "Calibration signal",
+    "signalWellCalibrated": "Well calibrated",
+    "signalHighConfidenceMiss": "High-confidence miss",
+    "signalPartial": "Partly confirmed",
+    "signalCautiousHit": "Correct but cautious",
+    "signalNotAvailable": "No signal yet",
+    "shareImage": "Share image",
+    "copyLinkedIn": "Copy LinkedIn text"
   },
   "shell": {
     "localData": "Decisions are stored only in this browser."
