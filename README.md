@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/30168897/README.md)
 # Decision Replay
 
 **Lock what you expect. Return when reality is known.**
@@ -9,18 +8,18 @@
 
 ## Βασικά χαρακτηριστικά
 
-- Επαγγελματικό instant demo στην αρχική σελίδα.
+- Τρία επαγγελματικά instant demos στην αρχική σελίδα: marketing, e-commerce και career.
 - Απλή καταγραφή με πέντε βασικές ερωτήσεις.
 - Προαιρετική ενότητα για κριτήρια επιτυχίας, εναλλακτικές, υποθέσεις και ρίσκα.
 - Κλειδωμένο αρχικό snapshot.
-- Υπενθύμιση μέσω Google Calendar, Outlook ή αρχείου `.ics`.
+- Υπενθύμιση μέσω Google Calendar, Outlook ή αρχείου `.ics`, με ορατή ένδειξη αν έχει οριστεί σχέδιο επιστροφής.
 - Replay που ξεχωρίζει δύο διαφορετικά πράγματα:
   - αν η αρχική πρόβλεψη επαληθεύτηκε,
   - αν το τελικό αποτέλεσμα ήταν καλό.
 - Καθαρή σύγκριση Τότε / Τώρα και στατιστικά βαθμονόμησης.
-- Ανώνυμη shareable κάρτα PNG, χωρίς ευαίσθητο περιεχόμενο από προεπιλογή.
+- Ανώνυμη shareable κάρτα PNG ή native mobile share, με τίτλο και μάθημα κρυφά από προεπιλογή.
 - Ελληνικά και αγγλικά.
-- Χωρίς λογαριασμό, backend, cookies ή analytics.
+- Χωρίς λογαριασμό, backend, cookies ή ενεργοποιημένο analytics tracker.
 - Τα δεδομένα αποθηκεύονται μόνο στον browser μέσω IndexedDB.
 
 ## Τεχνολογία
@@ -97,8 +96,9 @@ Landing → New Decision → Locked Decision → Calendar Reminder
 - Οι αποφάσεις και τα replays δεν αποστέλλονται σε server.
 - Η διαγραφή δεδομένων browser ή site storage διαγράφει και τις αποφάσεις. Χρησιμοποίησε export backup από τις Ρυθμίσεις.
 - Τα δεδομένα δεν συγχρονίζονται μεταξύ συσκευών.
-- Το προαιρετικό challenge link ενσωματώνει στοιχεία της απόφασης στο URL. Η εφαρμογή προειδοποιεί να μη χρησιμοποιείται με εμπιστευτικές πληροφορίες.
+- Το προαιρετικό independent-prediction link ενσωματώνει στοιχεία της απόφασης στο URL hash, ώστε να μην αποστέλλονται ως query σε server. Η εφαρμογή εξακολουθεί να προειδοποιεί να μη χρησιμοποιείται με εμπιστευτικές πληροφορίες.
 - Οι calendar υπηρεσίες λαμβάνουν μόνο τα στοιχεία του reminder που επιλέγει να προσθέσει ο χρήστης.
+- Υπάρχει privacy-safe event layer για μελλοντική μέτρηση βασικών product actions, αλλά δεν στέλνει τίποτα χωρίς ρητή εγκατάσταση analytics adapter από τον ιδιοκτήτη του site.
 
 ## Compatibility
 
@@ -106,7 +106,7 @@ Landing → New Decision → Locked Decision → Calendar Reminder
 
 ## Έκδοση
 
-Current MVP: **0.3.0**
+Current MVP: **0.4.0**
 
 ## License
 

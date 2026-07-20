@@ -1,7 +1,7 @@
 {
   "name": "decision-replay",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "A privacy-first decision journal that locks predictions and compares Then / Now when outcomes are known.",
   "license": "MIT",
