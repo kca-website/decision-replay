@@ -25,6 +25,8 @@ export interface DecisionSnapshot {
   secondOpinion?: string;
   replayDate: number;
   midCheckin: boolean;
+  reminderAddedAt?: number;
+  reminderType?: 'google' | 'outlook' | 'ics';
 }
 
 export interface DecisionReplay {
