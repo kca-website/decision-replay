@@ -1,7 +1,7 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
-import { LayoutDashboard, ClipboardList, Plus, Settings } from 'lucide-react';
+import { Home, LayoutDashboard, ClipboardList, Plus, Settings } from 'lucide-react';
 import { LanguageToggle } from './LanguageToggle';
 
 const Brand = () => (
@@ -14,6 +14,7 @@ const Brand = () => (
 interface NavItem { to: string; label: string; icon: JSX.Element; }
 
 const navItems = (t: TFunction): NavItem[] => [
+  { to: '/', label: t('nav.home'), icon: <Home size={18} /> },
   { to: '/app', label: t('nav.dashboard'), icon: <LayoutDashboard size={18} /> },
   { to: '/app/decisions', label: t('nav.decisions'), icon: <ClipboardList size={18} /> },
   { to: '/app/decisions/new', label: t('nav.newDecision'), icon: <Plus size={18} /> },
@@ -28,7 +29,7 @@ const NavItems = () => {
         <NavLink
           key={item.to}
           to={item.to}
-          end={item.to === '/app'}
+          end={item.to === '/' || item.to === '/app'}
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
               isActive ? 'bg-card text-ink shadow-xs border-l-[3px] border-l-accent pl-[13px]' : 'text-ink-muted hover:bg-card hover:text-ink'
@@ -50,9 +51,9 @@ export const AppShell = () => {
   return (
     <div className="min-h-screen bg-app md:grid md:grid-cols-[240px_1fr]">
       <aside className="hidden md:flex flex-col bg-subtle border-r p-4">
-        <a href="/" className="block hover:opacity-80 transition-opacity" aria-label={t('nav.home')}>
+        <Link to="/" className="block hover:opacity-80 transition-opacity" aria-label={t('nav.home')}>
           <Brand />
-        </a>
+        </Link>
         <nav className="flex flex-col gap-1" aria-label={t('nav.mainNavigation')}>
           <NavItems />
         </nav>
@@ -83,7 +84,7 @@ export const AppShell = () => {
 const MobileNavItem = ({ to, icon, label }: { to: string; icon: JSX.Element; label: string }) => (
   <NavLink
     to={to}
-    end={to === '/app'}
+    end={to === '/' || to === '/app'}
     className={({ isActive }) =>
       `flex-1 flex flex-col items-center gap-1 py-3 px-1 transition-colors ${isActive ? 'text-accent' : 'text-ink-subtle'}`
     }
