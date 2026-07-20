@@ -36,5 +36,5 @@ export const decodeChallenge = (str: string): ChallengeData | null => {
 
 export const buildChallengeUrl = (data: ChallengeData): string => {
   const base = window.location.origin;
-  return `${base}/challenge?d=${encodeChallenge(data)}`;
+  return `${base}/challenge#d=${encodeChallenge(data)}`;
 };
