@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Briefcase, BookOpen, Compass, ArrowRight } from 'lucide-react';
+import { Briefcase, BookOpen, Compass, ArrowRight, Home } from 'lucide-react';
 import { useProfile } from '../store/profileStore';
 import { Button } from '../components/ui/Button';
 import type { UserProfile } from '../db/db';
@@ -19,24 +19,34 @@ export const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-app flex items-center justify-center p-4">
-      <div className="max-w-xl w-full bg-card border rounded-xl p-6 md:p-10 shadow-sm">
-        <div className="text-xs uppercase tracking-[0.16em] text-accent font-semibold mb-3">{t('onboarding.eyebrow')}</div>
-        <h1 className="font-display text-3xl md:text-4xl mb-3">{t('onboarding.step1Title')}</h1>
-        <p className="text-ink-muted mb-8">{t('onboarding.step1Sub')}</p>
+    <div className="min-h-screen bg-app p-4">
+      <div className="max-w-xl mx-auto pt-4 md:pt-8">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-ink-muted hover:text-ink mb-6"
+        >
+          <Home size={17} />
+          {t('nav.home')}
+        </Link>
 
-        <div className="space-y-3">
-          <ProfileButton icon={<Briefcase size={20} />} title={t('profile.professional')} desc={t('onboarding.professionalDesc')} value="professional" chosen={chosen} onClick={setChosen} />
-          <ProfileButton icon={<BookOpen size={20} />} title={t('profile.student')} desc={t('onboarding.studentDesc')} value="student" chosen={chosen} onClick={setChosen} />
-          <ProfileButton icon={<Compass size={20} />} title={t('profile.personal')} desc={t('onboarding.personalDesc')} value="personal" chosen={chosen} onClick={setChosen} />
-        </div>
+        <div className="w-full bg-card border rounded-xl p-6 md:p-10 shadow-sm">
+          <div className="text-xs uppercase tracking-[0.16em] text-accent font-semibold mb-3">{t('onboarding.eyebrow')}</div>
+          <h1 className="font-display text-3xl md:text-4xl mb-3">{t('onboarding.step1Title')}</h1>
+          <p className="text-ink-muted mb-8">{t('onboarding.step1Sub')}</p>
 
-        <p className="text-xs text-ink-subtle mt-6">{t('onboarding.changeLater')}</p>
+          <div className="space-y-3">
+            <ProfileButton icon={<Briefcase size={20} />} title={t('profile.professional')} desc={t('onboarding.professionalDesc')} value="professional" chosen={chosen} onClick={setChosen} />
+            <ProfileButton icon={<BookOpen size={20} />} title={t('profile.student')} desc={t('onboarding.studentDesc')} value="student" chosen={chosen} onClick={setChosen} />
+            <ProfileButton icon={<Compass size={20} />} title={t('profile.personal')} desc={t('onboarding.personalDesc')} value="personal" chosen={chosen} onClick={setChosen} />
+          </div>
 
-        <div className="mt-8 flex justify-end">
-          <Button onClick={done} size="lg">
-            {t('onboarding.continue')} <ArrowRight size={18} />
-          </Button>
+          <p className="text-xs text-ink-subtle mt-6">{t('onboarding.changeLater')}</p>
+
+          <div className="mt-8 flex justify-end">
+            <Button onClick={done} size="lg">
+              {t('onboarding.continue')} <ArrowRight size={18} />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
