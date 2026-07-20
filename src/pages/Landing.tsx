@@ -1,20 +1,40 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   BarChart3,
+  BriefcaseBusiness,
   CalendarClock,
   Check,
   FlaskConical,
   Lock,
+  Megaphone,
   PackageCheck,
   ShieldCheck,
+  ShoppingCart,
   Target,
 } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
+import { trackEvent } from '../utils/analytics';
+
+type DemoId = 'marketing' | 'ecommerce' | 'career';
+
+const demos: Array<{ id: DemoId; icon: JSX.Element }> = [
+  { id: 'marketing', icon: <Megaphone size={17} /> },
+  { id: 'ecommerce', icon: <ShoppingCart size={17} /> },
+  { id: 'career', icon: <BriefcaseBusiness size={17} /> },
+];
 
 export const Landing = () => {
   const { t } = useTranslation();
+  const [selectedDemo, setSelectedDemo] = useState<DemoId>('marketing');
+  const demoPrefix = `landing.demos.${selectedDemo}`;
+
+  const selectDemo = (id: DemoId) => {
+    setSelectedDemo(id);
+    trackEvent('demo_viewed', { demo: id });
+  };
 
   return (
     <div className="min-h-screen bg-app text-ink">
@@ -95,34 +115,72 @@ export const Landing = () => {
 
         <section id="demo" className="bg-subtle py-16 md:py-24 scroll-mt-6">
           <div className="container-app max-w-5xl">
-            <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="text-center max-w-2xl mx-auto mb-8">
               <div className="text-xs font-semibold uppercase tracking-[0.16em] text-accent mb-3">{t('landing.demoEyebrow')}</div>
               <h2 className="font-display text-3xl md:text-4xl mb-4">{t('landing.demoTitle')}</h2>
               <p className="text-ink-muted text-lg">{t('landing.demoSub')}</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-              <DemoCard
-                tone="then"
-                label={t('comparison.then')}
-                date={t('landing.demoThenDate')}
-                fields={[
-                  [t('landing.demoChoiceLabel'), t('landing.demoChoice')],
-                  [t('landing.demoReasonLabel'), t('landing.demoReason')],
-                  [t('landing.demoPredictionLabel'), t('landing.demoPrediction')],
-                  [t('landing.demoConfidenceLabel'), '70%'],
-                ]}
-              />
-              <DemoCard
-                tone="now"
-                label={t('comparison.now')}
-                date={t('landing.demoNowDate')}
-                fields={[
-                  [t('landing.demoOutcomeLabel'), t('landing.demoOutcome')],
-                  [t('landing.demoMatchLabel'), t('landing.demoMatch')],
-                  [t('landing.demoLessonLabel'), t('landing.demoLesson')],
-                ]}
-              />
+            <div className="flex flex-col sm:flex-row gap-2 justify-center mb-7" role="tablist" aria-label={t('landing.demoTabsLabel')}>
+              {demos.map((demo) => {
+                const active = demo.id === selectedDemo;
+                return (
+                  <button
+                    key={demo.id}
+                    id={`demo-tab-${demo.id}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    aria-controls="demo-panel"
+                    onClick={() => selectDemo(demo.id)}
+                    className={`inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border text-sm font-medium transition-colors ${
+                      active ? 'bg-ink text-white border-ink' : 'bg-card text-ink-muted border-border-strong hover:text-ink hover:bg-app'
+                    }`}
+                  >
+                    {demo.icon}
+                    {t(`landing.demos.${demo.id}.tab`)}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              id="demo-panel"
+              role="tabpanel"
+              aria-labelledby={`demo-tab-${selectedDemo}`}
+              className="rounded-2xl border bg-app p-4 md:p-6"
+            >
+              <div className="flex items-start justify-between gap-4 mb-5 px-1">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.16em] text-accent font-semibold mb-2">{t('landing.fictionalLabel')}</div>
+                  <h3 className="font-display text-2xl md:text-3xl">{t(`${demoPrefix}.title`)}</h3>
+                </div>
+                <span className="hidden sm:inline-flex text-xs text-ink-muted bg-subtle px-3 py-1.5 rounded-full">{t(`${demoPrefix}.timeframe`)}</span>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                <DemoCard
+                  tone="then"
+                  label={t('comparison.then')}
+                  date={t(`${demoPrefix}.thenDate`)}
+                  fields={[
+                    [t('landing.demoChoiceLabel'), t(`${demoPrefix}.choice`)],
+                    [t('landing.demoReasonLabel'), t(`${demoPrefix}.reason`)],
+                    [t('landing.demoPredictionLabel'), t(`${demoPrefix}.prediction`)],
+                    [t('landing.demoConfidenceLabel'), t(`${demoPrefix}.confidence`)],
+                  ]}
+                />
+                <DemoCard
+                  tone="now"
+                  label={t('comparison.now')}
+                  date={t(`${demoPrefix}.nowDate`)}
+                  fields={[
+                    [t('landing.demoOutcomeLabel'), t(`${demoPrefix}.outcome`)],
+                    [t('landing.demoMatchLabel'), t(`${demoPrefix}.match`)],
+                    [t('landing.demoLessonLabel'), t(`${demoPrefix}.lesson`)],
+                  ]}
+                />
+              </div>
             </div>
 
             <div className="mt-8 text-center">

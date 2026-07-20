@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { ArrowLeft, CalendarPlus, Check, Copy, Lock, Plus, Swords, Trash2 } from 'lucide-react';
+import { ArrowLeft, BellRing, CalendarPlus, Check, Copy, Lock, Plus, Share2, Swords, Trash2 } from 'lucide-react';
 import { db, genId, computeDecisionStatus } from '../db/db';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -12,6 +12,7 @@ import { Modal } from '../components/ui/Modal';
 import { formatDate, daysUntil } from '../utils/date';
 import { buildChallengeUrl, type ChallengeData } from '../utils/challenge';
 import { buildGoogleCalendarUrl, buildOutlookCalendarUrl, downloadICS } from '../utils/reminder';
+import { trackEvent } from '../utils/analytics';
 
 export const DecisionDetail = () => {
   const { t, i18n } = useTranslation();
@@ -38,6 +39,7 @@ export const DecisionDetail = () => {
   const readyForReplay = status === 'replay' && !replay;
   const appUrl = window.location.origin;
   const choice = decision.choice || decision.options[decision.choiceIndex];
+  const hasReminder = Boolean(decision.reminderAddedAt);
 
   const addNote = async () => {
     if (!noteText.trim()) return;
@@ -71,11 +73,32 @@ export const DecisionDetail = () => {
 
   const copyChallenge = async () => {
     await navigator.clipboard.writeText(getChallengeUrl());
+    trackEvent('challenge_link_created', { method: 'copy' });
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
   };
 
-  const addICS = () => {
+  const shareChallenge = async () => {
+    const url = getChallengeUrl();
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: t('detail.challengeTitle'), text: t('detail.challengeDesc'), url });
+        trackEvent('challenge_link_created', { method: 'native_share' });
+        return;
+      }
+      await copyChallenge();
+    } catch {
+      // The user may cancel the native share dialog.
+    }
+  };
+
+  const markReminder = async (type: 'google' | 'outlook' | 'ics') => {
+    await db.decisions.update(decision.id, { reminderAddedAt: Date.now(), reminderType: type });
+    trackEvent('reminder_added', { provider: type });
+  };
+
+  const addICS = async () => {
+    await markReminder('ics');
     downloadICS(decision.title, decision.replayDate, appUrl, decision.id);
     setShowCreated(false);
   };
@@ -93,19 +116,35 @@ export const DecisionDetail = () => {
               <div className="text-xs uppercase tracking-[0.16em] text-success font-semibold mb-2">{t('detail.createdEyebrow')}</div>
               <h2 className="font-display text-2xl mb-2">{t('detail.createdTitle')}</h2>
               <p className="text-sm text-ink-muted">{t('detail.createdSub', { date: formatDate(decision.replayDate, i18n.language) })}</p>
+              <p className="text-sm font-medium text-ink mt-2">{t('detail.returnRule')}</p>
             </div>
             <button type="button" onClick={() => setShowCreated(false)} className="text-sm text-ink-muted hover:text-ink">{t('common.dismiss')}</button>
           </div>
+          {hasReminder && (
+            <div className="inline-flex items-center gap-2 text-sm text-success font-medium mb-4">
+              <BellRing size={16} /> {t('detail.reminderRecorded')}
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={buildGoogleCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => void markReminder('google')}
               className={buttonClasses('primary', 'sm')}
             >
               <CalendarPlus size={15} /> Google Calendar
             </a>
-            <Button size="sm" variant="secondary" onClick={addICS}><CalendarPlus size={15} /> {t('detail.downloadICS')}</Button>
+            <a
+              href={buildOutlookCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => void markReminder('outlook')}
+              className={buttonClasses('secondary', 'sm')}
+            >
+              <CalendarPlus size={15} /> Outlook
+            </a>
+            <Button size="sm" variant="secondary" onClick={() => void addICS()}><CalendarPlus size={15} /> {t('detail.downloadICS')}</Button>
           </div>
         </Card>
       )}
@@ -140,7 +179,7 @@ export const DecisionDetail = () => {
       ) : !replay ? (
         <div className="flex flex-wrap gap-3 mb-6">
           <Button size="sm" variant="secondary" onClick={() => setShowReminder(true)}>
-            <CalendarPlus size={14} /> {t('detail.reminder')}
+            {hasReminder ? <BellRing size={14} /> : <CalendarPlus size={14} />} {hasReminder ? t('dashboard.reminderAdded') : t('detail.reminder')}
           </Button>
           <Button size="sm" variant="ghost" onClick={() => setShowChallenge(true)}>
             <Swords size={14} /> {t('detail.challenge')}
@@ -227,7 +266,8 @@ export const DecisionDetail = () => {
       </Modal>
 
       <Modal open={showChallenge} onClose={() => setShowChallenge(false)} title={t('detail.challengeTitle')}>
-        <p className="text-ink-muted text-sm mb-3">{t('detail.challengeDesc')}</p>
+        <p className="text-ink-muted text-sm mb-2">{t('detail.challengeDesc')}</p>
+        <p className="text-xs text-success bg-success/10 rounded-md p-3 mb-3">{t('detail.challengeHidden')}</p>
         <p className="text-xs text-warning bg-warning/10 rounded-md p-3 mb-4">{t('detail.challengePrivacy')}</p>
         <div className="mb-4">
           <label htmlFor="challenger-name" className="block text-sm font-medium mb-1.5">{t('detail.challengeName')}</label>
@@ -240,18 +280,26 @@ export const DecisionDetail = () => {
             className="w-full px-3.5 py-2.5 border rounded-md bg-card text-[15px] focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/15"
           />
         </div>
-        <Button onClick={copyChallenge} className="w-full justify-center">
-          {copied ? <><Check size={16} /> {t('detail.challengeCopied')}</> : <><Copy size={16} /> {t('detail.challengeCopy')}</>}
-        </Button>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Button onClick={copyChallenge} className="w-full justify-center">
+            {copied ? <><Check size={16} /> {t('detail.challengeCopied')}</> : <><Copy size={16} /> {t('detail.challengeCopy')}</>}
+          </Button>
+          <Button variant="secondary" onClick={shareChallenge} className="w-full justify-center">
+            <Share2 size={16} /> {t('detail.challengeShare')}
+          </Button>
+        </div>
       </Modal>
 
       <Modal open={showReminder} onClose={() => setShowReminder(false)} title={t('detail.reminderTitle')}>
-        <p className="text-ink-muted text-sm mb-4">{t('detail.reminderDesc', { date: formatDate(decision.replayDate, i18n.language) })}</p>
+        <p className="text-ink-muted text-sm mb-2">{t('detail.reminderDesc', { date: formatDate(decision.replayDate, i18n.language) })}</p>
+        <p className="text-sm font-medium mb-4">{t('detail.returnRule')}</p>
+        {hasReminder && <p className="text-xs text-success bg-success/10 rounded-md p-3 mb-4">{t('detail.reminderRecorded')}</p>}
         <div className="space-y-3">
           <a
             href={buildGoogleCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => void markReminder('google')}
             className={buttonClasses('secondary', 'md', 'w-full justify-center')}
           >
             <CalendarPlus size={16} /> Google Calendar
@@ -260,11 +308,12 @@ export const DecisionDetail = () => {
             href={buildOutlookCalendarUrl(decision.title, decision.replayDate, appUrl, decision.id)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => void markReminder('outlook')}
             className={buttonClasses('secondary', 'md', 'w-full justify-center')}
           >
             <CalendarPlus size={16} /> Outlook
           </a>
-          <Button variant="ghost" className="w-full justify-center" onClick={() => { addICS(); setShowReminder(false); }}>
+          <Button variant="ghost" className="w-full justify-center" onClick={() => { void addICS(); setShowReminder(false); }}>
             {t('detail.downloadICS')}
           </Button>
         </div>

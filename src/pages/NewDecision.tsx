@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, ChevronDown, Lock, Plus, X } from 'lucide-react';
@@ -11,6 +11,7 @@ import { Slider } from '../components/ui/Slider';
 import { FormField } from '../components/ui/FormField';
 import { Modal } from '../components/ui/Modal';
 import { addDays, fromDateInputValue, toDateInputValue } from '../utils/date';
+import { trackEvent } from '../utils/analytics';
 
 type Step = 1 | 2;
 
@@ -62,6 +63,10 @@ export const NewDecision = () => {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  useEffect(() => {
+    trackEvent('decision_started', { entry: 'new_decision' });
+  }, []);
+
   const updateField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((current) => ({ ...current, [key]: value }));
   };
@@ -95,6 +100,7 @@ export const NewDecision = () => {
     };
 
     await db.decisions.add(snapshot);
+    trackEvent('decision_locked', { replay_window_days: Math.max(1, Math.round((snapshot.replayDate - snapshot.lockedAt) / 86400000)) });
     navigate(`/app/decisions/${snapshot.id}`, { state: { justCreated: true } });
   };
 

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Plus, Info, ChevronRight, PlayCircle } from 'lucide-react';
+import { BellOff, BellRing, CalendarPlus, Plus, Info, ChevronRight, PlayCircle } from 'lucide-react';
 import { db, computeDecisionStatus } from '../db/db';
 import { computeCalibration } from '../utils/calibration';
 import { formatDate, getTimeOfDayGreeting } from '../utils/date';
@@ -44,6 +44,10 @@ export const Dashboard = () => {
     .slice(0, 5);
 
   const replayReady = enriched.find((e) => e.status === 'replay');
+  const withoutReminder = enriched
+    .filter((entry) => entry.status !== 'completed' && !entry.d.reminderAddedAt)
+    .sort((a, b) => a.d.replayDate - b.d.replayDate);
+  const nextWithoutReminder = withoutReminder[0];
 
   if (decisions.length === 0) {
     return (
@@ -84,6 +88,24 @@ export const Dashboard = () => {
             {t('dashboard.startReplay')}
           </Link>
         </div>
+      )}
+
+      {nextWithoutReminder && (
+        <Card className="mb-8 bg-warning/5 !border-warning/30" padding="md">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-start gap-3">
+              <BellOff size={20} className="text-warning flex-shrink-0 mt-0.5" />
+              <div>
+                <div className="text-xs uppercase tracking-wider text-warning font-semibold mb-1">{t('dashboard.returnPlanTitle')}</div>
+                <div className="font-medium">{t('dashboard.returnPlanMissing', { count: withoutReminder.length })}</div>
+                <p className="text-sm text-ink-muted mt-1">{t('dashboard.returnPlanDesc')}</p>
+              </div>
+            </div>
+            <Link to={`/app/decisions/${nextWithoutReminder.d.id}`} className={buttonClasses('secondary', 'sm')}>
+              <CalendarPlus size={15} /> {t('dashboard.addReminder')}
+            </Link>
+          </div>
+        </Card>
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -142,6 +164,10 @@ export const Dashboard = () => {
               <div className="text-[15px] font-medium truncate">{d.title}</div>
               <div className="text-sm text-ink-muted mt-0.5">
                 {t('list.lockedOn', { date: formatDate(d.lockedAt, i18n.language) })} · {t('list.replayOn', { date: formatDate(d.replayDate, i18n.language) })}
+              </div>
+              <div className={`inline-flex items-center gap-1.5 text-xs mt-1.5 ${d.reminderAddedAt ? 'text-success' : 'text-warning'}`}>
+                {d.reminderAddedAt ? <BellRing size={13} /> : <BellOff size={13} />}
+                {d.reminderAddedAt ? t('dashboard.reminderAdded') : t('dashboard.reminderMissing')}
               </div>
             </div>
             <Badge variant={status}>{t(`list.status${status.charAt(0).toUpperCase() + status.slice(1)}`)}</Badge>

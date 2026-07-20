@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Swords, ArrowLeft, Copy, Check } from 'lucide-react';
+import { ArrowLeft, LockKeyhole, Swords } from 'lucide-react';
 import { decodeChallenge, type ChallengeData } from '../utils/challenge';
 import { Card } from '../components/ui/Card';
 import { Button, buttonClasses } from '../components/ui/Button';
 import { Slider } from '../components/ui/Slider';
 import { Textarea } from '../components/ui/Textarea';
+import { trackEvent } from '../utils/analytics';
 
 export const Challenge = () => {
   const { t } = useTranslation();
   const [params] = useSearchParams();
-  const encoded = params.get('d');
+  const queryEncoded = params.get('d');
+  const hashEncoded = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.hash.replace(/^#/, '')).get('d')
+    : null;
+  const encoded = hashEncoded || queryEncoded;
   const [challenge, setChallenge] = useState<ChallengeData | null>(null);
   const [step, setStep] = useState<'predict' | 'reveal'>('predict');
   const [myPrediction, setMyPrediction] = useState('');
@@ -36,6 +41,13 @@ export const Challenge = () => {
     );
   }
 
+  const reveal = () => {
+    setStep('reveal');
+    trackEvent('challenge_completed', {
+      confidence_gap: Math.abs(myConfidence - challenge.c),
+    });
+  };
+
   if (step === 'reveal') {
     const myConf = myConfidence;
     const theirConf = challenge.c;
@@ -43,6 +55,10 @@ export const Challenge = () => {
 
     return (
       <div className="container-app py-6 md:py-10 max-w-3xl">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink mb-6">
+          <ArrowLeft size={16} /> {t('brand')}
+        </Link>
+
         <h1 className="font-display text-3xl md:text-4xl mb-2">
           <Swords size={28} className="inline mr-2 text-accent" />
           {t('challenge.revealTitle')}
@@ -85,7 +101,7 @@ export const Challenge = () => {
           </Card>
         </div>
 
-        <Card padding="md" className="bg-accent-soft/30 !border-accent-soft mb-6">
+        <Card padding="md" className="bg-accent-soft/30 !border-accent-soft mb-4">
           <div className="text-center">
             <div className="text-sm text-ink-muted mb-1">{t('challenge.confidenceGap')}</div>
             <div className="font-display text-4xl font-medium text-accent">{gap}%</div>
@@ -95,9 +111,11 @@ export const Challenge = () => {
           </div>
         </Card>
 
+        <p className="text-sm text-ink-muted text-center mb-7">{t('challenge.completedNote')}</p>
+
         <div className="text-center">
           <p className="text-ink-muted text-sm mb-4">{t('challenge.ctaDesc')}</p>
-          <Link to="/" className={buttonClasses()}>{t('challenge.tryApp')}</Link>
+          <Link to="/app/decisions/new" className={buttonClasses()}>{t('challenge.tryApp')}</Link>
         </div>
       </div>
     );
@@ -113,9 +131,14 @@ export const Challenge = () => {
         <Swords size={24} className="text-accent" />
         <h1 className="font-display text-2xl md:text-3xl">{t('challenge.title')}</h1>
       </div>
-      <p className="text-ink-muted mb-2">
+      <p className="text-ink-muted mb-5">
         {t('challenge.from', { name: challenge.n })}
       </p>
+
+      <div className="flex items-start gap-3 p-4 bg-success/10 border border-success/20 rounded-lg mb-6 text-sm text-ink-muted">
+        <LockKeyhole size={18} className="text-success flex-shrink-0 mt-0.5" />
+        <p>{t('challenge.privateUntilSubmit')}</p>
+      </div>
 
       <Card padding="lg" className="mb-6">
         <h2 className="font-display text-xl mb-4">{challenge.q}</h2>
@@ -129,7 +152,7 @@ export const Challenge = () => {
           <div className="mb-4">
             <div className="text-[13px] text-ink-muted mb-1">{t('detail.options')}</div>
             <ul className="space-y-1 text-sm">
-              {challenge.o.map((o, i) => <li key={i} className="text-ink">• {o}</li>)}
+              {challenge.o.map((option, index) => <li key={index} className="text-ink">• {option}</li>)}
             </ul>
           </div>
         )}
@@ -137,33 +160,35 @@ export const Challenge = () => {
 
       <Card padding="lg" className="mb-6 space-y-5">
         <div>
-          <label className="block text-sm font-medium mb-2">{t('challenge.yourName')}</label>
+          <label htmlFor="challenge-name" className="block text-sm font-medium mb-2">{t('challenge.yourName')}</label>
           <input
+            id="challenge-name"
             type="text"
             value={myName}
-            onChange={(e) => setMyName(e.target.value)}
+            onChange={(event) => setMyName(event.target.value)}
             placeholder={t('challenge.namePlaceholder')}
             className="w-full px-3.5 py-2.5 border rounded-md bg-card text-[15px] focus:outline-none focus:border-accent focus:ring-4 focus:ring-accent/15"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">{t('challenge.yourPrediction')}</label>
+          <label htmlFor="challenge-prediction" className="block text-sm font-medium mb-2">{t('challenge.yourPrediction')}</label>
           <Textarea
+            id="challenge-prediction"
             value={myPrediction}
-            onChange={(e) => setMyPrediction(e.target.value)}
+            onChange={(event) => setMyPrediction(event.target.value)}
             placeholder={t('challenge.predictionPlaceholder')}
           />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">{t('challenge.yourConfidence')}</label>
-          <Slider value={myConfidence} onChange={(v) => setMyConfidence(v)} />
+          <Slider value={myConfidence} onChange={setMyConfidence} ariaLabel={t('challenge.yourConfidence')} />
         </div>
       </Card>
 
       <Button
         className="w-full justify-center"
         disabled={!myPrediction.trim()}
-        onClick={() => setStep('reveal')}
+        onClick={reveal}
       >
         {t('challenge.reveal')}
       </Button>

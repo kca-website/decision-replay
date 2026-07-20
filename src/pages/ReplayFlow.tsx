@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -9,6 +9,7 @@ import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
 import { FormField } from '../components/ui/FormField';
 import { formatDate } from '../utils/date';
+import { trackEvent } from '../utils/analytics';
 
 type Rating = 1 | 2 | 3 | 4;
 type WouldRepeat = 'yes' | 'no' | 'maybe';
@@ -30,6 +31,10 @@ export const ReplayFlow = () => {
   const [wouldRepeat, setWouldRepeat] = useState<WouldRepeat | null>(null);
   const [whatChange, setWhatChange] = useState('');
 
+  useEffect(() => {
+    if (id) trackEvent('replay_started');
+  }, [id]);
+
   if (!decision) return <div className="container-app py-10 text-ink-muted">{t('common.loading')}</div>;
 
   const save = async () => {
@@ -47,6 +52,7 @@ export const ReplayFlow = () => {
       wouldRepeat,
       whatChange: whatChange.trim() || undefined,
     });
+    trackEvent('replay_completed', { expectation_match: expectationMatch, outcome_rating: rating });
     navigate(`/app/decisions/${decision.id}/compare`);
   };
 
