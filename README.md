@@ -1,118 +1,62 @@
-# Decision Replay
+# Decision Replay — AI Advice Passport
 
-**Lock what you expect. Return when reality is known.**
+**AI answers age. Know when yours needs to be checked again.**
 
-Το Decision Replay είναι ένα privacy-first εργαλείο για επαγγελματικές αποφάσεις, προβλέψεις και υποθέσεις. Ο χρήστης καταγράφει τι αποφασίζει, γιατί, τι περιμένει να συμβεί και πόσο βέβαιος είναι. Η αρχική σκέψη κλειδώνει. Αργότερα καταγράφεται το πραγματικό αποτέλεσμα και εμφανίζεται η σύγκριση **Τότε / Τώρα**.
+Decision Replay has been repositioned from a generic decision journal into a privacy-first **AI Advice Passport**. The product helps a user keep an important AI answer together with the claims, recommendations and predictions it contains, an estimated freshness window, a recheck date and — when relevant — the real-world outcome of following the advice.
 
-Δεν αποφασίζει αντί του χρήστη. Τον βοηθά να ελέγχει αν οι προβλέψεις του ήταν ακριβείς και να μεταφέρει συγκεκριμένα μαθήματα στην επόμενη απόφαση.
+## Why this pivot
 
-## Βασικά χαρακτηριστικά
+The previous Decision Replay was a well-implemented decision journal, but the category is crowded and the product's main value arrived too late. AI Advice Passport moves the value event to the moment the answer is saved:
 
-- Τρία επαγγελματικά instant demos στην αρχική σελίδα: marketing, e-commerce και career.
-- Απλή καταγραφή με πέντε βασικές ερωτήσεις.
-- Προαιρετική ενότητα για κριτήρια επιτυχίας, εναλλακτικές, υποθέσεις και ρίσκα.
-- Κλειδωμένο αρχικό snapshot.
-- Υπενθύμιση μέσω Google Calendar, Outlook ή αρχείου `.ics`, με ορατή ένδειξη αν έχει οριστεί σχέδιο επιστροφής.
-- Replay που ξεχωρίζει δύο διαφορετικά πράγματα:
-  - αν η αρχική πρόβλεψη επαληθεύτηκε,
-  - αν το τελικό αποτέλεσμα ήταν καλό.
-- Καθαρή σύγκριση Τότε / Τώρα και στατιστικά βαθμονόμησης.
-- Ανώνυμη shareable κάρτα PNG ή native mobile share, με τίτλο και μάθημα κρυφά από προεπιλογή.
-- Ελληνικά και αγγλικά.
-- Χωρίς λογαριασμό, backend, cookies ή ενεργοποιημένο analytics tracker.
-- Τα δεδομένα αποθηκεύονται μόνο στον browser μέσω IndexedDB.
+1. Paste an important answer from ChatGPT, Claude, Gemini, Copilot, Grok, Perplexity or another AI.
+2. The browser separates the text into **claims**, **recommendations** and **predictions**.
+3. Each item receives a user-editable freshness class:
+   - **Stable** — default recheck window: 180 days.
+   - **Time-sensitive** — default recheck window: 30 days.
+   - **Highly volatile** — default recheck window: 7 days.
+4. The shortest freshness window becomes the Passport's next recheck date.
+5. If the user follows the advice, they can later record whether it worked fully, partly, not at all, or made things worse.
+6. The Reliability view summarizes the user's own outcomes by AI source.
 
-## Τεχνολογία
+## Important product rule
+
+The MVP does **not** claim to verify factual truth and does not produce an artificial “AI accuracy score”. Freshness is an ageing-risk signal, not proof that a claim is correct or incorrect.
+
+The current analysis is deterministic and local. It identifies time-sensitive wording, prices, availability, plan/features, regulation/travel terms and recommendation/prediction language. The user can edit the resulting classification before saving.
+
+## Privacy
+
+- No account.
+- No backend.
+- No pasted AI answer is sent to a server.
+- Passports are stored in browser `localStorage` for the MVP.
+- No external AI API is required.
+
+## MVP screens
+
+- Landing / concept explanation
+- Create Advice Passport
+- Passport review and user-editable freshness classification
+- Passport library
+- Passport detail + recheck action
+- Real-world outcome replay
+- Personal reliability summary
+- Greek / English interface toggle
+
+## Future validation before adding infrastructure
+
+The next product test should answer three questions before adding paid APIs or backend services:
+
+1. Do users save AI answers they expect to reuse?
+2. Do freshness/recheck signals change their behaviour?
+3. Do enough users return to record real-world outcomes to make personal reliability useful?
+
+Only after those are validated should the project add live source revalidation / automatic Advice Recall.
+
+## Technology
 
 - React 18 + TypeScript + Vite
-- Tailwind CSS
-- Dexie.js / IndexedDB
-- react-i18next
-- react-router-dom
-- Zustand
 - Lucide React
-- html2canvas, φορτωμένο δυναμικά μόνο όταν δημιουργείται share card
+- Browser local storage
 
-Δεν χρησιμοποιούνται εξωτερικά web fonts ή επί πληρωμή υπηρεσίες.
-
-## Τοπική εκτέλεση
-
-Απαιτείται Node.js 18 ή νεότερο.
-
-```bash
-npm install
-npm run dev
-```
-
-Το development URL είναι συνήθως `http://localhost:5173`.
-
-### Έλεγχοι πριν από deploy
-
-```bash
-npx tsc --noEmit
-npm run build
-npm run preview
-```
-
-Το production build δημιουργείται στον φάκελο `dist/`.
-
-## Deploy στο Vercel
-
-1. Ανέβασε το project σε GitHub.
-2. Στο Vercel επίλεξε **Add New → Project** και κάνε import το repository.
-3. Framework preset: **Vite**.
-4. Build command: `npm run build`.
-5. Output directory: `dist`.
-6. Deploy.
-
-Το `vercel.json` περιλαμβάνει rewrite για το SPA routing, ώστε τα εσωτερικά routes να ανοίγουν σωστά και μετά από refresh.
-
-## Δομή
-
-```text
-src/
-├── App.tsx
-├── components/
-│   ├── layout/
-│   └── ui/
-├── data/
-├── db/
-├── i18n/
-│   └── locales/
-├── pages/
-├── store/
-└── utils/
-```
-
-Κύρια flows:
-
-```text
-Landing → New Decision → Locked Decision → Calendar Reminder
-        → Replay → Then / Now Comparison → Anonymous Share Card
-```
-
-## Ιδιωτικότητα και περιορισμοί
-
-- Οι αποφάσεις και τα replays δεν αποστέλλονται σε server.
-- Η διαγραφή δεδομένων browser ή site storage διαγράφει και τις αποφάσεις. Χρησιμοποίησε export backup από τις Ρυθμίσεις.
-- Τα δεδομένα δεν συγχρονίζονται μεταξύ συσκευών.
-- Το προαιρετικό independent-prediction link ενσωματώνει στοιχεία της απόφασης στο URL hash, ώστε να μην αποστέλλονται ως query σε server. Η εφαρμογή εξακολουθεί να προειδοποιεί να μη χρησιμοποιείται με εμπιστευτικές πληροφορίες.
-- Οι calendar υπηρεσίες λαμβάνουν μόνο τα στοιχεία του reminder που επιλέγει να προσθέσει ο χρήστης.
-- Υπάρχει privacy-safe event layer για μελλοντική μέτρηση βασικών product actions, αλλά δεν στέλνει τίποτα χωρίς ρητή εγκατάσταση analytics adapter από τον ιδιοκτήτη του site.
-
-## Compatibility
-
-Τα υπάρχοντα δεδομένα της προηγούμενης έκδοσης παραμένουν αναγνώσιμα. Τα παλαιότερα replays που δεν περιέχουν το νέο πεδίο «συμφωνία πρόβλεψης» εμφανίζονται κανονικά, αλλά δεν υπολογίζονται στα νέα calibration metrics.
-
-## Έκδοση
-
-Current MVP: **0.4.0**
-
-## License
-
-MIT — δες το `LICENSE`.
-
-## Made by
-
-Konstantinos Koustas
-[LinkedIn](https://www.linkedin.com/in/kostaskoustas)
+The repository still contains legacy Decision Replay modules from the previous product direction, but the new entry point no longer imports them. They can be removed after the pivot is validated.
