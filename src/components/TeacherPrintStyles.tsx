@@ -3,19 +3,19 @@ export const TeacherPrintStyles = () => (
     .print-only { display: none; }
 
     @media print {
-      @page { size: A4; margin: 14mm; }
+      @page { size: A4; margin: 11mm; }
 
       body {
         background: #fff !important;
         color: #111827 !important;
-        font-size: 11pt;
+        font-size: 10pt;
       }
 
       .no-print { display: none !important; }
       .print-only { display: block !important; }
 
       .print-sheet {
-        max-width: 180mm;
+        max-width: 188mm;
         margin: 0 auto;
         color: #111827;
       }
@@ -23,77 +23,110 @@ export const TeacherPrintStyles = () => (
       .print-kicker {
         text-transform: uppercase;
         letter-spacing: .12em;
-        font-size: 9pt;
+        font-size: 8.5pt;
         font-weight: 800;
         color: #635BFF;
-        margin-bottom: 4mm;
+        margin-bottom: 2.5mm;
       }
 
       .print-sheet h1 {
-        font-size: 22pt;
-        margin: 0 0 4mm;
+        font-size: 19pt;
+        margin: 0 0 2.5mm;
       }
 
-      .print-sheet p { margin: 0 0 4mm; }
+      .print-sheet p { margin: 0 0 2.5mm; }
 
-      .print-box {
-        border: 1.5px solid #CBD5E1;
-        border-radius: 12px;
-        padding: 5mm;
-        margin: 5mm 0;
+      .print-box,
+      .print-message {
+        border: 1.2px solid #CBD5E1;
+        border-radius: 10px;
+        padding: 3.5mm;
+        margin: 3.5mm 0;
         background: #F8FAFC;
+        break-inside: avoid;
+      }
+
+      .print-message {
+        background: #F1F5F9;
+      }
+
+      .print-sms {
+        margin-top: 2.5mm;
+        border-radius: 9px;
+        padding: 3mm;
+        background: #E2E8F0;
+      }
+
+      .print-sms-from {
+        font-size: 8.5pt;
+        font-weight: 800;
+        color: #64748B;
+        margin-bottom: 1.5mm;
+      }
+
+      .print-sms-link {
+        margin-top: 1.5mm;
+        color: #2563EB;
+        font-weight: 700;
+        text-decoration: underline;
       }
 
       .print-options {
         display: grid;
-        gap: 3mm;
-        margin: 5mm 0 7mm;
+        gap: 2mm;
+        margin: 3.5mm 0 4.5mm;
       }
 
       .print-option {
         display: flex;
         align-items: center;
-        gap: 4mm;
+        gap: 3mm;
         border: 1px solid #CBD5E1;
-        border-radius: 10px;
-        padding: 3.5mm;
+        border-radius: 9px;
+        padding: 2.5mm;
+        break-inside: avoid;
       }
 
       .print-letter {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 9mm;
-        height: 9mm;
-        border-radius: 8px;
+        width: 8mm;
+        height: 8mm;
+        border-radius: 7px;
         background: #EDE9FE;
         color: #5B21B6;
         font-weight: 800;
+        flex: 0 0 auto;
       }
 
-      .print-question { margin: 6mm 0; }
+      .print-question {
+        margin: 4mm 0;
+        break-inside: avoid;
+      }
 
       .print-lines {
-        height: 18mm;
-        margin-top: 2.5mm;
+        height: 12mm;
+        margin-top: 1.5mm;
         background: repeating-linear-gradient(
           to bottom,
           transparent 0,
-          transparent 7mm,
-          #CBD5E1 7mm,
-          #CBD5E1 7.3mm
+          transparent 5.5mm,
+          #CBD5E1 5.5mm,
+          #CBD5E1 5.8mm
         );
       }
 
       .print-footer {
         display: flex;
-        gap: 3mm;
+        gap: 2.5mm;
         align-items: flex-start;
-        margin-top: 7mm;
-        padding-top: 4mm;
+        margin-top: 4mm;
+        padding-top: 3mm;
         border-top: 1px solid #CBD5E1;
-        font-size: 9.5pt;
+        font-size: 9pt;
         color: #475569;
+        break-inside: avoid;
       }
     }
   `}</style>
