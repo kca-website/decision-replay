@@ -139,7 +139,7 @@ export const ScenarioPlayer = () => {
                   aria-pressed={active}
                   className={`w-full text-left border rounded-2xl p-4 transition-all ${
                     active
-                      ? 'border-accent bg-[#FFF9F5] shadow-sm'
+                      ? 'border-accent bg-[#F3F2FF] shadow-sm'
                       : 'border-border-strong bg-card hover:bg-subtle'
                   }`}
                 >
@@ -152,7 +152,7 @@ export const ScenarioPlayer = () => {
 
         {selected && (
           <div className="space-y-4">
-            <section className="rounded-2xl border border-accent-soft bg-[#FFFDF9] p-5 md:p-6">
+            <section className="rounded-2xl border border-[#A5F3FC] bg-[#ECFEFF] p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.12em] text-accent font-bold mb-2">{c.after}</div>
               <p className="leading-relaxed mb-4">{selected.consequence[lang]}</p>
 
@@ -162,9 +162,9 @@ export const ScenarioPlayer = () => {
               </div>
             </section>
 
-            <section className="bg-[#292620] text-white rounded-2xl p-5 md:p-6">
+            <section className="bg-gradient-to-br from-[#3730A3] via-[#5B21B6] to-[#0F4C81] text-white rounded-2xl p-5 md:p-6">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
                   <BrainCircuit size={21} />
                 </div>
                 <div>
@@ -184,7 +184,7 @@ export const ScenarioPlayer = () => {
                   {loading ? c.thinking : c.askAi}
                 </button>
               ) : (
-                <div className="rounded-xl bg-white/8 border border-white/10 p-4">
+                <div className="rounded-xl bg-white/10 border border-white/20 p-4">
                   <div className="text-xs uppercase tracking-[0.12em] text-white/55 font-bold mb-3">
                     {coachSource === 'ai' ? c.ai : c.curated}
                   </div>
