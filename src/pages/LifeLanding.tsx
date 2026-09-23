@@ -92,100 +92,132 @@ export const LifeLanding = () => {
   return (
     <div className="min-h-screen bg-app text-ink">
       <header className="container-app py-5 flex items-center justify-between gap-4">
-        <Link to="/" className="font-display text-xl md:text-2xl font-medium flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-accent rounded-full inline-block" />
+        <Link to="/" className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+          <span className="w-3 h-3 bg-[#A3E635] rounded-full inline-block shadow-sm" />
           {c.brand}
         </Link>
         <LanguageToggle />
       </header>
 
       <main>
-        <section className="container-app pt-10 pb-16 md:pt-20 md:pb-24">
-          <div className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent mb-5">
-                <Sparkles size={15} /> {c.eyebrow}
-              </div>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.07] mb-6 max-w-3xl">
-                {c.titleA} <em className="italic text-accent">{c.titleB}</em>
-              </h1>
-              <p className="text-lg md:text-xl text-ink-muted leading-relaxed max-w-2xl mb-8">{c.sub}</p>
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                <Link
-                  to="/scenarios"
-                  className="inline-flex items-center justify-center gap-2 bg-accent text-white text-base px-7 py-3.5 rounded-md font-medium hover:bg-accent-hover transition-colors"
-                >
-                  {c.cta} <ArrowRight size={18} />
-                </Link>
-                <a
-                  href="#how"
-                  className="inline-flex items-center justify-center gap-2 bg-card border border-border-strong text-ink text-base px-7 py-3.5 rounded-md font-medium hover:bg-subtle transition-colors"
-                >
-                  {c.secondary}
-                </a>
-              </div>
-              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-subtle">
-                {[c.trust1, c.trust2, c.trust3].map((item) => (
-                  <span key={item} className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 size={14} className="text-success" /> {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+        <section className="relative overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#D9D6FF] blur-3xl opacity-70 pointer-events-none" />
+          <div className="absolute top-48 -left-28 w-64 h-64 rounded-full bg-[#CFFAFE] blur-3xl opacity-70 pointer-events-none" />
 
-            <div className="bg-card border rounded-2xl shadow-lg overflow-hidden">
-              <div className="bg-ink text-white p-5 md:p-6">
-                <div className="text-xs uppercase tracking-[0.16em] text-white/65 mb-2">{c.sampleLabel}</div>
-                <h2 className="font-display text-2xl md:text-3xl">{c.sampleTitle}</h2>
-              </div>
-              <div className="p-5 md:p-7">
-                <p className="text-ink-muted leading-relaxed mb-6">{c.sampleText}</p>
-                <div className="text-sm font-semibold mb-3">{c.sampleQuestion}</div>
-                <div className="border border-accent-soft bg-[#FFF9F5] rounded-xl p-4 mb-4">
-                  <div className="text-sm font-medium">{c.sampleChoice}</div>
+          <div className="container-app pt-10 pb-16 md:pt-20 md:pb-24 relative">
+            <div className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.15em] text-[#5148E8] bg-white/80 border px-3 py-2 rounded-full mb-5 shadow-xs">
+                  <Sparkles size={15} /> {c.eyebrow}
                 </div>
-                <div className="flex gap-3 rounded-xl bg-subtle p-4">
-                  <MessageCircleQuestion size={20} className="text-accent shrink-0 mt-0.5" />
-                  <p className="text-sm text-ink-muted leading-relaxed">{c.sampleConsequence}</p>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.03] mb-6 max-w-3xl">
+                  {c.titleA}{' '}
+                  <span className="bg-gradient-to-r from-[#635BFF] via-[#7C3AED] to-[#0EA5E9] bg-clip-text text-transparent">
+                    {c.titleB}
+                  </span>
+                </h1>
+
+                <p className="text-lg md:text-xl text-ink-muted leading-relaxed max-w-2xl mb-8">{c.sub}</p>
+
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                  <Link
+                    to="/scenarios"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#635BFF] to-[#0EA5E9] text-white text-base px-7 py-4 rounded-2xl font-bold shadow-md hover:opacity-95 transition-opacity"
+                  >
+                    {c.cta} <ArrowRight size={18} />
+                  </Link>
+                  <a
+                    href="#how"
+                    className="inline-flex items-center justify-center gap-2 bg-white border border-border-strong text-ink text-base px-7 py-4 rounded-2xl font-bold hover:bg-subtle transition-colors"
+                  >
+                    {c.secondary}
+                  </a>
+                </div>
+
+                <div className="flex flex-wrap gap-2 text-sm">
+                  {[c.trust1, c.trust2, c.trust3].map((item) => (
+                    <span key={item} className="inline-flex items-center gap-1.5 bg-white border rounded-full px-3 py-2 text-ink-muted">
+                      <CheckCircle2 size={14} className="text-success" /> {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white border rounded-[28px] shadow-lg overflow-hidden rotate-[1deg]">
+                <div className="bg-gradient-to-r from-[#635BFF] via-[#7C3AED] to-[#0EA5E9] text-white p-5 md:p-6">
+                  <div className="text-xs uppercase tracking-[0.16em] text-white/75 font-bold mb-2">{c.sampleLabel}</div>
+                  <h2 className="text-2xl md:text-3xl font-extrabold">{c.sampleTitle}</h2>
+                </div>
+                <div className="p-5 md:p-7">
+                  <p className="text-ink-muted leading-relaxed mb-6">{c.sampleText}</p>
+                  <div className="text-sm font-bold mb-3">{c.sampleQuestion}</div>
+                  <div className="border-2 border-[#C7C3FF] bg-[#F3F2FF] rounded-2xl p-4 mb-4">
+                    <div className="text-sm font-bold">{c.sampleChoice}</div>
+                  </div>
+                  <div className="flex gap-3 rounded-2xl bg-[#ECFEFF] border border-[#A5F3FC] p-4">
+                    <MessageCircleQuestion size={20} className="text-[#0891B2] shrink-0 mt-0.5" />
+                    <p className="text-sm text-ink-muted leading-relaxed">{c.sampleConsequence}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-subtle py-16 md:py-20">
+        <section className="bg-gradient-to-b from-[#EEF2FF] to-[#F7FAFF] py-16 md:py-20">
           <div className="container-app">
-            <h2 className="font-display text-3xl md:text-4xl text-center mb-10">{c.categoriesTitle}</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">{c.categoriesTitle}</h2>
             <div className="grid md:grid-cols-3 gap-5">
-              <CategoryCard icon={<Wifi size={22} />} title={c.internetTitle} text={c.internetText} />
-              <CategoryCard icon={<BrainCircuit size={22} />} title={c.aiTitle} text={c.aiText} />
-              <CategoryCard icon={<Users size={22} />} title={c.friendsTitle} text={c.friendsText} />
+              <CategoryCard
+                icon={<Wifi size={22} />}
+                title={c.internetTitle}
+                text={c.internetText}
+                iconClass="bg-[#E0F2FE] text-[#0284C7]"
+                accentClass="border-t-[#38BDF8]"
+              />
+              <CategoryCard
+                icon={<BrainCircuit size={22} />}
+                title={c.aiTitle}
+                text={c.aiText}
+                iconClass="bg-[#EDE9FE] text-[#7C3AED]"
+                accentClass="border-t-[#8B5CF6]"
+              />
+              <CategoryCard
+                icon={<Users size={22} />}
+                title={c.friendsTitle}
+                text={c.friendsText}
+                iconClass="bg-[#ECFCCB] text-[#4D7C0F]"
+                accentClass="border-t-[#A3E635]"
+              />
             </div>
           </div>
         </section>
 
         <section id="how" className="container-app py-16 md:py-24 max-w-5xl">
-          <h2 className="font-display text-3xl md:text-4xl text-center mb-10">{c.howTitle}</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">{c.howTitle}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {[c.step1, c.step2, c.step3, c.step4].map((step, index) => (
-              <div key={step} className="bg-card border rounded-xl p-5 md:p-6 flex gap-4 items-start">
-                <div className="w-9 h-9 rounded-full bg-accent-soft text-accent flex items-center justify-center font-semibold shrink-0">
+              <div key={step} className="bg-white border rounded-2xl p-5 md:p-6 flex gap-4 items-start shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#635BFF] to-[#0EA5E9] text-white flex items-center justify-center font-extrabold shrink-0">
                   {index + 1}
                 </div>
-                <p className="font-medium leading-relaxed pt-1">{step.substring(3)}</p>
+                <p className="font-semibold leading-relaxed pt-1">{step.substring(3)}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="border-y bg-card py-14">
+        <section className="border-y bg-[#111827] text-white py-14">
           <div className="container-read text-center">
-            <ShieldCheck size={30} className="text-success mx-auto mb-4" />
-            <h2 className="font-display text-3xl mb-4">{c.aiTitle2}</h2>
-            <p className="text-ink-muted text-lg leading-relaxed mb-7">{c.aiText2}</p>
+            <div className="w-12 h-12 rounded-2xl bg-[#A3E635] text-[#17233C] flex items-center justify-center mx-auto mb-4">
+              <ShieldCheck size={28} />
+            </div>
+            <h2 className="text-3xl font-extrabold mb-4">{c.aiTitle2}</h2>
+            <p className="text-white/70 text-lg leading-relaxed mb-7">{c.aiText2}</p>
             <Link
               to="/scenarios"
-              className="inline-flex items-center justify-center gap-2 bg-accent text-white px-7 py-3.5 rounded-md font-medium hover:bg-accent-hover transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#17233C] px-7 py-4 rounded-2xl font-bold hover:bg-[#EEF2FF] transition-colors"
             >
               {c.start} <ArrowRight size={18} />
             </Link>
@@ -198,10 +230,22 @@ export const LifeLanding = () => {
   );
 };
 
-const CategoryCard = ({ icon, title, text }: { icon: JSX.Element; title: string; text: string }) => (
-  <article className="bg-card border rounded-2xl p-6 shadow-xs">
-    <div className="w-11 h-11 rounded-xl bg-accent-soft text-accent flex items-center justify-center mb-5">{icon}</div>
-    <h3 className="font-display text-2xl mb-3">{title}</h3>
+const CategoryCard = ({
+  icon,
+  title,
+  text,
+  iconClass,
+  accentClass,
+}: {
+  icon: JSX.Element;
+  title: string;
+  text: string;
+  iconClass: string;
+  accentClass: string;
+}) => (
+  <article className={`bg-white border border-t-4 ${accentClass} rounded-2xl p-6 shadow-sm`}>
+    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 ${iconClass}`}>{icon}</div>
+    <h3 className="text-2xl font-extrabold mb-3">{title}</h3>
     <p className="text-ink-muted leading-relaxed">{text}</p>
   </article>
 );
