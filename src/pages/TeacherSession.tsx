@@ -7,6 +7,7 @@ import {
   Maximize2,
   Minimize2,
   Minus,
+  Play,
   Plus,
   Printer,
   Repeat2,
@@ -17,40 +18,28 @@ import {
 import { LanguageToggle } from '../components/layout/LanguageToggle';
 import { useTranslation } from 'react-i18next';
 import type { LifeLocale } from '../data/lifeScenarios';
+import {
+  getTeacherScenario,
+  teacherScenarios,
+  type TeacherPattern,
+} from '../data/teacherScenarios';
 
-type Pattern = 'riskyConsensus' | 'safeConsensus' | 'safeSplit' | 'split' | 'minority';
 type Round = 'before' | 'after';
 
 const MIN_VOTES = 5;
-const RISK_LEVELS = ['high', 'low', 'low'] as const;
 
 const copy = {
   el: {
     back: 'Αρχική',
-    title: 'Teacher Session v0.2',
-    subtitle: 'Μία οθόνη, μία ιστορία, συζήτηση 10–15 λεπτών.',
+    title: 'Teacher Sessions',
+    subtitle: 'Έτοιμες 15λεπτες δραστηριότητες για μία οθόνη.',
+    intro: 'Διάλεξε σενάριο, κάνε δύο γύρους ψηφοφορίας και χρησιμοποίησε το debrief χωρίς βαθμολόγηση παιδιών.',
     noLogin: 'Χωρίς login · χωρίς αποθήκευση · χωρίς κινητά μαθητών',
+    libraryTitle: 'Διάλεξε δραστηριότητα',
+    activityCount: '4 δραστηριότητες',
     eae: 'Απλή γλώσσα / ΕΑΕ',
-    skills: ['Ψηφιακή ιθαγένεια', 'Ασφαλής πλοήγηση', 'Κριτική σκέψη'],
     scenarioEyebrow: 'Σενάριο τάξης',
-    scenarioTitle: 'Το μήνυμα για το δέμα',
-    scenarioText: 'Στο κινητό εμφανίζεται μήνυμα που λέει ότι ένα δέμα δεν παραδόθηκε. Ζητά επιβεβαίωση διεύθυνσης και χρέωση 1,99€ μέσω συνδέσμου.',
-    scenarioSimple: 'Έρχεται μήνυμα για ένα δέμα. Λέει: «Πάτησε εδώ και πλήρωσε 1,99€». Δεν ξέρεις αν είναι αληθινό.',
-    smsFrom: 'COURIER INFO',
-    smsBody: 'Το δέμα σας δεν παραδόθηκε. Επιβεβαιώστε τη διεύθυνσή σας και καταβάλετε 1,99€ εντός 30 λεπτών.',
-    smsLink: 'parcel-check.help/gr',
     question: 'Τι θα έκανες;',
-    choices: [
-      'Πατάω τον σύνδεσμο για να δω τι έγινε.',
-      'Μπαίνω μόνος μου στην επίσημη εφαρμογή/σελίδα της courier.',
-      'Ρωτάω αν περιμένουμε δέμα και δεν ανοίγω τον σύνδεσμο.',
-    ],
-    simpleChoices: [
-      'Πατάω το link.',
-      'Μπαίνω στην επίσημη σελίδα.',
-      'Ρωτάω αν περιμένουμε δέμα. Δεν πατάω το link.',
-    ],
-    barLabels: ['Πατάω το link', 'Επίσημη σελίδα', 'Ελέγχω χωρίς το link'],
     countTitleBefore: '1ος γύρος · Τι θα κάνατε τώρα;',
     countTitleAfter: '2ος γύρος · Μετά τη συζήτηση',
     countHelp: 'Οι μαθητές σηκώνουν χέρι ή οι ομάδες συμφωνούν σε μία επιλογή. Πέρασε μόνο τον αριθμό.',
@@ -67,60 +56,6 @@ const copy = {
     safeSplitLabel: 'Διαφωνία ανάμεσα σε δύο ασφαλείς στρατηγικές',
     splitLabel: 'Διχασμένη τάξη',
     minorityLabel: 'Υπάρχει ουσιαστική μειοψηφία',
-    questions: {
-      riskyConsensus: [
-        'Τι υποθέσαμε για το μήνυμα ώστε ο σύνδεσμος να μας φανεί αρκετά ασφαλής;',
-        'Γιατί το μήνυμα βάζει όριο «30 λεπτών»; Ποιος κερδίζει αν βιαστούμε;',
-        'Πώς μπορούμε να ελέγξουμε αν υπάρχει πράγματι δέμα χωρίς να χρησιμοποιήσουμε τον σύνδεσμο;',
-      ],
-      safeConsensus: [
-        'Τι στοιχείο του μηνύματος έκανε την ίδια στρατηγική να φαίνεται πιο ασφαλής στους περισσότερους;',
-        'Ποιο διαφορετικό στοιχείο θα μπορούσε να σας κάνει να αλλάξετε τρόπο ελέγχου;',
-        'Πώς ξεχωρίζουμε την επαλήθευση από το να εμπιστευόμαστε το ίδιο μήνυμα που μας πιέζει;',
-      ],
-      safeSplit: [
-        'Οι δύο δημοφιλείς επιλογές αποφεύγουν το link. Τι ελέγχει καλύτερα η καθεμία;',
-        'Ποια θα μπορούσε να γίνει πρώτη και ποια δεύτερη, χωρίς να αυξάνει τον κίνδυνο;',
-        'Τι πληροφορία θέλουμε τελικά να επιβεβαιώσουμε: ότι υπάρχει δέμα, ποια courier το έχει ή και τα δύο;',
-      ],
-      split: [
-        'Ποιο στοιχείο του μηνύματος ερμηνεύσατε διαφορετικά μεταξύ σας;',
-        'Ποια επιλογή μας δίνει περισσότερες πληροφορίες πριν κάνουμε κάτι που ίσως δεν αναστρέφεται;',
-        'Τι μπορούμε να ελέγξουμε πρώτα χωρίς να δώσουμε στοιχεία ή χρήματα;',
-      ],
-      minority: [
-        'Ας ακούσουμε πρώτα τη λιγότερο δημοφιλή επιλογή: ποια λογική μπορεί να κρύβεται πίσω της;',
-        'Τι πληροφορία λείπει από το μήνυμα και θα βοηθούσε όλους να αποφασίσουν καλύτερα;',
-        'Ποια ασφαλής ενέργεια μπορεί να γίνει πρώτη, πριν αποφασίσουμε αν θα συνεχίσουμε;',
-      ],
-    },
-    simpleQuestions: {
-      riskyConsensus: [
-        'Τι σε έκανε να εμπιστευτείς το μήνυμα;',
-        'Γιατί γράφει «μέσα σε 30 λεπτά»;',
-        'Πώς ελέγχουμε το δέμα χωρίς να πατήσουμε το link;',
-      ],
-      safeConsensus: [
-        'Τι σε έκανε να μην πατήσεις το link;',
-        'Τι άλλο θα ήθελες να ξέρεις πριν αποφασίσεις;',
-        'Πώς ελέγχουμε αν υπάρχει πράγματι δέμα;',
-      ],
-      safeSplit: [
-        'Και οι δύο επιλογές δεν πατούν το link. Τι ελέγχει η καθεμία;',
-        'Ποιον έλεγχο θα έκανες πρώτο;',
-        'Τι θέλουμε να μάθουμε για το δέμα;',
-      ],
-      split: [
-        'Τι είδαμε διαφορετικά στο ίδιο μήνυμα;',
-        'Ποια επιλογή μας δίνει πρώτα περισσότερες πληροφορίες;',
-        'Τι μπορούμε να ελέγξουμε χωρίς να πατήσουμε το link;',
-      ],
-      minority: [
-        'Γιατί κάποιοι διάλεξαν διαφορετικά;',
-        'Τι πληροφορία λείπει από το μήνυμα;',
-        'Τι ασφαλές μπορούμε να κάνουμε πρώτα;',
-      ],
-    },
     nextQuestion: 'Επόμενη ερώτηση',
     secondRound: '2ος γύρος ψηφοφορίας',
     secondRoundHelp: 'Ψηφίστε ξανά μετά τη συζήτηση. Δεν βαθμολογείται κανείς — βλέπουμε μόνο αν μετακινήθηκε η τάξη.',
@@ -129,13 +64,10 @@ const copy = {
     beforeShort: 'Πριν',
     afterShort: 'Μετά',
     worksheet: 'Εκτύπωση / PDF worksheet',
-    worksheetTitle: 'Φύλλο συζήτησης — Το μήνυμα για το δέμα',
+    worksheetTitle: 'Φύλλο συζήτησης',
     worksheetIntro: 'Διάβασε το σενάριο και σημείωσε τι θα έκανες και γιατί.',
-    worksheetMessage: 'Το μήνυμα που βλέπεις',
-    worksheetWhy: 'Γιατί θα διάλεγες αυτή την επιλογή;',
-    worksheetClue: 'Ποια σημεία του μηνύματος θα έλεγες ότι χρειάζονται έλεγχο;',
-    worksheetSafe: 'Ποια είναι μία ενέργεια που μπορείς να κάνεις χωρίς να πατήσεις τον σύνδεσμο;',
-    worksheetFooter: 'Στόχος: να εξασκηθούμε στο πώς ελέγχουμε πριν ενεργήσουμε — όχι να βαθμολογήσουμε την επιλογή.',
+    worksheetArtifact: 'Το στοιχείο που βλέπει η τάξη',
+    worksheetFooter: 'Στόχος: να εξασκηθούμε στο πώς ελέγχουμε και σκεφτόμαστε πριν ενεργήσουμε — όχι να βαθμολογήσουμε την επιλογή.',
     projector: 'Προβολή σε μία οθόνη',
     projectorText: 'Η βασική ροή δεν απαιτεί καμία συσκευή από τους μαθητές.',
     eaeText: 'Η λειτουργία ΕΑΕ μειώνει το κείμενο και απλοποιεί τη διατύπωση χωρίς να αλλάζει τη στρατηγική κάθε επιλογής.',
@@ -146,30 +78,15 @@ const copy = {
   },
   en: {
     back: 'Home',
-    title: 'Teacher Session v0.2',
-    subtitle: 'One screen, one story, a 10–15 minute discussion.',
+    title: 'Teacher Sessions',
+    subtitle: 'Ready 15-minute activities for one screen.',
+    intro: 'Choose a scenario, run two voting rounds and use the debrief without grading individual students.',
     noLogin: 'No login · no storage · no student phones',
+    libraryTitle: 'Choose an activity',
+    activityCount: '4 activities',
     eae: 'Simple language / SEN',
-    skills: ['Digital citizenship', 'Safe browsing', 'Critical thinking'],
     scenarioEyebrow: 'Classroom scenario',
-    scenarioTitle: 'The delivery message',
-    scenarioText: 'A message says a parcel could not be delivered. It asks you to confirm your address and pay €1.99 through a link.',
-    scenarioSimple: 'You get a parcel message. It says: “Tap here and pay €1.99.” You do not know if it is real.',
-    smsFrom: 'COURIER INFO',
-    smsBody: 'Your parcel could not be delivered. Confirm your address and pay €1.99 within 30 minutes.',
-    smsLink: 'parcel-check.help/gr',
     question: 'What would you do?',
-    choices: [
-      'Tap the link to see what happened.',
-      'Open the courier’s official app/site yourself.',
-      'Ask whether we are expecting a parcel and do not open the link.',
-    ],
-    simpleChoices: [
-      'Tap the link.',
-      'Open the official site.',
-      'Ask whether we are expecting a parcel. Do not tap the link.',
-    ],
-    barLabels: ['Tap the link', 'Official site', 'Check without the link'],
     countTitleBefore: 'Round 1 · What would you do now?',
     countTitleAfter: 'Round 2 · After the discussion',
     countHelp: 'Students raise hands or groups agree on one option. Enter only the number.',
@@ -186,60 +103,6 @@ const copy = {
     safeSplitLabel: 'Split between two safer strategies',
     splitLabel: 'Split class',
     minorityLabel: 'Meaningful minority',
-    questions: {
-      riskyConsensus: [
-        'What did we assume about the message that made the link feel safe enough to use?',
-        'Why does the message create a “30 minute” deadline? Who benefits if we rush?',
-        'How can we check whether a parcel really exists without using the link?',
-      ],
-      safeConsensus: [
-        'What part of the message made the same strategy feel safer to most people?',
-        'What different detail could make you change how you verify it?',
-        'How do we separate verification from trusting the same message that is pressuring us?',
-      ],
-      safeSplit: [
-        'Both popular choices avoid the link. What does each one verify better?',
-        'Which could come first and which second without increasing risk?',
-        'What are we actually trying to confirm: whether a parcel exists, which courier has it, or both?',
-      ],
-      split: [
-        'Which part of the message did the class interpret differently?',
-        'Which option gives us more information before an action that may be hard to undo?',
-        'What can we check first without sharing details or money?',
-      ],
-      minority: [
-        'Let us hear the least popular option first: what reasoning might sit behind it?',
-        'What information is missing that would help everyone decide better?',
-        'What safe action can happen first before deciding whether to continue?',
-      ],
-    },
-    simpleQuestions: {
-      riskyConsensus: [
-        'What made you trust the message?',
-        'Why does it say “within 30 minutes”?',
-        'How can we check the parcel without tapping the link?',
-      ],
-      safeConsensus: [
-        'What made you avoid the link?',
-        'What else would you want to know before deciding?',
-        'How can we check whether the parcel really exists?',
-      ],
-      safeSplit: [
-        'Both choices avoid the link. What does each one check?',
-        'Which check would you do first?',
-        'What do we want to learn about the parcel?',
-      ],
-      split: [
-        'What did we see differently in the same message?',
-        'Which option gives us more information first?',
-        'What can we check without tapping the link?',
-      ],
-      minority: [
-        'Why did some people choose differently?',
-        'What information is missing from the message?',
-        'What safe thing can we do first?',
-      ],
-    },
     nextQuestion: 'Next question',
     secondRound: 'Second voting round',
     secondRoundHelp: 'Vote again after the discussion. Nobody is graded — we only see whether the class distribution moved.',
@@ -248,13 +111,10 @@ const copy = {
     beforeShort: 'Before',
     afterShort: 'After',
     worksheet: 'Print / PDF worksheet',
-    worksheetTitle: 'Discussion sheet — The delivery message',
+    worksheetTitle: 'Discussion sheet',
     worksheetIntro: 'Read the scenario and note what you would do and why.',
-    worksheetMessage: 'The message you see',
-    worksheetWhy: 'Why would you choose that option?',
-    worksheetClue: 'Which parts of the message would you want to verify?',
-    worksheetSafe: 'What is one action you can take without tapping the link?',
-    worksheetFooter: 'Goal: practise checking before acting — not grading the choice.',
+    worksheetArtifact: 'What the class sees',
+    worksheetFooter: 'Goal: practise checking and thinking before acting — not grading the choice.',
     projector: 'Single-screen projection',
     projectorText: 'The core flow requires no student devices.',
     eaeText: 'SEN mode shortens the text and simplifies wording without changing the strategy behind each option.',
@@ -275,6 +135,7 @@ export const TeacherSession = () => {
   const lang: LifeLocale = i18n.language.startsWith('en') ? 'en' : 'el';
   const c = copy[lang];
 
+  const [scenarioId, setScenarioId] = useState(teacherScenarios[0].id);
   const [simpleMode, setSimpleMode] = useState(false);
   const [presentationMode, setPresentationMode] = useState(false);
   const [round, setRound] = useState<Round>('before');
@@ -282,6 +143,9 @@ export const TeacherSession = () => {
   const [beforeCounts, setBeforeCounts] = useState<number[] | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [visibleQuestionCount, setVisibleQuestionCount] = useState(1);
+
+  const selectedScenario = getTeacherScenario(scenarioId);
+  const s = selectedScenario[lang];
 
   const total = counts.reduce((sum, value) => sum + value, 0);
   const percentages = getPercentages(counts);
@@ -295,7 +159,9 @@ export const TeacherSession = () => {
     return () => document.removeEventListener('fullscreenchange', handleFullscreen);
   }, []);
 
-  const pattern: Pattern = useMemo(() => {
+  const pattern: TeacherPattern = useMemo(() => {
+    if (!total) return 'minority';
+
     const sorted = counts
       .map((count, index) => ({ count, index, share: count / total }))
       .sort((a, b) => b.count - a.count);
@@ -303,18 +169,28 @@ export const TeacherSession = () => {
     const top = sorted[0];
     const second = sorted[1];
 
-    if (top.share >= 0.7 && RISK_LEVELS[top.index] === 'high') return 'riskyConsensus';
-    if (top.share >= 0.7 && RISK_LEVELS[top.index] === 'low') return 'safeConsensus';
+    if (top.share >= 0.7 && selectedScenario.riskLevels[top.index] === 'high') return 'riskyConsensus';
+    if (top.share >= 0.7 && selectedScenario.riskLevels[top.index] === 'low') return 'safeConsensus';
 
-    const riskyShare = counts[0] / total;
-    const safeDifference = Math.abs(counts[1] - counts[2]) / total;
-    if (riskyShare <= 0.2 && counts[1] > 0 && counts[2] > 0 && safeDifference <= 0.15) {
+    const riskyShare = counts.reduce(
+      (sum, count, index) => sum + (selectedScenario.riskLevels[index] === 'high' ? count : 0),
+      0,
+    ) / total;
+
+    const safeSorted = sorted.filter((item) => selectedScenario.riskLevels[item.index] === 'low');
+    if (
+      riskyShare <= 0.2 &&
+      safeSorted.length >= 2 &&
+      safeSorted[0].count > 0 &&
+      safeSorted[1].count > 0 &&
+      Math.abs(safeSorted[0].share - safeSorted[1].share) <= 0.15
+    ) {
       return 'safeSplit';
     }
 
     if (Math.abs(top.share - second.share) <= 0.15) return 'split';
     return 'minority';
-  }, [counts, total]);
+  }, [counts, total, selectedScenario]);
 
   const patternLabel = {
     riskyConsensus: c.riskyConsensusLabel,
@@ -324,18 +200,8 @@ export const TeacherSession = () => {
     minority: c.minorityLabel,
   }[pattern];
 
-  const choices = simpleMode ? c.simpleChoices : c.choices;
-  const questionSet = simpleMode ? c.simpleQuestions[pattern] : c.questions[pattern];
-
-  const changeCount = (index: number, delta: number) => {
-    setCounts((current) =>
-      current.map((value, currentIndex) =>
-        currentIndex === index ? Math.max(0, value + delta) : value,
-      ),
-    );
-    setRevealed(false);
-    setVisibleQuestionCount(1);
-  };
+  const choices = simpleMode ? s.simpleChoices : s.choices;
+  const questionSet = simpleMode ? s.simpleQuestions[pattern] : s.questions[pattern];
 
   const resetCurrentRound = () => {
     setCounts([0, 0, 0]);
@@ -347,6 +213,27 @@ export const TeacherSession = () => {
     setRound('before');
     setBeforeCounts(null);
     resetCurrentRound();
+  };
+
+  const changeScenario = (id: string) => {
+    setScenarioId(id);
+    setSimpleMode(false);
+    setRound('before');
+    setBeforeCounts(null);
+    setCounts([0, 0, 0]);
+    setRevealed(false);
+    setVisibleQuestionCount(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const changeCount = (index: number, delta: number) => {
+    setCounts((current) =>
+      current.map((value, currentIndex) =>
+        currentIndex === index ? Math.max(0, value + delta) : value,
+      ),
+    );
+    setRevealed(false);
+    setVisibleQuestionCount(1);
   };
 
   const reveal = () => {
@@ -403,20 +290,54 @@ export const TeacherSession = () => {
 
       <main className={`${presentationMode ? 'max-w-[1500px] mx-auto px-6 md:px-10 pt-8' : 'container-app'} pb-20 no-print`}>
         {!presentationMode && (
-          <section className="max-w-4xl pt-6 md:pt-10 mb-8">
-            <div className="inline-flex items-center gap-2 bg-[#EDE9FE] text-[#6D28D9] rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.12em] mb-4">
-              <Sparkles size={15} /> {c.title}
-            </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-3">{c.subtitle}</h1>
-            <p className="text-ink-muted font-semibold">{c.noLogin}</p>
-          </section>
+          <>
+            <section className="max-w-4xl pt-6 md:pt-10 mb-8">
+              <div className="inline-flex items-center gap-2 bg-[#EDE9FE] text-[#6D28D9] rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.12em] mb-4">
+                <Sparkles size={15} /> {c.title}
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-3">{c.subtitle}</h1>
+              <p className="text-lg text-ink-muted mb-3">{c.intro}</p>
+              <p className="text-ink-muted font-semibold">{c.noLogin}</p>
+            </section>
+
+            <section className="mb-8">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <h2 className="text-2xl font-extrabold">{c.libraryTitle}</h2>
+                <span className="text-sm font-bold text-ink-subtle">{c.activityCount}</span>
+              </div>
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+                {teacherScenarios.map((scenario) => {
+                  const local = scenario[lang];
+                  const active = scenario.id === scenarioId;
+                  return (
+                    <button
+                      key={scenario.id}
+                      type="button"
+                      onClick={() => changeScenario(scenario.id)}
+                      aria-pressed={active}
+                      className={`text-left rounded-2xl border p-4 transition-all ${
+                        active
+                          ? 'border-accent bg-[#F3F2FF] shadow-sm'
+                          : 'border-border-strong bg-white hover:bg-subtle'
+                      }`}
+                    >
+                      <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-accent mb-2">
+                        {local.category}
+                      </div>
+                      <div className="font-extrabold leading-snug">{local.title}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          </>
         )}
 
         <section className={`grid gap-5 mb-6 ${presentationMode ? 'grid-cols-1' : 'lg:grid-cols-[1fr_320px]'}`}>
           <div className="bg-white border rounded-3xl p-5 md:p-7 shadow-sm">
             {!presentationMode && (
               <div className="flex flex-wrap items-center gap-2 mb-5">
-                {c.skills.map((skill) => (
+                {s.skills.map((skill) => (
                   <span key={skill} className="bg-[#EEF2FF] text-[#4338CA] rounded-full px-3 py-1.5 text-xs font-bold">
                     {skill}
                   </span>
@@ -424,29 +345,27 @@ export const TeacherSession = () => {
               </div>
             )}
 
-            <div className="text-xs uppercase tracking-[0.13em] font-extrabold text-accent mb-2">{c.scenarioEyebrow}</div>
-            <h2 className={`${titleSize} font-extrabold mb-4`}>{c.scenarioTitle}</h2>
+            <div className="text-xs uppercase tracking-[0.13em] font-extrabold text-accent mb-2">
+              {c.scenarioEyebrow} · {s.category}
+            </div>
+            <h2 className={`${titleSize} font-extrabold mb-4`}>{s.title}</h2>
             <p className={`${bodySize} text-ink-muted leading-relaxed mb-6`}>
-              {simpleMode ? c.scenarioSimple : c.scenarioText}
+              {simpleMode ? s.scenarioSimple : s.scenarioText}
             </p>
 
-            <div className={`${presentationMode ? 'max-w-2xl' : 'max-w-md'} mx-auto bg-[#0F172A] rounded-[28px] p-3 shadow-lg mb-7`}>
-              <div className="bg-white rounded-[22px] overflow-hidden">
-                <div className="px-5 py-3 border-b flex items-center justify-between text-xs text-ink-subtle font-bold">
-                  <span>09:41</span>
-                  <span>SMS</span>
-                </div>
-                <div className={`${presentationMode ? 'p-8' : 'p-5'} bg-[#F8FAFC]`}>
-                  <div className="text-xs font-extrabold text-ink-subtle mb-2">{c.smsFrom}</div>
-                  <div className={`inline-block max-w-[92%] bg-[#E2E8F0] rounded-2xl rounded-bl-md px-4 py-3 leading-relaxed ${presentationMode ? 'text-xl' : 'text-sm'}`}>
-                    <p>{c.smsBody}</p>
-                    <p className="mt-2 text-[#2563EB] font-semibold underline">{c.smsLink}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TeacherArtifact
+              kind={selectedScenario.artifactKind}
+              label={s.artifactLabel}
+              from={s.artifactFrom}
+              body={s.artifactBody}
+              link={s.artifactLink}
+              meta={s.artifactMeta}
+              presentationMode={presentationMode}
+            />
 
-            <h3 className={`${presentationMode ? 'text-3xl md:text-4xl' : 'text-2xl'} font-extrabold mb-4`}>{c.question}</h3>
+            <h3 className={`${presentationMode ? 'text-3xl md:text-4xl' : 'text-2xl'} font-extrabold mb-4`}>
+              {c.question}
+            </h3>
             <div className="grid md:grid-cols-3 gap-3">
               {choices.map((choice, index) => (
                 <div key={choice} className="border-2 border-border-strong rounded-2xl p-4 bg-[#FCFDFF]">
@@ -511,23 +430,25 @@ export const TeacherSession = () => {
             {counts.map((count, index) => (
               <div key={index} className="border rounded-2xl p-4">
                 <div className="font-extrabold mb-1">
-                  {String.fromCharCode(65 + index)} · {c.barLabels[index]}
+                  {String.fromCharCode(65 + index)} · {s.barLabels[index]}
                 </div>
                 <div className="flex items-center justify-between gap-3 mt-3">
                   <button
                     type="button"
                     onClick={() => changeCount(index, -1)}
                     className={`${presentationMode ? 'w-14 h-14' : 'w-11 h-11'} rounded-xl border flex items-center justify-center bg-white hover:bg-subtle`}
-                    aria-label={`${c.decrease} ${c.barLabels[index]}`}
+                    aria-label={`${c.decrease} ${s.barLabels[index]}`}
                   >
                     <Minus size={18} />
                   </button>
-                  <div className={`${presentationMode ? 'text-5xl' : 'text-3xl'} font-extrabold tabular-nums`}>{count}</div>
+                  <div className={`${presentationMode ? 'text-5xl' : 'text-3xl'} font-extrabold tabular-nums`}>
+                    {count}
+                  </div>
                   <button
                     type="button"
                     onClick={() => changeCount(index, 1)}
                     className={`${presentationMode ? 'w-14 h-14' : 'w-11 h-11'} rounded-xl bg-[#17233C] text-white flex items-center justify-center hover:bg-[#253453]`}
-                    aria-label={`${c.increase} ${c.barLabels[index]}`}
+                    aria-label={`${c.increase} ${s.barLabels[index]}`}
                   >
                     <Plus size={18} />
                   </button>
@@ -572,7 +493,7 @@ export const TeacherSession = () => {
                   {percentages.map((percent, index) => (
                     <div key={index}>
                       <div className={`flex justify-between gap-4 font-bold mb-2 ${presentationMode ? 'text-xl' : 'text-sm'}`}>
-                        <span>{String.fromCharCode(65 + index)} · {c.barLabels[index]}</span>
+                        <span>{String.fromCharCode(65 + index)} · {s.barLabels[index]}</span>
                         <span>{percent}%</span>
                       </div>
                       <div className={`${presentationMode ? 'h-7' : 'h-4'} bg-[#E8ECF7] rounded-full overflow-hidden`}>
@@ -587,8 +508,12 @@ export const TeacherSession = () => {
               </div>
 
               <div className="bg-[#111827] text-white rounded-3xl p-5 md:p-7">
-                <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-[#A3E635] mb-2">{patternLabel}</div>
-                <h2 className={`${presentationMode ? 'text-3xl' : 'text-2xl'} font-extrabold mb-5`}>{c.debriefTitle}</h2>
+                <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-[#A3E635] mb-2">
+                  {patternLabel}
+                </div>
+                <h2 className={`${presentationMode ? 'text-3xl' : 'text-2xl'} font-extrabold mb-5`}>
+                  {c.debriefTitle}
+                </h2>
 
                 <div className="space-y-4">
                   {questionSet.slice(0, visibleQuestionCount).map((question, index) => (
@@ -596,7 +521,9 @@ export const TeacherSession = () => {
                       <div className={`${presentationMode ? 'w-10 h-10 text-lg' : 'w-7 h-7 text-sm'} rounded-lg bg-white/10 flex items-center justify-center shrink-0 font-extrabold`}>
                         {index + 1}
                       </div>
-                      <p className={`${presentationMode ? 'text-xl md:text-2xl' : ''} text-white/90 leading-relaxed`}>{question}</p>
+                      <p className={`${presentationMode ? 'text-xl md:text-2xl' : ''} text-white/90 leading-relaxed`}>
+                        {question}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -629,12 +556,14 @@ export const TeacherSession = () => {
             {round === 'after' && beforePercentages && (
               <section className="bg-white border rounded-3xl p-5 md:p-7 shadow-sm mb-6">
                 <div className="max-w-3xl mb-6">
-                  <h2 className={`${presentationMode ? 'text-4xl' : 'text-3xl'} font-extrabold mb-2`}>{c.comparisonTitle}</h2>
+                  <h2 className={`${presentationMode ? 'text-4xl' : 'text-3xl'} font-extrabold mb-2`}>
+                    {c.comparisonTitle}
+                  </h2>
                   <p className={`${presentationMode ? 'text-lg' : ''} text-ink-muted`}>{c.comparisonText}</p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4">
-                  {c.barLabels.map((label, index) => (
+                  {s.barLabels.map((label, index) => (
                     <div key={label} className="rounded-2xl border p-4">
                       <div className="font-extrabold mb-4">{String.fromCharCode(65 + index)} · {label}</div>
                       <div className="space-y-3">
@@ -688,20 +617,21 @@ export const TeacherSession = () => {
       <section className="print-only">
         <div className="print-sheet">
           <div className="print-kicker">Teacher Session</div>
-          <h1>{c.worksheetTitle}</h1>
+          <h1>{c.worksheetTitle} — {s.title}</h1>
           <p>{c.worksheetIntro}</p>
 
           <div className="print-box">
-            <strong>{c.scenarioTitle}</strong>
-            <p>{simpleMode ? c.scenarioSimple : c.scenarioText}</p>
+            <strong>{s.title}</strong>
+            <p>{simpleMode ? s.scenarioSimple : s.scenarioText}</p>
           </div>
 
           <div className="print-message">
-            <strong>{c.worksheetMessage}</strong>
+            <strong>{c.worksheetArtifact}</strong>
             <div className="print-sms">
-              <div className="print-sms-from">{c.smsFrom}</div>
-              <div>{c.smsBody}</div>
-              <div className="print-sms-link">{c.smsLink}</div>
+              <div className="print-sms-from">{s.artifactFrom} · {s.artifactLabel}</div>
+              <div>{s.artifactBody}</div>
+              {s.artifactLink && <div className="print-sms-link">{s.artifactLink}</div>}
+              {s.artifactMeta && <div className="mt-2 text-sm">{s.artifactMeta}</div>}
             </div>
           </div>
 
@@ -714,7 +644,7 @@ export const TeacherSession = () => {
             ))}
           </div>
 
-          {[c.worksheetWhy, c.worksheetClue, c.worksheetSafe].map((question) => (
+          {[s.worksheetWhy, s.worksheetClue, s.worksheetSafe].map((question) => (
             <div key={question} className="print-question">
               <strong>{question}</strong>
               <div className="print-lines" />
@@ -727,6 +657,80 @@ export const TeacherSession = () => {
           </div>
         </div>
       </section>
+    </div>
+  );
+};
+
+const TeacherArtifact = ({
+  kind,
+  label,
+  from,
+  body,
+  link,
+  meta,
+  presentationMode,
+}: {
+  kind: 'sms' | 'video' | 'chat';
+  label: string;
+  from: string;
+  body: string;
+  link?: string;
+  meta?: string;
+  presentationMode: boolean;
+}) => {
+  if (kind === 'video') {
+    return (
+      <div className={`${presentationMode ? 'max-w-3xl' : 'max-w-xl'} mx-auto mb-7 overflow-hidden rounded-[28px] bg-[#111827] text-white shadow-lg`}>
+        <div className="aspect-video bg-gradient-to-br from-[#312E81] via-[#5B21B6] to-[#0E7490] relative flex items-center justify-center">
+          <div className={`${presentationMode ? 'w-24 h-24' : 'w-16 h-16'} rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30`}>
+            <Play size={presentationMode ? 38 : 28} fill="currentColor" />
+          </div>
+          <div className="absolute left-4 top-4 rounded-full bg-black/35 px-3 py-1.5 text-xs font-extrabold tracking-wide">
+            {label}
+          </div>
+        </div>
+        <div className={`${presentationMode ? 'p-7' : 'p-5'}`}>
+          <div className="text-xs uppercase tracking-[0.12em] text-white/55 font-bold mb-2">{from}</div>
+          <p className={`${presentationMode ? 'text-xl' : 'text-base'} font-semibold leading-relaxed`}>{body}</p>
+          {meta && <p className="mt-3 text-sm text-white/60 leading-relaxed">{meta}</p>}
+        </div>
+      </div>
+    );
+  }
+
+  if (kind === 'chat') {
+    return (
+      <div className={`${presentationMode ? 'max-w-2xl' : 'max-w-md'} mx-auto bg-[#0F172A] rounded-[28px] p-3 shadow-lg mb-7`}>
+        <div className="bg-[#F8FAFC] rounded-[22px] overflow-hidden">
+          <div className="px-5 py-3 bg-white border-b flex items-center justify-between text-xs text-ink-subtle font-bold">
+            <span>{from}</span><span>{label}</span>
+          </div>
+          <div className={`${presentationMode ? 'p-8' : 'p-5'}`}>
+            <div className={`ml-auto max-w-[88%] bg-[#EDE9FE] border border-[#C4B5FD] rounded-2xl rounded-br-md px-4 py-3 leading-relaxed ${presentationMode ? 'text-xl' : 'text-sm'}`}>
+              {body}
+            </div>
+            {meta && <p className="mt-4 text-xs text-ink-subtle leading-relaxed">{meta}</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${presentationMode ? 'max-w-2xl' : 'max-w-md'} mx-auto bg-[#0F172A] rounded-[28px] p-3 shadow-lg mb-7`}>
+      <div className="bg-white rounded-[22px] overflow-hidden">
+        <div className="px-5 py-3 border-b flex items-center justify-between text-xs text-ink-subtle font-bold">
+          <span>09:41</span><span>{label}</span>
+        </div>
+        <div className={`${presentationMode ? 'p-8' : 'p-5'} bg-[#F8FAFC]`}>
+          <div className="text-xs font-extrabold text-ink-subtle mb-2">{from}</div>
+          <div className={`inline-block max-w-[92%] bg-[#E2E8F0] rounded-2xl rounded-bl-md px-4 py-3 leading-relaxed ${presentationMode ? 'text-xl' : 'text-sm'}`}>
+            <p>{body}</p>
+            {link && <p className="mt-2 text-[#2563EB] font-semibold underline">{link}</p>}
+          </div>
+          {meta && <p className="mt-3 text-xs text-ink-subtle leading-relaxed">{meta}</p>}
+        </div>
+      </div>
     </div>
   );
 };
