@@ -2,7 +2,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppShell } from './components/layout/AppShell';
-import { Landing } from './pages/Landing';
+import { Landing as LegacyLanding } from './pages/Landing';
+import { LifeLanding } from './pages/LifeLanding';
+import { ScenarioHub } from './pages/ScenarioHub';
+import { ScenarioPlayer } from './pages/ScenarioPlayer';
 import { About } from './pages/About';
 import { Privacy } from './pages/Privacy';
 import { Onboarding } from './pages/Onboarding';
@@ -24,7 +27,11 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<LifeLanding />} />
+      <Route path="/scenarios" element={<ScenarioHub />} />
+      <Route path="/scenario/:id" element={<ScenarioPlayer />} />
+
+      <Route path="/legacy" element={<LegacyLanding />} />
       <Route path="/about" element={<About />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/onboarding" element={<Onboarding />} />
@@ -38,6 +45,7 @@ const App = () => {
         <Route path="decisions/:id/compare" element={<Comparison />} />
         <Route path="settings" element={<Settings />} />
       </Route>
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
