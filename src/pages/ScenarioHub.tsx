@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, BrainCircuit, Clock3, Users, Wifi } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
+import { ScenarioVisual } from '../components/ScenarioVisual';
 import {
   categoryMeta,
   lifeScenarios,
@@ -13,9 +14,9 @@ import {
 const labels = {
   el: {
     back: 'Αρχική',
-    eyebrow: 'Διάλεξε ιστορία',
-    title: 'Σε ποια κατάσταση θέλεις να μπεις;',
-    sub: 'Δεν υπάρχει σκορ. Διάλεξε τι θα έκανες και μετά δες τις συνέπειες και τις ερωτήσεις του coach.',
+    eyebrow: 'Διάλεξε την επόμενη πρόβα',
+    title: 'Τι θα έκανες αν σου συνέβαινε τώρα;',
+    sub: '10 σύντομες καταστάσεις. Μπαίνεις στη στιγμή, διαλέγεις και βλέπεις τι μπορεί να ακολουθήσει.',
     all: 'Όλα',
     age: 'ηλικίες',
     minutes: 'λεπτά',
@@ -23,9 +24,9 @@ const labels = {
   },
   en: {
     back: 'Home',
-    eyebrow: 'Choose a story',
-    title: 'Which situation do you want to enter?',
-    sub: 'There is no score. Choose what you would do, then see the consequences and the coach questions.',
+    eyebrow: 'Choose your next rehearsal',
+    title: 'What would you do if it happened right now?',
+    sub: '10 short situations. Step into the moment, choose and see what could happen next.',
     all: 'All',
     age: 'ages',
     minutes: 'min',
@@ -39,22 +40,10 @@ const icons: Record<ScenarioCategory, JSX.Element> = {
   friends: <Users size={18} />,
 };
 
-const categoryClasses: Record<ScenarioCategory, { pill: string; border: string; icon: string }> = {
-  internet: {
-    pill: 'bg-[#E0F2FE] text-[#0369A1]',
-    border: 'border-t-[#38BDF8]',
-    icon: 'bg-[#E0F2FE] text-[#0284C7]',
-  },
-  ai: {
-    pill: 'bg-[#EDE9FE] text-[#6D28D9]',
-    border: 'border-t-[#8B5CF6]',
-    icon: 'bg-[#EDE9FE] text-[#7C3AED]',
-  },
-  friends: {
-    pill: 'bg-[#ECFCCB] text-[#4D7C0F]',
-    border: 'border-t-[#A3E635]',
-    icon: 'bg-[#ECFCCB] text-[#4D7C0F]',
-  },
+const categoryClasses: Record<ScenarioCategory, { pill: string; border: string }> = {
+  internet: { pill: 'bg-[#E0F2FE] text-[#0369A1]', border: 'border-t-[#38BDF8]' },
+  ai: { pill: 'bg-[#EDE9FE] text-[#6D28D9]', border: 'border-t-[#8B5CF6]' },
+  friends: { pill: 'bg-[#ECFCCB] text-[#4D7C0F]', border: 'border-t-[#A3E635]' },
 };
 
 export const ScenarioHub = () => {
@@ -79,7 +68,7 @@ export const ScenarioHub = () => {
 
       <main className="container-app pb-20">
         <div className="max-w-3xl pt-8 md:pt-14 mb-9">
-          <div className="inline-flex bg-white border rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.15em] text-accent mb-4">
+          <div className="inline-flex bg-white border rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.14em] text-accent mb-4">
             {c.eyebrow}
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{c.title}</h1>
@@ -106,31 +95,37 @@ export const ScenarioHub = () => {
             return (
               <article
                 key={scenario.id}
-                className={`bg-white border border-t-4 ${palette.border} rounded-2xl p-6 flex flex-col min-h-[315px] shadow-sm`}
+                className={`bg-white border border-t-4 ${palette.border} rounded-2xl overflow-hidden flex flex-col shadow-sm`}
               >
-                <div className="flex items-center justify-between gap-3 mb-5">
-                  <span className={`inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.1em] px-3 py-1.5 rounded-full ${palette.pill}`}>
-                    {icons[scenario.category]}
-                    {categoryMeta[scenario.category].label[lang]}
-                  </span>
-                  <span className="text-xs font-medium text-ink-subtle inline-flex items-center gap-1">
-                    <Clock3 size={13} /> {scenario.minutes} {c.minutes}
-                  </span>
+                <div className="p-3 pb-0">
+                  <ScenarioVisual visual={scenario.visual} compact />
                 </div>
 
-                <h2 className="text-2xl font-extrabold mb-3">{scenario.title[lang]}</h2>
-                <p className="text-ink-muted leading-relaxed mb-6 flex-1">{scenario.teaser[lang]}</p>
+                <div className="p-5 flex flex-col flex-1">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <span className={`inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.09em] px-3 py-1.5 rounded-full ${palette.pill}`}>
+                      {icons[scenario.category]}
+                      {categoryMeta[scenario.category].label[lang]}
+                    </span>
+                    <span className="text-xs font-medium text-ink-subtle inline-flex items-center gap-1">
+                      <Clock3 size={13} /> {scenario.minutes} {c.minutes}
+                    </span>
+                  </div>
 
-                <div className="text-xs font-medium text-ink-subtle mb-4">
-                  {c.age} {scenario.minAge}–{scenario.maxAge}
+                  <h2 className="text-xl md:text-2xl font-extrabold mb-2">{scenario.title[lang]}</h2>
+                  <p className="text-ink-muted leading-relaxed mb-5 flex-1">{scenario.teaser[lang]}</p>
+
+                  <div className="text-xs font-medium text-ink-subtle mb-4">
+                    {c.age} {scenario.minAge}–{scenario.maxAge}
+                  </div>
+
+                  <Link
+                    to={`/scenario/${scenario.id}`}
+                    className="inline-flex items-center justify-between gap-2 bg-[#17233C] text-white rounded-xl px-4 py-3 font-bold hover:bg-[#253453] transition-colors"
+                  >
+                    {c.play} <ArrowRight size={17} />
+                  </Link>
                 </div>
-
-                <Link
-                  to={`/scenario/${scenario.id}`}
-                  className="inline-flex items-center justify-between gap-2 bg-[#17233C] text-white rounded-xl px-4 py-3 font-bold hover:bg-[#253453] transition-colors"
-                >
-                  {c.play} <ArrowRight size={17} />
-                </Link>
               </article>
             );
           })}
