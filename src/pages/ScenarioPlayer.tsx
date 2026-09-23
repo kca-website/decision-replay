@@ -4,10 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   ArrowRight,
-  BrainCircuit,
-  Loader2,
-  RefreshCw,
-  ShieldCheck,
+  Lightbulb,
+  RotateCcw,
 } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
 import { ScenarioVisual } from '../components/ScenarioVisual';
@@ -17,7 +15,6 @@ import {
   lifeScenarios,
   type LifeLocale,
 } from '../data/lifeScenarios';
-import { getAiCoachReflection } from '../utils/aiCoach';
 
 const labels = {
   el: {
@@ -25,15 +22,16 @@ const labels = {
     situation: 'Η στιγμή',
     after: 'Τι μπορεί να ακολουθήσει',
     perspective: 'Δες το κι αλλιώς',
-    coachTitle: 'Μία σκέψη ακόμα',
-    coachText: 'Το AI βλέπει μόνο το έτοιμο σενάριο και την επιλογή σου. Δεν χρειάζεται να γράψεις προσωπικά στοιχεία.',
-    askAi: 'Δώσε μου 3 ερωτήσεις',
-    thinking: 'Σκέφτεται…',
-    curated: '3 ερωτήσεις για σκέψη',
-    ai: '3 ερωτήσεις από το AI',
-    reset: 'Άλλαξε επιλογή',
+    reflectionTitle: 'Σκέψου λίγο ακόμη',
+    reflectionIntro: 'Δεν υπάρχει βαθμολογία. Οι ερωτήσεις είναι μέρος του έτοιμου σεναρίου και δεν στέλνουν δεδομένα πουθενά.',
+    replayTitle: 'Replay τη στιγμή',
+    replayFirst: 'Τώρα γύρνα στο ίδιο σημείο και δοκίμασε άλλη αντίδραση. Δες τι αλλάζει στη συνέπεια.',
+    replayMore: 'Ίδια στιγμή, διαφορετική επιλογή. Σύγκρινε τις συνέπειες πριν πας στην επόμενη ιστορία.',
+    replay: 'Δοκίμασε άλλη επιλογή',
     next: 'Επόμενη ιστορία',
-    noScore: 'Δεν υπάρχει σκορ. Δες τις συνέπειες και ξανασκέψου.',
+    tried: 'Δοκίμασες',
+    choices: 'επιλογές',
+    noScore: 'Δεν υπάρχει «σωστή απάντηση» ή σκορ. Δες τη συνέπεια και ξανασκέψου.',
     story: 'Ιστορία',
     of: 'από',
   },
@@ -42,15 +40,16 @@ const labels = {
     situation: 'The moment',
     after: 'What could happen next',
     perspective: 'See it another way',
-    coachTitle: 'One more thought',
-    coachText: 'AI sees only the prepared scenario and your selected option. You do not need to type personal information.',
-    askAi: 'Give me 3 questions',
-    thinking: 'Thinking…',
-    curated: '3 questions to think about',
-    ai: '3 questions from AI',
-    reset: 'Change choice',
+    reflectionTitle: 'Think one step further',
+    reflectionIntro: 'There is no score. These questions are part of the prepared scenario and send no data anywhere.',
+    replayTitle: 'Replay the moment',
+    replayFirst: 'Go back to the same moment and try another response. See what changes in the consequence.',
+    replayMore: 'Same moment, different choice. Compare the consequences before moving to the next story.',
+    replay: 'Try another choice',
     next: 'Next story',
-    noScore: 'There is no score. See the consequences and think again.',
+    tried: 'You tried',
+    choices: 'choices',
+    noScore: 'There is no “right answer” or score. See the consequence and think again.',
     story: 'Story',
     of: 'of',
   },
@@ -64,9 +63,7 @@ export const ScenarioPlayer = () => {
   const scenario = getScenario(id);
 
   const [choiceId, setChoiceId] = useState<string | null>(null);
-  const [coachText, setCoachText] = useState('');
-  const [coachSource, setCoachSource] = useState<'ai' | 'curated' | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [triedChoiceIds, setTriedChoiceIds] = useState<string[]>([]);
 
   const scenarioIndex = scenario
     ? lifeScenarios.findIndex((item) => item.id === scenario.id)
@@ -84,17 +81,16 @@ export const ScenarioPlayer = () => {
 
   const choose = (idToChoose: string) => {
     setChoiceId(idToChoose || null);
-    setCoachText('');
-    setCoachSource(null);
+    if (idToChoose) {
+      setTriedChoiceIds((current) =>
+        current.includes(idToChoose) ? current : [...current, idToChoose],
+      );
+    }
   };
 
-  const askCoach = async () => {
-    if (!selected) return;
-    setLoading(true);
-    const result = await getAiCoachReflection(scenario, selected, lang);
-    setCoachText(result.text);
-    setCoachSource(result.source);
-    setLoading(false);
+  const resetForNext = () => {
+    setChoiceId(null);
+    setTriedChoiceIds([]);
   };
 
   return (
@@ -136,6 +132,7 @@ export const ScenarioPlayer = () => {
           <div className="space-y-3">
             {scenario.choices.map((choice) => {
               const active = choice.id === choiceId;
+              const tried = triedChoiceIds.includes(choice.id);
               return (
                 <button
                   key={choice.id}
@@ -145,7 +142,9 @@ export const ScenarioPlayer = () => {
                   className={`w-full text-left border rounded-2xl p-4 transition-all ${
                     active
                       ? 'border-accent bg-[#F3F2FF] shadow-sm'
-                      : 'border-border-strong bg-white hover:bg-subtle'
+                      : tried
+                        ? 'border-[#C7C3FF] bg-white'
+                        : 'border-border-strong bg-white hover:bg-subtle'
                   }`}
                 >
                   <span className="font-semibold leading-relaxed">{choice.label[lang]}</span>
@@ -167,60 +166,62 @@ export const ScenarioPlayer = () => {
               </div>
             </section>
 
-            <section className="bg-gradient-to-br from-[#3730A3] via-[#5B21B6] to-[#0F4C81] text-white rounded-2xl p-5 md:p-6">
+            <section className="bg-white border rounded-2xl p-5 md:p-6">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-                  <BrainCircuit size={21} />
+                <div className="w-10 h-10 rounded-xl bg-[#EDE9FE] text-[#6D28D9] flex items-center justify-center shrink-0">
+                  <Lightbulb size={21} />
                 </div>
                 <div>
-                  <h2 className="text-xl md:text-2xl font-extrabold mb-1">{c.coachTitle}</h2>
-                  <p className="text-sm text-white/65 leading-relaxed">{c.coachText}</p>
+                  <h2 className="text-xl md:text-2xl font-extrabold mb-1">{c.reflectionTitle}</h2>
+                  <p className="text-sm text-ink-muted leading-relaxed">{c.reflectionIntro}</p>
                 </div>
               </div>
 
-              {!coachText ? (
-                <button
-                  type="button"
-                  onClick={askCoach}
-                  disabled={loading}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-ink px-5 py-3 rounded-xl font-semibold hover:bg-white/90 disabled:opacity-60"
-                >
-                  {loading ? <Loader2 size={17} className="animate-spin" /> : <ShieldCheck size={17} />}
-                  {loading ? c.thinking : c.askAi}
-                </button>
-              ) : (
-                <div className="rounded-xl bg-white/10 border border-white/20 p-4">
-                  <div className="text-xs uppercase tracking-[0.12em] text-white/55 font-bold mb-3">
-                    {coachSource === 'ai' ? c.ai : c.curated}
+              <div className="space-y-3">
+                {scenario.reflection.map((question, index) => (
+                  <div key={question[lang]} className="rounded-xl bg-subtle p-4 flex gap-3">
+                    <span className="font-extrabold text-accent">{index + 1}</span>
+                    <p className="leading-relaxed">{question[lang]}</p>
                   </div>
-                  <div className="whitespace-pre-line leading-relaxed text-white/95">{coachText}</div>
-                </div>
-              )}
+                ))}
+              </div>
             </section>
 
-            <div className="grid sm:grid-cols-2 gap-3 pt-1">
-              <button
-                type="button"
-                onClick={() => choose('')}
-                className="inline-flex items-center justify-center gap-2 border border-border-strong bg-white px-5 py-3 rounded-xl font-semibold hover:bg-subtle"
-              >
-                <RefreshCw size={16} /> {c.reset}
-              </button>
+            <section className="bg-[#17233C] text-white rounded-2xl p-5 md:p-6">
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.12em] text-[#A3E635] font-bold mb-2">{c.replayTitle}</div>
+                  <h2 className="text-xl md:text-2xl font-extrabold">
+                    {triedChoiceIds.length > 1 ? c.replayMore : c.replayFirst}
+                  </h2>
+                </div>
+                <RotateCcw size={24} className="text-white/70 shrink-0" />
+              </div>
 
-              {nextScenario && (
-                <Link
-                  to={`/scenario/${nextScenario.id}`}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#635BFF] to-[#0EA5E9] text-white px-5 py-3 rounded-xl font-semibold"
-                  onClick={() => {
-                    setChoiceId(null);
-                    setCoachText('');
-                    setCoachSource(null);
-                  }}
+              <div className="text-sm text-white/65 mb-5">
+                {c.tried} {triedChoiceIds.length} / {scenario.choices.length} {c.choices}
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => choose('')}
+                  className="inline-flex items-center justify-center gap-2 bg-white text-[#17233C] px-5 py-3 rounded-xl font-bold hover:bg-[#EEF2FF]"
                 >
-                  {c.next} <ArrowRight size={17} />
-                </Link>
-              )}
-            </div>
+                  <RotateCcw size={16} /> {c.replay}
+                </button>
+
+                {nextScenario && (
+                  <Link
+                    to={`/scenario/${nextScenario.id}`}
+                    className="inline-flex items-center justify-center gap-2 border border-white/25 bg-white/10 text-white px-5 py-3 rounded-xl font-bold hover:bg-white/15"
+                    onClick={resetForNext}
+                  >
+                    {c.next} <ArrowRight size={17} />
+                  </Link>
+                )}
+              </div>
+            </section>
           </div>
         )}
       </main>
