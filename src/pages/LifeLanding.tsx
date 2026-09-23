@@ -4,83 +4,95 @@ import {
   ArrowRight,
   BrainCircuit,
   CheckCircle2,
-  MessageCircleQuestion,
   ShieldCheck,
   Sparkles,
   Users,
   Wifi,
 } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
+import { ScenarioVisual } from '../components/ScenarioVisual';
 import type { LifeLocale } from '../data/lifeScenarios';
 
 const copy = {
   el: {
     brand: 'Εσύ τι θα έκανες;',
-    eyebrow: 'Interactive life scenarios',
-    titleA: 'Μπες στην ιστορία.',
-    titleB: 'Εσύ αποφασίζεις τι γίνεται μετά.',
-    sub: 'Σύντομα σενάρια για Internet, AI και φίλους. Δεν ψάχνουμε τη “σωστή απάντηση” — εξασκούμε το πώς σκεφτόμαστε πριν δράσουμε.',
-    cta: 'Δοκίμασε ένα σενάριο',
-    secondary: 'Δες πώς λειτουργεί',
-    trust1: '2–4 λεπτά ανά ιστορία',
-    trust2: 'Χωρίς βαθμολογία σωστό/λάθος',
-    trust3: 'AI χωρίς προσωπικές ερωτήσεις',
-    sampleLabel: 'Δείγμα ιστορίας',
+    eyebrow: 'Micro-simulations για πραγματικές στιγμές',
+    titleA: 'Πριν σου συμβεί στ’ αλήθεια,',
+    titleB: 'δοκίμασέ το εδώ.',
+    sub: 'Μικρές, ρεαλιστικές προσομοιώσεις για AI, Internet και παρέα. Διαλέγεις, βλέπεις τι μπορεί να ακολουθήσει και ξανασκέφτεσαι — χωρίς σκορ και χωρίς κήρυγμα.',
+    cta: 'Μπες σε μια ιστορία',
+    secondary: 'Πώς λειτουργεί',
+    trust1: '2–4 λεπτά',
+    trust2: 'Χωρίς σωστό / λάθος',
+    trust3: 'Χωρίς ελεύθερο AI chat',
+    sampleLabel: 'Πρόβα 01',
     sampleTitle: 'Η φωτογραφία στην ομαδική',
-    sampleText: 'Ένας φίλος ανεβάζει αστεία φωτογραφία συμμαθητή χωρίς να τον ρωτήσει. Όλοι γελάνε. Κάποιος λέει να μπει και σε story.',
+    sampleText: 'Ένας φίλος ανεβάζει άβολη φωτογραφία συμμαθητή χωρίς να τον ρωτήσει. Όλοι γελάνε. Κάποιος λέει να μπει και σε story.',
     sampleQuestion: 'Τι θα έκανες;',
     sampleChoice: 'Θα έλεγα να μη δημοσιευτεί αλλού.',
-    sampleConsequence: 'Η παρέα ίσως αντιδράσει, αλλά η φωτογραφία σταματά πριν διαδοθεί περισσότερο.',
-    categoriesTitle: 'Τρεις κόσμοι για την πρώτη έκδοση',
+    sampleConsequence: 'Η παρέα ίσως αντιδράσει, αλλά βάζεις όριο πριν η φωτογραφία διαδοθεί περισσότερο.',
+    whyEyebrow: 'Γιατί υπάρχει',
+    whyTitle: 'Οι κανόνες είναι εύκολοι. Η στιγμή όχι.',
+    whyText: 'Άλλο να ξέρεις θεωρητικά ότι πρέπει να προσέχεις και άλλο να πρέπει να αποφασίσεις μέσα σε λίγα δευτερόλεπτα. Εδώ κάνεις πρόβα στη στιγμή — με ασφάλεια.',
+    why1: 'Πριν πατήσεις ένα ύποπτο link.',
+    why2: 'Πριν πιστέψεις ένα deepfake.',
+    why3: 'Πριν η ομαδική ξεφύγει.',
+    categoriesTitle: '10 ιστορίες. 3 κόσμοι.',
     internetTitle: 'Internet',
-    internetText: 'Ιδιωτικότητα, social media, online γνωριμίες και viral παγίδες.',
+    internetText: 'Online γνωριμίες, scams, viral παγίδες και ιδιωτικότητα.',
     aiTitle: 'AI',
-    aiText: 'Deepfakes, αξιοπιστία, σχολικές εργασίες και υπεύθυνη χρήση.',
+    aiText: 'Deepfakes, αξιοπιστία, σχολικές εργασίες και συμβουλές από AI.',
     friendsTitle: 'Φίλοι',
-    friendsText: 'Πίεση παρέας, όρια, ομαδικές συνομιλίες και δύσκολες στιγμές.',
-    howTitle: 'Δεν είναι quiz. Είναι προσομοίωση.',
-    step1: '1. Μπαίνεις σε μια πραγματική κατάσταση.',
-    step2: '2. Επιλέγεις πώς θα αντιδρούσες.',
-    step3: '3. Βλέπεις συνέπειες και νέες οπτικές.',
-    step4: '4. Ο AI coach σε βοηθά να σκεφτείς — δεν αποφασίζει για εσένα.',
-    aiTitle2: 'AI με συγκεκριμένα όρια',
-    aiText2: 'Ο coach δεν έχει ελεύθερη συνομιλία. Βλέπει μόνο το έτοιμο σενάριο και την επιλογή σου και επιστρέφει σύντομες ερωτήσεις αναστοχασμού. Δεν ζητά προσωπικά στοιχεία.',
-    start: 'Μπες στις ιστορίες',
-    footer: 'Prototype concept — όχι τελικό brand ή production έκδοση.',
+    friendsText: 'Πίεση παρέας, όρια, screenshots και δύσκολες κοινωνικές στιγμές.',
+    howTitle: 'Μία ιστορία σε τέσσερα βήματα',
+    step1: '1. Μπαίνεις στη στιγμή.',
+    step2: '2. Διαλέγεις τι θα έκανες.',
+    step3: '3. Βλέπεις τι μπορεί να ακολουθήσει.',
+    step4: '4. Το AI σε βοηθά να σκεφτείς λίγο ακόμη.',
+    aiTitle2: 'AI που δεν αποφασίζει για εσένα',
+    aiText2: 'Ο coach δεν έχει ελεύθερη συνομιλία. Βλέπει μόνο το έτοιμο σενάριο και την επιλογή σου και επιστρέφει τρεις σύντομες ερωτήσεις. Δεν ζητά προσωπική ιστορία.',
+    start: 'Ξεκίνα την πρώτη πρόβα',
+    footer: 'Prototype — χτίζουμε ένα mobile-first simulator για πραγματικές ψηφιακές και κοινωνικές στιγμές.',
   },
   en: {
     brand: 'What Would You Do?',
-    eyebrow: 'Interactive life scenarios',
-    titleA: 'Step into the story.',
-    titleB: 'You decide what happens next.',
-    sub: 'Short scenarios about the Internet, AI and friends. We are not looking for a single “correct answer” — we practise how to think before acting.',
-    cta: 'Try a scenario',
-    secondary: 'See how it works',
-    trust1: '2–4 minutes per story',
-    trust2: 'No right/wrong scoring',
-    trust3: 'AI without personal questions',
-    sampleLabel: 'Sample story',
+    eyebrow: 'Micro-simulations for real moments',
+    titleA: 'Before it happens for real,',
+    titleB: 'try it here.',
+    sub: 'Short, realistic simulations about AI, the Internet and friends. Choose, see what may follow and think again — without scores or lectures.',
+    cta: 'Enter a story',
+    secondary: 'How it works',
+    trust1: '2–4 minutes',
+    trust2: 'No right / wrong',
+    trust3: 'No open AI chat',
+    sampleLabel: 'Rehearsal 01',
     sampleTitle: 'The photo in the group chat',
-    sampleText: 'A friend posts a funny photo of a classmate without asking. Everyone laughs. Someone suggests putting it on a story.',
+    sampleText: 'A friend posts an awkward photo of a classmate without asking. Everyone laughs. Someone suggests putting it on a story.',
     sampleQuestion: 'What would you do?',
     sampleChoice: 'I would say it should not be reposted.',
-    sampleConsequence: 'The group may push back, but the photo stops before spreading further.',
-    categoriesTitle: 'Three worlds for the first version',
+    sampleConsequence: 'The group may push back, but you set a boundary before the photo spreads further.',
+    whyEyebrow: 'Why it exists',
+    whyTitle: 'Rules are easy. The moment is not.',
+    whyText: 'Knowing a rule in theory is different from making a choice in a few seconds. Here you can rehearse the moment safely.',
+    why1: 'Before you tap a suspicious link.',
+    why2: 'Before you believe a deepfake.',
+    why3: 'Before the group chat blows up.',
+    categoriesTitle: '10 stories. 3 worlds.',
     internetTitle: 'Internet',
-    internetText: 'Privacy, social media, online contacts and viral traps.',
+    internetText: 'Online contacts, scams, viral traps and privacy.',
     aiTitle: 'AI',
-    aiText: 'Deepfakes, reliability, schoolwork and responsible use.',
+    aiText: 'Deepfakes, reliability, schoolwork and advice from AI.',
     friendsTitle: 'Friends',
-    friendsText: 'Peer pressure, boundaries, group chats and difficult moments.',
-    howTitle: 'Not a quiz. A simulation.',
-    step1: '1. Enter a realistic situation.',
-    step2: '2. Choose how you would respond.',
-    step3: '3. See consequences and other perspectives.',
-    step4: '4. The AI coach helps you think — it does not decide for you.',
-    aiTitle2: 'AI with clear boundaries',
-    aiText2: 'The coach is not an open chat. It sees only the prepared scenario and your selected option, then returns short reflection questions. It does not ask for personal information.',
-    start: 'Explore the stories',
-    footer: 'Prototype concept — not the final brand or production version.',
+    friendsText: 'Peer pressure, boundaries, screenshots and difficult social moments.',
+    howTitle: 'One story in four steps',
+    step1: '1. Step into the moment.',
+    step2: '2. Choose what you would do.',
+    step3: '3. See what could happen next.',
+    step4: '4. AI helps you think one step further.',
+    aiTitle2: 'AI that does not decide for you',
+    aiText2: 'The coach is not an open chat. It sees only the prepared scenario and your selected option, then returns three short questions. It does not ask for your personal story.',
+    start: 'Start your first rehearsal',
+    footer: 'Prototype — building a mobile-first simulator for real digital and social moments.',
   },
 } as const;
 
@@ -104,10 +116,10 @@ export const LifeLanding = () => {
           <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#D9D6FF] blur-3xl opacity-70 pointer-events-none" />
           <div className="absolute top-48 -left-28 w-64 h-64 rounded-full bg-[#CFFAFE] blur-3xl opacity-70 pointer-events-none" />
 
-          <div className="container-app pt-10 pb-16 md:pt-20 md:pb-24 relative">
+          <div className="container-app pt-9 pb-16 md:pt-20 md:pb-24 relative">
             <div className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.15em] text-[#5148E8] bg-white/80 border px-3 py-2 rounded-full mb-5 shadow-xs">
+                <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-[#5148E8] bg-white/85 border px-3 py-2 rounded-full mb-5 shadow-xs">
                   <Sparkles size={15} /> {c.eyebrow}
                 </div>
 
@@ -145,22 +157,39 @@ export const LifeLanding = () => {
               </div>
 
               <div className="bg-white border rounded-[28px] shadow-lg overflow-hidden rotate-[1deg]">
-                <div className="bg-gradient-to-r from-[#635BFF] via-[#7C3AED] to-[#0EA5E9] text-white p-5 md:p-6">
-                  <div className="text-xs uppercase tracking-[0.16em] text-white/75 font-bold mb-2">{c.sampleLabel}</div>
-                  <h2 className="text-2xl md:text-3xl font-extrabold">{c.sampleTitle}</h2>
+                <div className="p-4 pb-0">
+                  <ScenarioVisual visual="groupPhoto" />
                 </div>
                 <div className="p-5 md:p-7">
-                  <p className="text-ink-muted leading-relaxed mb-6">{c.sampleText}</p>
+                  <div className="text-xs uppercase tracking-[0.14em] text-accent font-extrabold mb-2">{c.sampleLabel}</div>
+                  <h2 className="text-2xl md:text-3xl font-extrabold mb-3">{c.sampleTitle}</h2>
+                  <p className="text-ink-muted leading-relaxed mb-5">{c.sampleText}</p>
                   <div className="text-sm font-bold mb-3">{c.sampleQuestion}</div>
                   <div className="border-2 border-[#C7C3FF] bg-[#F3F2FF] rounded-2xl p-4 mb-4">
                     <div className="text-sm font-bold">{c.sampleChoice}</div>
                   </div>
-                  <div className="flex gap-3 rounded-2xl bg-[#ECFEFF] border border-[#A5F3FC] p-4">
-                    <MessageCircleQuestion size={20} className="text-[#0891B2] shrink-0 mt-0.5" />
-                    <p className="text-sm text-ink-muted leading-relaxed">{c.sampleConsequence}</p>
+                  <div className="rounded-2xl bg-[#ECFEFF] border border-[#A5F3FC] p-4 text-sm text-ink-muted leading-relaxed">
+                    {c.sampleConsequence}
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#111827] text-white py-14 md:py-18">
+          <div className="container-app">
+            <div className="max-w-3xl mb-9">
+              <div className="text-xs uppercase tracking-[0.14em] font-extrabold text-[#A3E635] mb-3">{c.whyEyebrow}</div>
+              <h2 className="text-3xl md:text-4xl font-extrabold mb-4">{c.whyTitle}</h2>
+              <p className="text-white/70 text-lg leading-relaxed">{c.whyText}</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-3">
+              {[c.why1, c.why2, c.why3].map((item, index) => (
+                <div key={item} className="rounded-2xl bg-white/8 border border-white/10 p-5 font-semibold">
+                  <span className="text-[#A3E635] font-extrabold mr-2">0{index + 1}</span>{item}
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -169,27 +198,9 @@ export const LifeLanding = () => {
           <div className="container-app">
             <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">{c.categoriesTitle}</h2>
             <div className="grid md:grid-cols-3 gap-5">
-              <CategoryCard
-                icon={<Wifi size={22} />}
-                title={c.internetTitle}
-                text={c.internetText}
-                iconClass="bg-[#E0F2FE] text-[#0284C7]"
-                accentClass="border-t-[#38BDF8]"
-              />
-              <CategoryCard
-                icon={<BrainCircuit size={22} />}
-                title={c.aiTitle}
-                text={c.aiText}
-                iconClass="bg-[#EDE9FE] text-[#7C3AED]"
-                accentClass="border-t-[#8B5CF6]"
-              />
-              <CategoryCard
-                icon={<Users size={22} />}
-                title={c.friendsTitle}
-                text={c.friendsText}
-                iconClass="bg-[#ECFCCB] text-[#4D7C0F]"
-                accentClass="border-t-[#A3E635]"
-              />
+              <CategoryCard icon={<Wifi size={22} />} title={c.internetTitle} text={c.internetText} iconClass="bg-[#E0F2FE] text-[#0284C7]" accentClass="border-t-[#38BDF8]" />
+              <CategoryCard icon={<BrainCircuit size={22} />} title={c.aiTitle} text={c.aiText} iconClass="bg-[#EDE9FE] text-[#7C3AED]" accentClass="border-t-[#8B5CF6]" />
+              <CategoryCard icon={<Users size={22} />} title={c.friendsTitle} text={c.friendsText} iconClass="bg-[#ECFCCB] text-[#4D7C0F]" accentClass="border-t-[#A3E635]" />
             </div>
           </div>
         </section>
