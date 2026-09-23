@@ -8,6 +8,7 @@ export type TeacherPattern =
 export type TeacherRisk = 'high' | 'low';
 export type TeacherArtifactKind = 'sms' | 'video' | 'chat';
 export type TeacherLocale = 'el' | 'en';
+export type TeacherAgeBand = '10-12' | '13-15';
 
 export interface TeacherScenarioLocale {
   category: string;
@@ -33,6 +34,7 @@ export interface TeacherScenarioLocale {
 export interface TeacherScenario {
   id: string;
   artifactKind: TeacherArtifactKind;
+  ageBand: TeacherAgeBand;
   riskLevels: [TeacherRisk, TeacherRisk, TeacherRisk];
   el: TeacherScenarioLocale;
   en: TeacherScenarioLocale;
@@ -42,6 +44,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'courier-sms',
     artifactKind: 'sms',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Internet · Απάτες',
@@ -141,6 +144,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'bank-alert',
     artifactKind: 'sms',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Internet · Phishing',
@@ -212,6 +216,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'deepfake-school',
     artifactKind: 'video',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'AI · Deepfakes',
@@ -283,6 +288,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'private-screenshot',
     artifactKind: 'chat',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Φίλοι · Ομαδικές συνομιλίες',
@@ -354,6 +360,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'friend-verification-code',
     artifactKind: 'chat',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Internet · Λογαριασμοί',
@@ -445,6 +452,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'game-coins-giveaway',
     artifactKind: 'chat',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Internet · Gaming',
@@ -536,6 +544,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'ai-homework-sources',
     artifactKind: 'chat',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'AI · Σχολική εργασία',
@@ -627,6 +636,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'ai-friendship-advice',
     artifactKind: 'chat',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'AI · Συμβουλές',
@@ -718,6 +728,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'ai-classmate-image',
     artifactKind: 'chat',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'AI · Εικόνες',
@@ -809,6 +820,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'photo-story-consent',
     artifactKind: 'chat',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Φίλοι · Ιδιωτικότητα',
@@ -900,6 +912,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'exclude-classmate-group',
     artifactKind: 'chat',
+    ageBand: '10-12',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Φίλοι · Πίεση παρέας',
@@ -991,6 +1004,7 @@ export const teacherScenarios: TeacherScenario[] = [
   {
     id: 'live-location-share',
     artifactKind: 'chat',
+    ageBand: '13-15',
     riskLevels: ['high', 'low', 'low'],
     el: {
       category: 'Internet · Τοποθεσία',
