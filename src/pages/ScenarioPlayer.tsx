@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
+import { ScenarioVisual } from '../components/ScenarioVisual';
 import {
   categoryMeta,
   getScenario,
@@ -21,35 +22,35 @@ import { getAiCoachReflection } from '../utils/aiCoach';
 const labels = {
   el: {
     back: 'Όλες οι ιστορίες',
-    situation: 'Τι συμβαίνει',
-    after: 'Τι μπορεί να συμβεί',
-    perspective: 'Σκέψου και αυτό',
-    coachTitle: 'Σκέψου το λίγο ακόμα',
-    coachText: 'Ο AI coach βλέπει μόνο το έτοιμο σενάριο και την επιλογή σου. Δεν χρειάζεται να γράψεις τίποτα προσωπικό.',
+    situation: 'Η στιγμή',
+    after: 'Τι μπορεί να ακολουθήσει',
+    perspective: 'Δες το κι αλλιώς',
+    coachTitle: 'Μία σκέψη ακόμα',
+    coachText: 'Το AI βλέπει μόνο το έτοιμο σενάριο και την επιλογή σου. Δεν χρειάζεται να γράψεις προσωπικά στοιχεία.',
     askAi: 'Δώσε μου 3 ερωτήσεις',
     thinking: 'Σκέφτεται…',
     curated: '3 ερωτήσεις για σκέψη',
     ai: '3 ερωτήσεις από το AI',
     reset: 'Άλλαξε επιλογή',
     next: 'Επόμενη ιστορία',
-    noScore: 'Δεν υπάρχει μία σωστή απάντηση.',
+    noScore: 'Δεν υπάρχει σκορ. Δες τις συνέπειες και ξανασκέψου.',
     story: 'Ιστορία',
     of: 'από',
   },
   en: {
     back: 'All stories',
-    situation: 'What is happening',
-    after: 'What could happen',
-    perspective: 'Think about this too',
-    coachTitle: 'Think a little further',
-    coachText: 'The AI coach sees only the prepared scenario and your selected option. You do not need to type anything personal.',
+    situation: 'The moment',
+    after: 'What could happen next',
+    perspective: 'See it another way',
+    coachTitle: 'One more thought',
+    coachText: 'AI sees only the prepared scenario and your selected option. You do not need to type personal information.',
     askAi: 'Give me 3 questions',
     thinking: 'Thinking…',
     curated: '3 questions to think about',
     ai: '3 questions from AI',
     reset: 'Change choice',
     next: 'Next story',
-    noScore: 'There is not just one right answer.',
+    noScore: 'There is no score. See the consequences and think again.',
     story: 'Story',
     of: 'of',
   },
@@ -115,17 +116,21 @@ export const ScenarioPlayer = () => {
           </span>
         </div>
 
-        <h1 className="font-sans text-3xl md:text-4xl font-bold leading-tight mb-5">
+        <h1 className="text-3xl md:text-4xl font-extrabold leading-tight mb-4">
           {scenario.title[lang]}
         </h1>
 
-        <section className="bg-card border rounded-2xl p-5 md:p-6 mb-5">
+        <div className="mb-5">
+          <ScenarioVisual visual={scenario.visual} />
+        </div>
+
+        <section className="bg-white border rounded-2xl p-5 md:p-6 mb-5 shadow-xs">
           <div className="text-xs uppercase tracking-[0.12em] text-ink-subtle font-bold mb-2">{c.situation}</div>
           <p className="text-base md:text-lg leading-relaxed">{scenario.situation[lang]}</p>
         </section>
 
         <section className="mb-5">
-          <h2 className="font-sans text-2xl font-bold mb-1">{scenario.question[lang]}</h2>
+          <h2 className="text-2xl font-extrabold mb-1">{scenario.question[lang]}</h2>
           <p className="text-sm text-ink-subtle mb-4">{c.noScore}</p>
 
           <div className="space-y-3">
@@ -140,7 +145,7 @@ export const ScenarioPlayer = () => {
                   className={`w-full text-left border rounded-2xl p-4 transition-all ${
                     active
                       ? 'border-accent bg-[#F3F2FF] shadow-sm'
-                      : 'border-border-strong bg-card hover:bg-subtle'
+                      : 'border-border-strong bg-white hover:bg-subtle'
                   }`}
                 >
                   <span className="font-semibold leading-relaxed">{choice.label[lang]}</span>
@@ -153,10 +158,10 @@ export const ScenarioPlayer = () => {
         {selected && (
           <div className="space-y-4">
             <section className="rounded-2xl border border-[#A5F3FC] bg-[#ECFEFF] p-5 md:p-6">
-              <div className="text-xs uppercase tracking-[0.12em] text-accent font-bold mb-2">{c.after}</div>
+              <div className="text-xs uppercase tracking-[0.12em] text-[#0369A1] font-bold mb-2">{c.after}</div>
               <p className="leading-relaxed mb-4">{selected.consequence[lang]}</p>
 
-              <div className="border-t pt-4">
+              <div className="border-t border-cyan-200 pt-4">
                 <div className="text-xs uppercase tracking-[0.12em] text-ink-subtle font-bold mb-2">{c.perspective}</div>
                 <p className="text-ink-muted leading-relaxed">{selected.perspective[lang]}</p>
               </div>
@@ -168,7 +173,7 @@ export const ScenarioPlayer = () => {
                   <BrainCircuit size={21} />
                 </div>
                 <div>
-                  <h2 className="font-sans text-xl md:text-2xl font-bold mb-1">{c.coachTitle}</h2>
+                  <h2 className="text-xl md:text-2xl font-extrabold mb-1">{c.coachTitle}</h2>
                   <p className="text-sm text-white/65 leading-relaxed">{c.coachText}</p>
                 </div>
               </div>
@@ -197,7 +202,7 @@ export const ScenarioPlayer = () => {
               <button
                 type="button"
                 onClick={() => choose('')}
-                className="inline-flex items-center justify-center gap-2 border border-border-strong bg-card px-5 py-3 rounded-xl font-semibold hover:bg-subtle"
+                className="inline-flex items-center justify-center gap-2 border border-border-strong bg-white px-5 py-3 rounded-xl font-semibold hover:bg-subtle"
               >
                 <RefreshCw size={16} /> {c.reset}
               </button>
@@ -205,7 +210,7 @@ export const ScenarioPlayer = () => {
               {nextScenario && (
                 <Link
                   to={`/scenario/${nextScenario.id}`}
-                  className="inline-flex items-center justify-center gap-2 bg-accent text-white px-5 py-3 rounded-xl font-semibold hover:bg-accent-hover"
+                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#635BFF] to-[#0EA5E9] text-white px-5 py-3 rounded-xl font-semibold"
                   onClick={() => {
                     setChoiceId(null);
                     setCoachText('');
