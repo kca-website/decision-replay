@@ -6,6 +6,7 @@ import { Landing as LegacyLanding } from './pages/Landing';
 import { LifeLanding } from './pages/LifeLanding';
 import { ScenarioHub } from './pages/ScenarioHub';
 import { ScenarioPlayer } from './pages/ScenarioPlayer';
+import { TeacherSession } from './pages/TeacherSession';
 import { About } from './pages/About';
 import { Privacy } from './pages/Privacy';
 import { Onboarding } from './pages/Onboarding';
@@ -30,6 +31,7 @@ const App = () => {
       <Route path="/" element={<LifeLanding />} />
       <Route path="/scenarios" element={<ScenarioHub />} />
       <Route path="/scenario/:id" element={<ScenarioPlayer />} />
+      <Route path="/teacher" element={<TeacherSession />} />
 
       <Route path="/legacy" element={<LegacyLanding />} />
       <Route path="/about" element={<About />} />
