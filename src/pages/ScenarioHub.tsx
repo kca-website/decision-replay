@@ -39,6 +39,24 @@ const icons: Record<ScenarioCategory, JSX.Element> = {
   friends: <Users size={18} />,
 };
 
+const categoryClasses: Record<ScenarioCategory, { pill: string; border: string; icon: string }> = {
+  internet: {
+    pill: 'bg-[#E0F2FE] text-[#0369A1]',
+    border: 'border-t-[#38BDF8]',
+    icon: 'bg-[#E0F2FE] text-[#0284C7]',
+  },
+  ai: {
+    pill: 'bg-[#EDE9FE] text-[#6D28D9]',
+    border: 'border-t-[#8B5CF6]',
+    icon: 'bg-[#EDE9FE] text-[#7C3AED]',
+  },
+  friends: {
+    pill: 'bg-[#ECFCCB] text-[#4D7C0F]',
+    border: 'border-t-[#A3E635]',
+    icon: 'bg-[#ECFCCB] text-[#4D7C0F]',
+  },
+};
+
 export const ScenarioHub = () => {
   const { i18n } = useTranslation();
   const lang: LifeLocale = i18n.language.startsWith('en') ? 'en' : 'el';
@@ -53,7 +71,7 @@ export const ScenarioHub = () => {
   return (
     <div className="min-h-screen bg-app text-ink">
       <header className="container-app py-5 flex items-center justify-between gap-4">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-ink-muted hover:text-ink">
+        <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-ink">
           <ArrowLeft size={16} /> {c.back}
         </Link>
         <LanguageToggle />
@@ -61,8 +79,10 @@ export const ScenarioHub = () => {
 
       <main className="container-app pb-20">
         <div className="max-w-3xl pt-8 md:pt-14 mb-9">
-          <div className="text-xs font-semibold uppercase tracking-[0.16em] text-accent mb-3">{c.eyebrow}</div>
-          <h1 className="font-display text-4xl md:text-5xl mb-4">{c.title}</h1>
+          <div className="inline-flex bg-white border rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.15em] text-accent mb-4">
+            {c.eyebrow}
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{c.title}</h1>
           <p className="text-lg text-ink-muted leading-relaxed">{c.sub}</p>
         </div>
 
@@ -80,33 +100,40 @@ export const ScenarioHub = () => {
         </div>
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {scenarios.map((scenario) => (
-            <article key={scenario.id} className="bg-card border rounded-2xl p-6 flex flex-col min-h-[315px] shadow-xs">
-              <div className="flex items-center justify-between gap-3 mb-5">
-                <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-accent">
-                  {icons[scenario.category]}
-                  {categoryMeta[scenario.category].label[lang]}
-                </span>
-                <span className="text-xs text-ink-subtle inline-flex items-center gap-1">
-                  <Clock3 size={13} /> {scenario.minutes} {c.minutes}
-                </span>
-              </div>
+          {scenarios.map((scenario) => {
+            const palette = categoryClasses[scenario.category];
 
-              <h2 className="font-display text-2xl mb-3">{scenario.title[lang]}</h2>
-              <p className="text-ink-muted leading-relaxed mb-6 flex-1">{scenario.teaser[lang]}</p>
-
-              <div className="text-xs text-ink-subtle mb-4">
-                {c.age} {scenario.minAge}–{scenario.maxAge}
-              </div>
-
-              <Link
-                to={`/scenario/${scenario.id}`}
-                className="inline-flex items-center justify-between gap-2 border border-border-strong rounded-lg px-4 py-3 font-medium hover:bg-subtle transition-colors"
+            return (
+              <article
+                key={scenario.id}
+                className={`bg-white border border-t-4 ${palette.border} rounded-2xl p-6 flex flex-col min-h-[315px] shadow-sm`}
               >
-                {c.play} <ArrowRight size={17} />
-              </Link>
-            </article>
-          ))}
+                <div className="flex items-center justify-between gap-3 mb-5">
+                  <span className={`inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.1em] px-3 py-1.5 rounded-full ${palette.pill}`}>
+                    {icons[scenario.category]}
+                    {categoryMeta[scenario.category].label[lang]}
+                  </span>
+                  <span className="text-xs font-medium text-ink-subtle inline-flex items-center gap-1">
+                    <Clock3 size={13} /> {scenario.minutes} {c.minutes}
+                  </span>
+                </div>
+
+                <h2 className="text-2xl font-extrabold mb-3">{scenario.title[lang]}</h2>
+                <p className="text-ink-muted leading-relaxed mb-6 flex-1">{scenario.teaser[lang]}</p>
+
+                <div className="text-xs font-medium text-ink-subtle mb-4">
+                  {c.age} {scenario.minAge}–{scenario.maxAge}
+                </div>
+
+                <Link
+                  to={`/scenario/${scenario.id}`}
+                  className="inline-flex items-center justify-between gap-2 bg-[#17233C] text-white rounded-xl px-4 py-3 font-bold hover:bg-[#253453] transition-colors"
+                >
+                  {c.play} <ArrowRight size={17} />
+                </Link>
+              </article>
+            );
+          })}
         </div>
       </main>
     </div>
@@ -127,8 +154,10 @@ const FilterButton = ({
   <button
     type="button"
     onClick={onClick}
-    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium transition-colors ${
-      active ? 'bg-ink text-white border-ink' : 'bg-card text-ink-muted border-border-strong hover:text-ink'
+    className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-bold transition-colors ${
+      active
+        ? 'bg-gradient-to-r from-[#635BFF] to-[#0EA5E9] text-white border-transparent'
+        : 'bg-white text-ink-muted border-border-strong hover:text-ink'
     }`}
   >
     {icon}
