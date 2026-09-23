@@ -32,11 +32,11 @@ const copy = {
   el: {
     back: 'Αρχική',
     title: 'Teacher Sessions',
-    subtitle: 'Έτοιμες 15λεπτες δραστηριότητες για μία οθόνη.',
+    subtitle: 'Έτοιμες 15λεπτες δραστηριότητες για ηλικίες 10–15, σε μία οθόνη.',
     intro: 'Διάλεξε σενάριο, κάνε δύο γύρους ψηφοφορίας και χρησιμοποίησε το debrief χωρίς βαθμολόγηση παιδιών.',
     noLogin: 'Χωρίς login · χωρίς αποθήκευση · χωρίς κινητά μαθητών',
     libraryTitle: 'Διάλεξε δραστηριότητα',
-    activityCount: '12 δραστηριότητες',
+    activityCount: 'δραστηριότητες',
     eae: 'Απλή γλώσσα / ΕΑΕ',
     scenarioEyebrow: 'Σενάριο τάξης',
     question: 'Τι θα έκανες;',
@@ -79,11 +79,11 @@ const copy = {
   en: {
     back: 'Home',
     title: 'Teacher Sessions',
-    subtitle: 'Ready 15-minute activities for one screen.',
+    subtitle: 'Ready 15-minute activities for ages 10–15, on one screen.',
     intro: 'Choose a scenario, run two voting rounds and use the debrief without grading individual students.',
     noLogin: 'No login · no storage · no student phones',
     libraryTitle: 'Choose an activity',
-    activityCount: '12 activities',
+    activityCount: 'activities',
     eae: 'Simple language / SEN',
     scenarioEyebrow: 'Classroom scenario',
     question: 'What would you do?',
@@ -303,7 +303,7 @@ export const TeacherSession = () => {
             <section className="mb-8">
               <div className="flex items-center justify-between gap-3 mb-4">
                 <h2 className="text-2xl font-extrabold">{c.libraryTitle}</h2>
-                <span className="text-sm font-bold text-ink-subtle">{c.activityCount}</span>
+                <span className="text-sm font-bold text-ink-subtle">{teacherScenarios.length} {c.activityCount}</span>
               </div>
               <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
                 {teacherScenarios.map((scenario) => {

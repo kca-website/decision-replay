@@ -129,7 +129,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'internet',
     visual: 'viral',
     minAge: 11,
-    maxAge: 16,
+    maxAge: 15,
     minutes: 3,
     title: { el: 'Το viral challenge', en: 'The viral challenge' },
     teaser: {
@@ -189,7 +189,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'ai',
     visual: 'homework',
     minAge: 11,
-    maxAge: 17,
+    maxAge: 15,
     minutes: 4,
     title: { el: 'Η εργασία που έγραψε το AI', en: 'The homework AI wrote' },
     teaser: {
@@ -249,7 +249,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'ai',
     visual: 'deepfake',
     minAge: 12,
-    maxAge: 17,
+    maxAge: 15,
     minutes: 4,
     title: { el: 'Το βίντεο του καθηγητή', en: 'The teacher video' },
     teaser: {
@@ -369,7 +369,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'friends',
     visual: 'exclude',
     minAge: 11,
-    maxAge: 16,
+    maxAge: 15,
     minutes: 4,
     title: { el: '«Μην τον καλέσουμε»', en: '“Let’s not invite them”' },
     teaser: {
@@ -429,7 +429,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'internet',
     visual: 'fakeProfile',
     minAge: 11,
-    maxAge: 17,
+    maxAge: 15,
     minutes: 3,
     title: { el: 'Το δεύτερο προφίλ του φίλου σου', en: 'Your friend’s second profile' },
     teaser: {
@@ -489,7 +489,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'friends',
     visual: 'screenshot',
     minAge: 12,
-    maxAge: 17,
+    maxAge: 15,
     minutes: 4,
     title: { el: 'Το screenshot από προσωπική συνομιλία', en: 'The private chat screenshot' },
     teaser: {
@@ -549,7 +549,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'ai',
     visual: 'aiAdvice',
     minAge: 12,
-    maxAge: 17,
+    maxAge: 15,
     minutes: 4,
     title: { el: 'Το AI σου λέει τι να κάνεις', en: 'AI tells you what to do' },
     teaser: {
@@ -609,7 +609,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'internet',
     visual: 'rewardScam',
     minAge: 10,
-    maxAge: 16,
+    maxAge: 15,
     minutes: 3,
     title: { el: '«Δωρεάν 5.000 coins — μόνο σήμερα»', en: '“Free 5,000 coins — today only”' },
     teaser: {

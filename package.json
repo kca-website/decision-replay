@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.4.0",
   "type": "module",
-  "description": "A privacy-first decision journal that locks predictions and compares Then / Now when outcomes are known.",
+  "description": "A bilingual scenario simulator for ages 10–15 about AI, the Internet and social decisions, with a projector-first classroom mode.",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
