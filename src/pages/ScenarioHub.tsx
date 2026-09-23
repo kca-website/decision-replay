@@ -16,7 +16,7 @@ const labels = {
     back: 'Αρχική',
     eyebrow: 'Διάλεξε την επόμενη πρόβα',
     title: 'Τι θα έκανες αν σου συνέβαινε τώρα;',
-    sub: '10 σύντομες καταστάσεις. Μπαίνεις στη στιγμή, διαλέγεις και βλέπεις τι μπορεί να ακολουθήσει.',
+    sub: '10 σύντομες καταστάσεις για ηλικίες 10–15. Μπαίνεις στη στιγμή, διαλέγεις, βλέπεις τι μπορεί να ακολουθήσει και μπορείς να ξαναδοκιμάσεις.'
     all: 'Όλα',
     age: 'ηλικίες',
     minutes: 'λεπτά',
@@ -26,7 +26,7 @@ const labels = {
     back: 'Home',
     eyebrow: 'Choose your next rehearsal',
     title: 'What would you do if it happened right now?',
-    sub: '10 short situations. Step into the moment, choose and see what could happen next.',
+    sub: '10 short situations for ages 10–15. Step into the moment, choose, see what could happen next and replay another option.'
     all: 'All',
     age: 'ages',
     minutes: 'min',
