@@ -5,10 +5,10 @@
 @layer base {
   html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   body { @apply bg-app text-ink font-sans; font-size: 16px; line-height: 1.6; }
-  h1, h2, h3, h4 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; line-height: 1.2; }
+  h1, h2, h3, h4 { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 700; line-height: 1.12; }
   input, textarea, button, select { font-family: inherit; }
-  ::selection { background-color: #F2E1D6; color: #2A2621; }
-  :focus-visible { outline: 3px solid rgba(178, 90, 60, 0.35); outline-offset: 2px; border-radius: 4px; }
+  ::selection { background-color: #DCD9FF; color: #17233C; }
+  :focus-visible { outline: 3px solid rgba(99, 91, 255, 0.35); outline-offset: 2px; border-radius: 8px; }
 }
 
 @layer components {
@@ -19,24 +19,24 @@
 input[type='range'] { -webkit-appearance: none; appearance: none; background: transparent; cursor: pointer; }
 input[type='range']::-webkit-slider-runnable-track {
   height: 6px;
-  background: linear-gradient(90deg, #B25A3C 0%, #B25A3C var(--val, 50%), #F3EEE3 var(--val, 50%));
+  background: linear-gradient(90deg, #635BFF 0%, #635BFF var(--val, 50%), #E4E8F7 var(--val, 50%));
   border-radius: 999px;
 }
 input[type='range']::-moz-range-track {
   height: 6px;
-  background: linear-gradient(90deg, #B25A3C 0%, #B25A3C var(--val, 50%), #F3EEE3 var(--val, 50%));
+  background: linear-gradient(90deg, #635BFF 0%, #635BFF var(--val, 50%), #E4E8F7 var(--val, 50%));
   border-radius: 999px;
 }
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 24px; width: 24px; border-radius: 50%;
-  background: #FFFFFF; border: 2px solid #B25A3C; margin-top: -9px;
-  box-shadow: 0 2px 4px rgba(74, 60, 45, 0.1);
+  background: #FFFFFF; border: 2px solid #635BFF; margin-top: -9px;
+  box-shadow: 0 2px 6px rgba(54, 69, 120, 0.14);
 }
 input[type='range']::-moz-range-thumb {
   height: 24px; width: 24px; border-radius: 50%;
-  background: #FFFFFF; border: 2px solid #B25A3C;
-  box-shadow: 0 2px 4px rgba(74, 60, 45, 0.1);
+  background: #FFFFFF; border: 2px solid #635BFF;
+  box-shadow: 0 2px 6px rgba(54, 69, 120, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
