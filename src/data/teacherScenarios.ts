@@ -350,7 +350,7 @@ export const teacherScenarios: TeacherScenario[] = [
       worksheetClue: 'What might be missing from a screenshot that could change its meaning?',
       worksheetSafe: 'Write one way to address the conflict without sharing it further.',
     },
-  },,
+  },
   {
     id: 'friend-verification-code',
     artifactKind: 'chat',
