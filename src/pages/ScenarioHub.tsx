@@ -11,26 +11,40 @@ import {
   type ScenarioCategory,
 } from '../data/lifeScenarios';
 
+type AgeBand = 'all' | '10-12' | '13-15';
+
 const labels = {
   el: {
     back: 'Αρχική',
     eyebrow: 'Διάλεξε την επόμενη πρόβα',
     title: 'Τι θα έκανες αν σου συνέβαινε τώρα;',
-    sub: '10 σύντομες καταστάσεις για ηλικίες 10–15. Μπαίνεις στη στιγμή, διαλέγεις, βλέπεις τι μπορεί να ακολουθήσει και μπορείς να ξαναδοκιμάσεις.',
+    sub: 'Ρεαλιστικές καταστάσεις για ηλικίες 10–15. Διάλεξε ηλικιακή ζώνη και θέμα, μπες στη στιγμή και δοκίμασε περισσότερες από μία επιλογές.',
     all: 'Όλα',
+    ageGroup: 'Ηλικιακή ζώνη',
+    allAges: 'Όλες 10–15',
+    younger: '10–12',
+    teens: '13–15',
+    topics: 'Θέμα',
     age: 'ηλικίες',
     minutes: 'λεπτά',
     play: 'Μπες στην ιστορία',
+    results: 'ιστορίες',
   },
   en: {
     back: 'Home',
     eyebrow: 'Choose your next rehearsal',
     title: 'What would you do if it happened right now?',
-    sub: '10 short situations for ages 10–15. Step into the moment, choose, see what could happen next and replay another option.',
+    sub: 'Realistic situations for ages 10–15. Choose an age band and topic, step into the moment and try more than one response.',
     all: 'All',
+    ageGroup: 'Age band',
+    allAges: 'All 10–15',
+    younger: '10–12',
+    teens: '13–15',
+    topics: 'Topic',
     age: 'ages',
     minutes: 'min',
     play: 'Enter the story',
+    results: 'stories',
   },
 } as const;
 
@@ -50,12 +64,17 @@ export const ScenarioHub = () => {
   const { i18n } = useTranslation();
   const lang: LifeLocale = i18n.language.startsWith('en') ? 'en' : 'el';
   const c = labels[lang];
-  const [filter, setFilter] = useState<'all' | ScenarioCategory>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | ScenarioCategory>('all');
+  const [ageFilter, setAgeFilter] = useState<AgeBand>('all');
 
-  const scenarios =
-    filter === 'all'
-      ? lifeScenarios
-      : lifeScenarios.filter((scenario) => scenario.category === filter);
+  const scenarios = lifeScenarios.filter((scenario) => {
+    const categoryMatch = categoryFilter === 'all' || scenario.category === categoryFilter;
+    const ageMatch =
+      ageFilter === 'all' ||
+      (ageFilter === '10-12' && scenario.minAge === 10 && scenario.maxAge === 12) ||
+      (ageFilter === '13-15' && scenario.minAge === 13 && scenario.maxAge === 15);
+    return categoryMatch && ageMatch;
+  });
 
   return (
     <div className="min-h-screen bg-app text-ink">
@@ -67,7 +86,7 @@ export const ScenarioHub = () => {
       </header>
 
       <main className="container-app pb-20">
-        <div className="max-w-3xl pt-8 md:pt-14 mb-9">
+        <div className="max-w-3xl pt-8 md:pt-14 mb-8">
           <div className="inline-flex bg-white border rounded-full px-3 py-2 text-xs font-extrabold uppercase tracking-[0.14em] text-accent mb-4">
             {c.eyebrow}
           </div>
@@ -75,17 +94,40 @@ export const ScenarioHub = () => {
           <p className="text-lg text-ink-muted leading-relaxed">{c.sub}</p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-8">
-          <FilterButton active={filter === 'all'} onClick={() => setFilter('all')} label={c.all} />
-          {(Object.keys(categoryMeta) as ScenarioCategory[]).map((category) => (
-            <FilterButton
-              key={category}
-              active={filter === category}
-              onClick={() => setFilter(category)}
-              label={categoryMeta[category].label[lang]}
-              icon={icons[category]}
-            />
-          ))}
+        <section className="bg-white border rounded-2xl p-4 md:p-5 mb-8 shadow-xs">
+          <div className="mb-4">
+            <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-ink-subtle mb-2">{c.ageGroup}</div>
+            <div className="flex flex-wrap gap-2">
+              <FilterButton active={ageFilter === 'all'} onClick={() => setAgeFilter('all')} label={c.allAges} />
+              <FilterButton active={ageFilter === '10-12'} onClick={() => setAgeFilter('10-12')} label={c.younger} />
+              <FilterButton active={ageFilter === '13-15'} onClick={() => setAgeFilter('13-15')} label={c.teens} />
+            </div>
+          </div>
+
+          <div>
+            <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-ink-subtle mb-2">{c.topics}</div>
+            <div className="flex flex-wrap gap-2">
+              <FilterButton active={categoryFilter === 'all'} onClick={() => setCategoryFilter('all')} label={c.all} />
+              {(Object.keys(categoryMeta) as ScenarioCategory[]).map((category) => (
+                <FilterButton
+                  key={category}
+                  active={categoryFilter === category}
+                  onClick={() => setCategoryFilter(category)}
+                  label={categoryMeta[category].label[lang]}
+                  icon={icons[category]}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <div className="flex items-center justify-between gap-4 mb-5">
+          <div className="text-sm font-bold text-ink-muted">
+            {scenarios.length} {c.results}
+          </div>
+          <div className="text-xs text-ink-subtle">
+            {lifeScenarios.length} {c.results} · 9 × 10–12 · 9 × 13–15
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -115,7 +157,7 @@ export const ScenarioHub = () => {
                   <h2 className="text-xl md:text-2xl font-extrabold mb-2">{scenario.title[lang]}</h2>
                   <p className="text-ink-muted leading-relaxed mb-5 flex-1">{scenario.teaser[lang]}</p>
 
-                  <div className="text-xs font-medium text-ink-subtle mb-4">
+                  <div className="text-xs font-bold text-ink-subtle mb-4">
                     {c.age} {scenario.minAge}–{scenario.maxAge}
                   </div>
 
