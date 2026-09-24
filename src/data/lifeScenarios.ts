@@ -84,7 +84,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'share',
-        label: { el: 'Θα του έδινα το Instagram μου.', en: 'I would give them my Instagram.' },
+        label: { el: 'Θα του έδινα ένα κλειστό Instagram με λίγες προσωπικές πληροφορίες.', en: 'I would give them a private Instagram with little personal information.' },
         consequence: {
           el: 'Η συζήτηση μεταφέρεται σε χώρο όπου μπορεί να φαίνονται περισσότερες προσωπικές πληροφορίες σου.',
           en: 'The conversation moves somewhere that may reveal more personal information about you.',
@@ -144,10 +144,10 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'join',
-        label: { el: 'Το δοκιμάζω — αφού το κάνουν τόσοι.', en: 'I try it — so many people are doing it.' },
+        label: { el: 'Το δοκιμάζω αν φαίνεται εύκολο και το κάνουν ήδη φίλοι μου.', en: 'I try it if it looks easy and friends are already doing it.' },
         consequence: {
-          el: 'Η δημοτικότητα γίνεται το βασικό κριτήριο, παρότι τα views δεν αποδεικνύουν ότι κάτι είναι ασφαλές.',
-          en: 'Popularity becomes the main criterion even though views do not prove something is safe.',
+          el: 'Το ότι φαίνεται εύκολο ή το κάνουν φίλοι μειώνει την αίσθηση κινδύνου, αλλά δεν σου λέει τι μπορεί να πάει στραβά.',
+          en: 'If it looks easy or friends are doing it, the risk can feel smaller even though you still do not know what could go wrong.',
         },
         perspective: {
           el: 'Ένα trend μπορεί να διαδίδεται πιο γρήγορα από τις πληροφορίες για τους κινδύνους του.',
@@ -204,7 +204,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'submit',
-        label: { el: 'Το παραδίδω όπως είναι.', en: 'I submit it as it is.' },
+        label: { el: 'Κρατάω το κείμενο του AI και αλλάζω μερικές φράσεις για να ακούγεται δικό μου.', en: 'I keep the AI text and change a few phrases so it sounds like mine.' },
         consequence: {
           el: 'Κερδίζεις χρόνο, αλλά παραδίδεις πράγματα που δεν έχεις ελέγξει και ίσως δεν μπορείς να εξηγήσεις.',
           en: 'You save time, but submit things you have not checked and may not be able to explain.',
@@ -264,7 +264,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'forward',
-        label: { el: 'Το προωθώ — ας αποφασίσουν οι άλλοι.', en: 'I forward it — others can decide.' },
+        label: { el: 'Το στέλνω σε δύο φίλους για να ρωτήσω αν τους φαίνεται αληθινό.', en: 'I send it to two friends to ask whether it looks real.' },
         consequence: {
           el: 'Το βίντεο εξαπλώνεται πριν επιβεβαιωθεί αν είναι αυθεντικό.',
           en: 'The video spreads before anyone confirms whether it is authentic.',
@@ -384,7 +384,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'agree',
-        label: { el: 'Συμφωνώ για να μη χαλάσω την παρέα.', en: 'I agree so I do not upset the group.' },
+        label: { el: 'Δεν λέω τίποτα και ακολουθώ το σχέδιο της παρέας για να μη γίνω εγώ θέμα.', en: 'I say nothing and go along with the group so I do not become the next issue.' },
         consequence: {
           el: 'Αποφεύγεις τη σύγκρουση, αλλά συμμετέχεις στον αποκλεισμό.',
           en: 'You avoid conflict, but take part in excluding someone.',
@@ -444,7 +444,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'send',
-        label: { el: 'Στέλνω τον κωδικό για να βοηθήσω.', en: 'I send the code to help.' },
+        label: { el: 'Στέλνω τον κωδικό αφού το προφίλ έχει σωστή φωτογραφία και ξέρει πράγματα για τον φίλο μου.', en: 'I send the code because the profile has the right photo and knows things about my friend.' },
         consequence: {
           el: 'Αν ο λογαριασμός είναι ψεύτικος, μπορεί να δώσεις σε άλλον πρόσβαση σε κάτι που ανήκει σε εσένα.',
           en: 'If the account is fake, you may give someone access to something that belongs to you.',
@@ -504,7 +504,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'share',
-        label: { el: 'Το στέλνω στην παρέα για να το δουν όλοι.', en: 'I send it to the group so everyone can see.' },
+        label: { el: 'Το δείχνω μόνο σε έναν κοντινό φίλο για να ρωτήσω τι πιστεύει.', en: 'I show it to one close friend to ask what they think.' },
         consequence: {
           el: 'Η ιδιωτική συζήτηση αποκτά μεγαλύτερο κοινό και γίνεται δυσκολότερο να σταματήσει η διάδοση.',
           en: 'The private conversation gets a bigger audience and becomes harder to contain.',
@@ -564,7 +564,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'follow',
-        label: { el: 'Το ακολουθώ — ακούγεται πολύ σίγουρο.', en: 'I follow it — it sounds very confident.' },
+        label: { el: 'Το ακολουθώ γιατί ταιριάζει με αυτό που ήδη σκεφτόμουν.', en: 'I follow it because it matches what I was already thinking.' },
         consequence: {
           el: 'Μια μεγάλη απόφαση βασίζεται σε μια απάντηση που έχει μόνο το κομμάτι της ιστορίας που έγραψες.',
           en: 'A major decision is based on an answer that only knows the part of the story you typed.',
@@ -624,7 +624,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'login',
-        label: { el: 'Συνδέομαι — δεν θέλω να χάσω την προσφορά.', en: 'I log in — I do not want to miss the offer.' },
+        label: { el: 'Συνδέομαι επειδή η σελίδα έχει το σωστό λογότυπο και μοιάζει επίσημη.', en: 'I log in because the page has the right logo and looks official.' },
         consequence: {
           el: 'Αν η σελίδα είναι ψεύτικη, τα στοιχεία σύνδεσης μπορούν να καταλήξουν σε άλλον.',
           en: 'If the page is fake, your login details can end up with someone else.',
@@ -684,7 +684,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'copy',
-        label: { el: 'Την αντιγράφω — ακούγεται πολύ σίγουρο.', en: 'I copy it — it sounds very confident.' },
+        label: { el: 'Τη χρησιμοποιώ τώρα και λέω ότι θα την ελέγξω πριν παραδώσω.', en: 'I use it for now and tell myself I will verify it before submitting.' },
         consequence: {
           el: 'Κερδίζεις χρόνο, αλλά η σιγουριά στον τρόπο που γράφει ένα AI δεν αποδεικνύει ότι το γεγονός είναι σωστό.',
           en: 'You save time, but confident wording from AI does not prove the fact is correct.',
@@ -744,7 +744,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'make',
-        label: { el: 'Το φτιάχνω αφού όλοι ξέρουν ότι είναι ψεύτικο.', en: 'I make it because everyone knows it is fake.' },
+        label: { el: 'Το φτιάχνω αλλά το στέλνω μόνο στην κλειστή παρέα, όχι δημόσια.', en: 'I make it but share it only in the private group, not publicly.' },
         consequence: {
           el: 'Η εικόνα μπορεί να γίνει αστείο για την παρέα, αλλά χρησιμοποιεί το πρόσωπο κάποιου χωρίς να έχει συμφωνήσει.',
           en: 'The image may become a joke for the group, but it uses someone’s likeness without their agreement.',
@@ -804,7 +804,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'share',
-        label: { el: 'Τα δίνω για να βγει καλύτερη η ιστορία.', en: 'I share them so the story is better.' },
+        label: { el: 'Δίνω το σχολείο μου, αλλά όχι διεύθυνση ή φωτογραφία, για να γίνει πιο προσωπική η ιστορία.', en: 'I share my school, but not my address or photo, so the story feels more personal.' },
         consequence: {
           el: 'Η ιστορία μπορεί να γίνει πιο προσωπική, αλλά έχεις δώσει περισσότερες πληροφορίες από όσες χρειάζονται για τη δραστηριότητα.',
           en: 'The story may become more personal, but you have shared more information than the activity needs.',
@@ -984,7 +984,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'send',
-        label: { el: 'Στέλνω τον κωδικό για να βοηθήσω.', en: 'I send the code to help.' },
+        label: { el: 'Στέλνω τον κωδικό αφού πρώτα ρωτήσω κάτι που μόνο ο πραγματικός φίλος μου θα ήξερε.', en: 'I send the code after first asking something only my real friend would know.' },
         consequence: {
           el: 'Αν το προφίλ δεν είναι του φίλου σου, ο κωδικός μπορεί να χρησιμοποιηθεί για πρόσβαση σε δικό σου λογαριασμό.',
           en: 'If the profile is not your friend, the code may be used to access one of your accounts.',
@@ -1104,7 +1104,7 @@ export const lifeScenarios: LifeScenario[] = [
     choices: [
       {
         id: 'reshare',
-        label: { el: 'Το προωθώ για να ενημερωθούν όλοι.', en: 'I forward it so everyone knows.' },
+        label: { el: 'Το στέλνω μόνο σε δύο φίλους και ρωτάω αν ξέρουν αν ισχύει.', en: 'I send it only to two friends and ask whether they know if it is true.' },
         consequence: {
           el: 'Η πληροφορία φτάνει γρήγορα σε περισσότερους, αλλά μαζί εξαπλώνεται και μια κατηγορία που δεν έχει επιβεβαιωθεί.',
           en: 'The information reaches more people quickly, but so does an accusation that has not been verified.',
