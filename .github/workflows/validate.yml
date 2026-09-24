@@ -2,8 +2,6 @@ name: Validate app
 
 on:
   push:
-    branches:
-      - focus-classroom-replay
   pull_request:
     branches:
       - main

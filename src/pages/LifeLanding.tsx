@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { LanguageToggle } from '../components/layout/LanguageToggle';
 import { ScenarioVisual } from '../components/ScenarioVisual';
-import type { LifeLocale } from '../data/lifeScenarios';
+import { lifeScenarios, type LifeLocale } from '../data/lifeScenarios';
 
 const copy = {
   el: {
@@ -37,7 +37,7 @@ const copy = {
     why1: 'Πριν πατήσεις ένα ύποπτο link.',
     why2: 'Πριν πιστέψεις ένα deepfake.',
     why3: 'Πριν η ομαδική ξεφύγει.',
-    categoriesTitle: '10 ιστορίες. 3 κόσμοι.',
+    categoriesTitle: 'ιστορίες. 3 κόσμοι. 2 ηλικιακές ζώνες.',
     internetTitle: 'Internet',
     internetText: 'Online γνωριμίες, scams, viral παγίδες και ιδιωτικότητα.',
     aiTitle: 'AI',
@@ -77,7 +77,7 @@ const copy = {
     why1: 'Before you tap a suspicious link.',
     why2: 'Before you believe a deepfake.',
     why3: 'Before the group chat blows up.',
-    categoriesTitle: '10 stories. 3 worlds.',
+    categoriesTitle: 'stories. 3 worlds. 2 age bands.',
     internetTitle: 'Internet',
     internetText: 'Online contacts, scams, viral traps and privacy.',
     aiTitle: 'AI',
@@ -196,7 +196,7 @@ export const LifeLanding = () => {
 
         <section className="bg-gradient-to-b from-[#EEF2FF] to-[#F7FAFF] py-16 md:py-20">
           <div className="container-app">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">{c.categoriesTitle}</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">{lifeScenarios.length} {c.categoriesTitle}</h2>
             <div className="grid md:grid-cols-3 gap-5">
               <CategoryCard icon={<Wifi size={22} />} title={c.internetTitle} text={c.internetText} iconClass="bg-[#E0F2FE] text-[#0284C7]" accentClass="border-t-[#38BDF8]" />
               <CategoryCard icon={<BrainCircuit size={22} />} title={c.aiTitle} text={c.aiText} iconClass="bg-[#EDE9FE] text-[#7C3AED]" accentClass="border-t-[#8B5CF6]" />

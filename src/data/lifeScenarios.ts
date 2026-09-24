@@ -69,7 +69,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'internet',
     visual: 'gaming',
     minAge: 10,
-    maxAge: 14,
+    maxAge: 12,
     minutes: 3,
     title: { el: 'Ο συμπαίκτης ζητά Instagram', en: 'Your gaming teammate asks for Instagram' },
     teaser: {
@@ -128,8 +128,8 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'viral-challenge',
     category: 'internet',
     visual: 'viral',
-    minAge: 11,
-    maxAge: 15,
+    minAge: 10,
+    maxAge: 12,
     minutes: 3,
     title: { el: 'Το viral challenge', en: 'The viral challenge' },
     teaser: {
@@ -188,7 +188,7 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'ai-homework',
     category: 'ai',
     visual: 'homework',
-    minAge: 11,
+    minAge: 13,
     maxAge: 15,
     minutes: 4,
     title: { el: 'Η εργασία που έγραψε το AI', en: 'The homework AI wrote' },
@@ -248,7 +248,7 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'deepfake-teacher',
     category: 'ai',
     visual: 'deepfake',
-    minAge: 12,
+    minAge: 13,
     maxAge: 15,
     minutes: 4,
     title: { el: 'Το βίντεο του καθηγητή', en: 'The teacher video' },
@@ -309,7 +309,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'friends',
     visual: 'groupPhoto',
     minAge: 10,
-    maxAge: 15,
+    maxAge: 12,
     minutes: 3,
     title: { el: 'Η φωτογραφία στην ομαδική', en: 'The photo in the group chat' },
     teaser: {
@@ -368,8 +368,8 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'exclude-classmate',
     category: 'friends',
     visual: 'exclude',
-    minAge: 11,
-    maxAge: 15,
+    minAge: 10,
+    maxAge: 12,
     minutes: 4,
     title: { el: '«Μην τον καλέσουμε»', en: '“Let’s not invite them”' },
     teaser: {
@@ -428,7 +428,7 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'fake-profile',
     category: 'internet',
     visual: 'fakeProfile',
-    minAge: 11,
+    minAge: 13,
     maxAge: 15,
     minutes: 3,
     title: { el: 'Το δεύτερο προφίλ του φίλου σου', en: 'Your friend’s second profile' },
@@ -488,7 +488,7 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'private-screenshot',
     category: 'friends',
     visual: 'screenshot',
-    minAge: 12,
+    minAge: 13,
     maxAge: 15,
     minutes: 4,
     title: { el: 'Το screenshot από προσωπική συνομιλία', en: 'The private chat screenshot' },
@@ -548,7 +548,7 @@ export const lifeScenarios: LifeScenario[] = [
     id: 'ai-advice',
     category: 'ai',
     visual: 'aiAdvice',
-    minAge: 12,
+    minAge: 13,
     maxAge: 15,
     minutes: 4,
     title: { el: 'Το AI σου λέει τι να κάνεις', en: 'AI tells you what to do' },
@@ -609,7 +609,7 @@ export const lifeScenarios: LifeScenario[] = [
     category: 'internet',
     visual: 'rewardScam',
     minAge: 10,
-    maxAge: 15,
+    maxAge: 12,
     minutes: 3,
     title: { el: '«Δωρεάν 5.000 coins — μόνο σήμερα»', en: '“Free 5,000 coins — today only”' },
     teaser: {
@@ -664,6 +664,487 @@ export const lifeScenarios: LifeScenario[] = [
       { el: 'Τι θα έλεγες ότι είναι “ασφαλές σημείο” για να ελέγξεις μια προσφορά;', en: 'What would count as a safe place to verify an offer?' },
     ],
   },
+  {
+    id: 'ai-fact-check',
+    category: 'ai',
+    visual: 'homework',
+    minAge: 10,
+    maxAge: 12,
+    minutes: 3,
+    title: { el: 'Το AI απαντά με σιγουριά', en: 'AI answers with confidence' },
+    teaser: {
+      el: 'Η απάντηση ακούγεται σωστή, αλλά δεν ξέρεις από πού προέκυψε.',
+      en: 'The answer sounds right, but you do not know where it came from.',
+    },
+    situation: {
+      el: 'Για μια εργασία ρωτάς ένα AI πότε έγινε ένα ιστορικό γεγονός. Απαντά αμέσως, με πολλές λεπτομέρειες και απόλυτη σιγουριά. Στο βιβλίο θυμάσαι κάτι διαφορετικό.',
+      en: 'For homework, you ask an AI when a historical event happened. It answers immediately with lots of detail and total confidence. You remember something different from your textbook.',
+    },
+    question: { el: 'Τι θα έκανες πριν χρησιμοποιήσεις την απάντηση;', en: 'What would you do before using the answer?' },
+    choices: [
+      {
+        id: 'copy',
+        label: { el: 'Την αντιγράφω — ακούγεται πολύ σίγουρο.', en: 'I copy it — it sounds very confident.' },
+        consequence: {
+          el: 'Κερδίζεις χρόνο, αλλά η σιγουριά στον τρόπο που γράφει ένα AI δεν αποδεικνύει ότι το γεγονός είναι σωστό.',
+          en: 'You save time, but confident wording from AI does not prove the fact is correct.',
+        },
+        perspective: {
+          el: 'Ένα AI μπορεί να δώσει λάθος πληροφορία με πολύ πειστικό τρόπο.',
+          en: 'AI can give incorrect information in a very convincing way.',
+        },
+      },
+      {
+        id: 'check',
+        label: { el: 'Ελέγχω στο βιβλίο ή σε γνωστή αξιόπιστη πηγή.', en: 'I check the textbook or a known reliable source.' },
+        consequence: {
+          el: 'Χρειάζεται λίγο περισσότερο χρόνο, αλλά ξεχωρίζεις τι είπε το AI από αυτό που μπορείς να επιβεβαιώσεις.',
+          en: 'It takes a little longer, but you separate what AI said from what you can verify.',
+        },
+        perspective: {
+          el: 'Η επαλήθευση είναι πιο σημαντική όταν μια απάντηση θα χρησιμοποιηθεί ως γεγονός.',
+          en: 'Verification matters most when an answer will be used as a fact.',
+        },
+      },
+      {
+        id: 'compare',
+        label: { el: 'Ζητάω από το AI να εξηγήσει και μετά συγκρίνω με το βιβλίο.', en: 'I ask AI to explain, then compare it with the textbook.' },
+        consequence: {
+          el: 'Η εξήγηση μπορεί να σε βοηθήσει να καταλάβεις το θέμα, αλλά ο τελικός έλεγχος παραμένει δικός σου.',
+          en: 'The explanation may help you understand the topic, but the final check is still yours.',
+        },
+        perspective: {
+          el: 'Το AI μπορεί να είναι βοήθημα σκέψης χωρίς να γίνεται η μοναδική πηγή.',
+          en: 'AI can support thinking without becoming the only source.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Ποια είναι η διαφορά ανάμεσα στο «ακούγεται σίγουρο» και στο «έχει ελεγχθεί»;', en: 'What is the difference between “sounds confident” and “has been verified”?' },
+      { el: 'Πότε θα εμπιστευόσουν περισσότερο το βιβλίο, έναν άνθρωπο ή ένα AI;', en: 'When would you trust a textbook, a person, or AI more?' },
+    ],
+  },
+  {
+    id: 'ai-photo-prank',
+    category: 'ai',
+    visual: 'deepfake',
+    minAge: 10,
+    maxAge: 12,
+    minutes: 3,
+    title: { el: 'Η αστεία AI φωτογραφία', en: 'The funny AI photo' },
+    teaser: {
+      el: 'Ένας φίλος θέλει να φτιάξει ψεύτικη αστεία εικόνα συμμαθητή.',
+      en: 'A friend wants to make a fake funny image of a classmate.',
+    },
+    situation: {
+      el: 'Στην παρέα κάποιος προτείνει να βάλετε τη φωτογραφία ενός συμμαθητή σε AI και να τον δείξετε σε μια γελοία σκηνή. Λέει ότι «είναι ψεύτικο, άρα δεν πειράζει».',
+      en: 'Someone in your group suggests putting a classmate’s photo into AI and showing them in a ridiculous scene. They say, “It is fake, so it cannot hurt.”',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'make',
+        label: { el: 'Το φτιάχνω αφού όλοι ξέρουν ότι είναι ψεύτικο.', en: 'I make it because everyone knows it is fake.' },
+        consequence: {
+          el: 'Η εικόνα μπορεί να γίνει αστείο για την παρέα, αλλά χρησιμοποιεί το πρόσωπο κάποιου χωρίς να έχει συμφωνήσει.',
+          en: 'The image may become a joke for the group, but it uses someone’s likeness without their agreement.',
+        },
+        perspective: {
+          el: 'Το ότι κάτι είναι τεχνητό δεν εξαφανίζει το θέμα της συναίνεσης.',
+          en: 'Being artificial does not remove the issue of consent.',
+        },
+      },
+      {
+        id: 'ask',
+        label: { el: 'Ρωτάω πρώτα τον συμμαθητή αν είναι ΟΚ.', en: 'I ask the classmate first if they are OK with it.' },
+        consequence: {
+          el: 'Το αστείο μπορεί να αλλάξει ή να μη γίνει, αλλά το άτομο έχει λόγο στο πώς χρησιμοποιείται η εικόνα του.',
+          en: 'The joke may change or not happen, but the person has a say in how their image is used.',
+        },
+        perspective: {
+          el: 'Η συναίνεση μετρά και όταν το αποτέλεσμα δεν είναι πραγματική φωτογραφία.',
+          en: 'Consent matters even when the result is not a real photograph.',
+        },
+      },
+      {
+        id: 'fictional',
+        label: { el: 'Κάνω το αστείο με φανταστικό χαρακτήρα αντί για συμμαθητή.', en: 'I make the joke with a fictional character instead.' },
+        consequence: {
+          el: 'Κρατάς τη δημιουργική ιδέα χωρίς να βάζεις πραγματικό πρόσωπο στο επίκεντρο.',
+          en: 'You keep the creative idea without putting a real person at the centre of it.',
+        },
+        perspective: {
+          el: 'Μερικές φορές μπορείς να κρατήσεις το χιούμορ αλλά να αλλάξεις ποιον επηρεάζει.',
+          en: 'Sometimes you can keep the humour while changing who is affected.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Αλλάζει κάτι αν όλοι ξέρουν ότι η εικόνα είναι ψεύτικη;', en: 'Does it change anything if everyone knows the image is fake?' },
+      { el: 'Πότε χρειάζεται να ζητάμε άδεια για τη φωτογραφία ή το πρόσωπο κάποιου;', en: 'When should we ask permission to use someone’s photo or likeness?' },
+    ],
+  },
+  {
+    id: 'ai-personal-details',
+    category: 'ai',
+    visual: 'aiAdvice',
+    minAge: 10,
+    maxAge: 12,
+    minutes: 3,
+    title: { el: '«Πες μου λίγα περισσότερα για εσένα»', en: '“Tell me a little more about you”' },
+    teaser: {
+      el: 'Ένα AI ζητά προσωπικές λεπτομέρειες για να κάνει την απάντηση «καλύτερη».',
+      en: 'An AI asks for personal details to make its answer “better.”',
+    },
+    situation: {
+      el: 'Χρησιμοποιείς ένα AI για να φτιάξεις ιστορία. Για να την κάνει πιο προσωπική, σου ζητά όνομα σχολείου, περιοχή που μένεις και μια φωτογραφία σου.',
+      en: 'You use AI to create a story. To make it more personal, it asks for your school name, where you live, and a photo of you.',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'share',
+        label: { el: 'Τα δίνω για να βγει καλύτερη η ιστορία.', en: 'I share them so the story is better.' },
+        consequence: {
+          el: 'Η ιστορία μπορεί να γίνει πιο προσωπική, αλλά έχεις δώσει περισσότερες πληροφορίες από όσες χρειάζονται για τη δραστηριότητα.',
+          en: 'The story may become more personal, but you have shared more information than the activity needs.',
+        },
+        perspective: {
+          el: 'Το «θα κάνει καλύτερη απάντηση» δεν σημαίνει ότι κάθε πληροφορία είναι απαραίτητη.',
+          en: '“It will make a better answer” does not mean every detail is necessary.',
+        },
+      },
+      {
+        id: 'generalize',
+        label: { el: 'Δίνω μόνο γενικές, φανταστικές λεπτομέρειες.', en: 'I use only general or fictional details.' },
+        consequence: {
+          el: 'Μπορείς να συνεχίσεις τη δημιουργία χωρίς να αποκαλύψεις ποιο σχολείο ή πού μένεις.',
+          en: 'You can keep creating without revealing your school or where you live.',
+        },
+        perspective: {
+          el: 'Συχνά μπορούμε να πετύχουμε τον ίδιο στόχο με λιγότερα προσωπικά δεδομένα.',
+          en: 'Often we can reach the same goal with less personal data.',
+        },
+      },
+      {
+        id: 'pause',
+        label: { el: 'Σταματάω και ρωτάω έναν έμπιστο ενήλικο αν χρειάζονται αυτά τα στοιχεία.', en: 'I pause and ask a trusted adult whether those details are needed.' },
+        consequence: {
+          el: 'Η δραστηριότητα καθυστερεί λίγο, αλλά προσθέτεις δεύτερη ματιά πριν μοιραστείς στοιχεία.',
+          en: 'The activity pauses briefly, but you add a second check before sharing information.',
+        },
+        perspective: {
+          el: 'Το να σταματήσεις πριν δώσεις δεδομένα είναι επίσης ψηφιακή δεξιότητα.',
+          en: 'Pausing before sharing data is also a digital skill.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Ποια στοιχεία ήταν πραγματικά απαραίτητα για να φτιαχτεί η ιστορία;', en: 'Which details were actually necessary to create the story?' },
+      { el: 'Πώς μπορείς να κάνεις μια ερώτηση προσωπική χωρίς να αποκαλύψεις ποιος είσαι;', en: 'How can you personalise a prompt without revealing who you are?' },
+    ],
+  },
+  {
+    id: 'group-chat-pile-on',
+    category: 'friends',
+    visual: 'groupPhoto',
+    minAge: 10,
+    maxAge: 12,
+    minutes: 3,
+    title: { el: 'Όλοι γελάνε με το ίδιο άτομο', en: 'Everyone is laughing at the same person' },
+    teaser: {
+      el: 'Ένα λάθος στην τάξη γίνεται αστείο στην ομαδική.',
+      en: 'A mistake in class turns into a joke in the group chat.',
+    },
+    situation: {
+      el: 'Ένας συμμαθητής είπε λάθος απάντηση στην τάξη. Το απόγευμα στην ομαδική αρχίζουν memes και γελαστά emoji για αυτόν. Κάθε νέο μήνυμα κάνει το αστείο μεγαλύτερο.',
+      en: 'A classmate gave a wrong answer in class. Later, the group chat fills with memes and laughing emojis about them. Each message makes the joke bigger.',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'join',
+        label: { el: 'Βάζω κι εγώ ένα emoji — όλοι το κάνουν.', en: 'I add an emoji too — everyone is doing it.' },
+        consequence: {
+          el: 'Η δική σου αντίδραση είναι μικρή, αλλά προστίθεται σε μια μεγάλη ομάδα που στοχεύει το ίδιο άτομο.',
+          en: 'Your reaction is small, but it adds to a large group targeting the same person.',
+        },
+        perspective: {
+          el: 'Πολλές μικρές αντιδράσεις μαζί μπορούν να έχουν μεγαλύτερο αποτέλεσμα από όσο φαίνεται η καθεμία μόνη της.',
+          en: 'Many small reactions together can have a bigger impact than each one seems to have alone.',
+        },
+      },
+      {
+        id: 'silent',
+        label: { el: 'Δεν γράφω τίποτα και περιμένω να περάσει.', en: 'I say nothing and wait for it to pass.' },
+        consequence: {
+          el: 'Δεν προσθέτεις άλλο μήνυμα, αλλά η συζήτηση μπορεί να συνεχιστεί χωρίς αντίλογο.',
+          en: 'You do not add another message, but the conversation may continue without any pushback.',
+        },
+        perspective: {
+          el: 'Το να μη συμμετέχεις και το να βοηθάς να αλλάξει η κατάσταση είναι δύο διαφορετικά πράγματα.',
+          en: 'Not joining in and helping change the situation are two different things.',
+        },
+      },
+      {
+        id: 'shift',
+        label: { el: 'Λέω να σταματήσει το αστείο ή στέλνω μήνυμα στήριξης στον συμμαθητή.', en: 'I ask the group to stop or send the classmate a supportive message.' },
+        consequence: {
+          el: 'Ίσως νιώσεις ότι ξεχωρίζεις από την παρέα, αλλά αλλάζεις το μήνυμα ότι «όλοι συμφωνούν».',
+          en: 'You may feel like you stand out from the group, but you change the message that “everyone agrees.”',
+        },
+        perspective: {
+          el: 'Ένας παρατηρητής μπορεί να επηρεάσει το κλίμα χωρίς να χρειάζεται να κάνει καβγά.',
+          en: 'A bystander can influence the tone without starting a fight.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Τι αλλάζει όταν δέκα μικρές αντιδράσεις πέφτουν πάνω στο ίδιο άτομο;', en: 'What changes when ten small reactions all target the same person?' },
+      { el: 'Ποια είναι μια φράση που θα μπορούσε να αλλάξει το κλίμα χωρίς επίθεση;', en: 'What is one sentence that could change the tone without attacking anyone?' },
+    ],
+  },
+  {
+    id: 'live-location-share',
+    category: 'internet',
+    visual: 'screenshot',
+    minAge: 13,
+    maxAge: 15,
+    minutes: 3,
+    title: { el: '«Στείλε live location να σε βρούμε»', en: '“Share live location so we can find you”' },
+    teaser: {
+      el: 'Η ομαδική έχει και άτομα που γνωρίζεις λίγο.',
+      en: 'The group chat includes people you barely know.',
+    },
+    situation: {
+      el: 'Σε μια μεγάλη εκδήλωση η παρέα δεν σε βρίσκει. Στην ομαδική υπάρχουν εννέα άτομα, δύο από τα οποία τα έχεις γνωρίσει μόνο μία φορά. Κάποιος ζητά να στείλεις live location για μία ώρα.',
+      en: 'At a large event your friends cannot find you. The group chat has nine people, including two you have met only once. Someone asks you to share live location for an hour.',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'group',
+        label: { el: 'Στέλνω live location σε όλη την ομαδική.', en: 'I share live location with the whole group.' },
+        consequence: {
+          el: 'Η παρέα μπορεί να σε βρει γρήγορα, αλλά όλοι στην ομάδα βλέπουν τη θέση σου όσο η κοινοποίηση μένει ενεργή.',
+          en: 'Your friends may find you quickly, but everyone in the group can see your position while sharing stays active.',
+        },
+        perspective: {
+          el: 'Η ευκολία και η ποσότητα προσωπικής πληροφορίας δεν είναι πάντα το ίδιο πράγμα.',
+          en: 'Convenience and the amount of personal information shared are not the same thing.',
+        },
+      },
+      {
+        id: 'trusted',
+        label: { el: 'Το στέλνω μόνο σε ένα άτομο που εμπιστεύομαι και για λίγο.', en: 'I share it only with one trusted person and for a short time.' },
+        consequence: {
+          el: 'Δίνεις πραγματικό χρόνο τοποθεσίας μόνο εκεί που χρειάζεται για να λυθεί το πρόβλημα.',
+          en: 'You share real-time location only where it is needed to solve the problem.',
+        },
+        perspective: {
+          el: 'Το κοινό και η διάρκεια είναι δύο τρόποι να περιορίζεις μια κοινοποίηση.',
+          en: 'Audience and duration are two ways to limit sharing.',
+        },
+      },
+      {
+        id: 'meeting',
+        label: { el: 'Δίνω ένα συγκεκριμένο σημείο συνάντησης χωρίς live location.', en: 'I give a specific meeting point without live location.' },
+        consequence: {
+          el: 'Δεν φαίνεται η συνεχής θέση σου, αλλά χρειάζεται περισσότερος συντονισμός για να συναντηθείτε.',
+          en: 'Your continuous location stays private, but meeting may require more coordination.',
+        },
+        perspective: {
+          el: 'Μερικές φορές ένα σταθερό σημείο λύνει το ίδιο πρόβλημα με λιγότερα δεδομένα.',
+          en: 'Sometimes a fixed meeting point solves the same problem with less data.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Τι παραπάνω αποκαλύπτει το live location από ένα σημείο συνάντησης;', en: 'What does live location reveal beyond a meeting point?' },
+      { el: 'Πώς αλλάζει η απόφαση ανάλογα με το ποιοι είναι μέσα στην ομαδική;', en: 'How does the decision change depending on who is in the group?' },
+    ],
+  },
+  {
+    id: 'verification-code',
+    category: 'internet',
+    visual: 'fakeProfile',
+    minAge: 13,
+    maxAge: 15,
+    minutes: 3,
+    title: { el: 'Ο «φίλος» που ζητά κωδικό', en: 'The “friend” asking for a code' },
+    teaser: {
+      el: 'Νέο προφίλ με σωστή φωτογραφία ζητά τον κωδικό που ήρθε στο κινητό σου.',
+      en: 'A new profile with the right photo asks for the code sent to your phone.',
+    },
+    situation: {
+      el: 'Ένα νέο προφίλ με φωτογραφία φίλου σου λέει ότι έχασε τον λογαριασμό του. Σου γράφει ότι θα έρθει ένας εξαψήφιος κωδικός στο κινητό σου και πρέπει να του τον στείλεις γρήγορα.',
+      en: 'A new profile using your friend’s photo says they lost their account. It says a six-digit code will arrive on your phone and asks you to send it quickly.',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'send',
+        label: { el: 'Στέλνω τον κωδικό για να βοηθήσω.', en: 'I send the code to help.' },
+        consequence: {
+          el: 'Αν το προφίλ δεν είναι του φίλου σου, ο κωδικός μπορεί να χρησιμοποιηθεί για πρόσβαση σε δικό σου λογαριασμό.',
+          en: 'If the profile is not your friend, the code may be used to access one of your accounts.',
+        },
+        perspective: {
+          el: 'Ένας κωδικός επιβεβαίωσης που έρχεται στη δική σου συσκευή δεν είναι κάτι που χρειάζεται κάποιος άλλος.',
+          en: 'A verification code sent to your device is not something another person should need.',
+        },
+      },
+      {
+        id: 'verify',
+        label: { el: 'Επικοινωνώ με τον φίλο μου από άλλο κανάλι πρώτα.', en: 'I contact my friend through another channel first.' },
+        consequence: {
+          el: 'Ελέγχεις την ταυτότητα χωρίς να βασίζεσαι στο ίδιο προφίλ που ζητά τον κωδικό.',
+          en: 'You verify identity without relying on the same profile asking for the code.',
+        },
+        perspective: {
+          el: 'Ο ανεξάρτητος έλεγχος μειώνει το ρίσκο όταν ένα προφίλ μπορεί να είναι πλαστό ή παραβιασμένο.',
+          en: 'Independent verification reduces risk when an account may be fake or compromised.',
+        },
+      },
+      {
+        id: 'report',
+        label: { el: 'Δεν στέλνω τίποτα και κάνω αναφορά στο προφίλ.', en: 'I send nothing and report the profile.' },
+        consequence: {
+          el: 'Προστατεύεις τον κωδικό και περιορίζεις την επαφή, αλλά ίσως χρειάζεται και να ενημερώσεις τον πραγματικό φίλο.',
+          en: 'You protect the code and limit contact, but you may also need to alert the real friend.',
+        },
+        perspective: {
+          el: 'Η προστασία του δικού σου λογαριασμού και η βοήθεια προς τον φίλο μπορούν να γίνουν με ξεχωριστές κινήσεις.',
+          en: 'Protecting your account and helping your friend can be separate actions.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Γιατί ο κωδικός έρχεται στη δική σου συσκευή και όχι στη δική του;', en: 'Why is the code arriving on your device rather than theirs?' },
+      { el: 'Ποιος είναι ένας ανεξάρτητος τρόπος να ελέγξεις ποιος βρίσκεται πίσω από ένα προφίλ;', en: 'What is one independent way to verify who is behind a profile?' },
+    ],
+  },
+  {
+    id: 'private-photo-pressure',
+    category: 'friends',
+    visual: 'screenshot',
+    minAge: 13,
+    maxAge: 15,
+    minutes: 3,
+    title: { el: '«Στείλε μου μια πολύ προσωπική φωτογραφία»', en: '“Send me a very personal photo”' },
+    teaser: {
+      el: 'Κάποιος που σου αρέσει λέει ότι αν τον εμπιστεύεσαι, πρέπει να το αποδείξεις.',
+      en: 'Someone you like says that if you trust them, you should prove it.',
+    },
+    situation: {
+      el: 'Μιλάς με κάποιον που σου αρέσει. Σου ζητά μια πολύ προσωπική φωτογραφία και λέει «θα τη δω μόνο εγώ — αν με εμπιστεύεσαι, στείλε». Όταν διστάζεις, επιμένει.',
+      en: 'You are chatting with someone you like. They ask for a very personal photo and say, “Only I will see it — if you trust me, send it.” When you hesitate, they keep pushing.',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'send',
+        label: { el: 'Τη στέλνω για να μη νομίσει ότι δεν τον εμπιστεύομαι.', en: 'I send it so they do not think I distrust them.' },
+        consequence: {
+          el: 'Η πίεση μπορεί να σταματήσει προσωρινά, αλλά μετά την αποστολή δεν ελέγχεις πλήρως πού μπορεί να αποθηκευτεί ή να κοινοποιηθεί η εικόνα.',
+          en: 'The pressure may stop for now, but after sending you cannot fully control where the image may be stored or shared.',
+        },
+        perspective: {
+          el: 'Η εμπιστοσύνη δεν χρειάζεται να αποδεικνύεται με κάτι που σε κάνει να νιώθεις πίεση ή δυσφορία.',
+          en: 'Trust does not need to be proven by doing something that makes you feel pressured or uncomfortable.',
+        },
+      },
+      {
+        id: 'boundary',
+        label: { el: 'Λέω καθαρά όχι και βάζω όριο.', en: 'I clearly say no and set a boundary.' },
+        consequence: {
+          el: 'Ο άλλος μπορεί να απογοητευτεί ή να πιέσει ξανά, αλλά δεν κάνεις κάτι που δεν θέλεις για να κρατήσεις τη σχέση.',
+          en: 'The other person may be disappointed or push again, but you do not do something you do not want to keep the relationship.',
+        },
+        perspective: {
+          el: 'Το «όχι» δεν χρειάζεται επιπλέον απόδειξη ή δικαιολογία.',
+          en: '“No” does not require extra proof or justification.',
+        },
+      },
+      {
+        id: 'support',
+        label: { el: 'Σταματάω τη συζήτηση και μιλάω σε έμπιστο ενήλικο αν η πίεση συνεχίζεται.', en: 'I stop the conversation and talk to a trusted adult if the pressure continues.' },
+        consequence: {
+          el: 'Μπορεί να νιώσεις άβολα να το μοιραστείς, αλλά δεν μένεις μόνος/μόνη απέναντι σε επίμονη πίεση.',
+          en: 'It may feel awkward to share, but you do not stay alone with persistent pressure.',
+        },
+        perspective: {
+          el: 'Η βοήθεια από άνθρωπο που εμπιστεύεσαι είναι ιδιαίτερα σημαντική όταν κάποιος δεν σέβεται ένα όριο.',
+          en: 'Support from someone you trust matters especially when another person will not respect a boundary.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Γιατί η φράση «αν με εμπιστεύεσαι» μπορεί να λειτουργεί σαν πίεση;', en: 'Why can “if you trust me” work as pressure?' },
+      { el: 'Ποια σημάδια δείχνουν ότι ένα όριο δεν γίνεται σεβαστό;', en: 'What signs show that a boundary is not being respected?' },
+    ],
+  },
+  {
+    id: 'anonymous-rumor',
+    category: 'friends',
+    visual: 'screenshot',
+    minAge: 13,
+    maxAge: 15,
+    minutes: 3,
+    title: { el: 'Το ανώνυμο story για συμμαθητή', en: 'The anonymous story about a classmate' },
+    teaser: {
+      el: 'Μια σοβαρή κατηγορία κυκλοφορεί χωρίς πηγή και όλοι τη στέλνουν.',
+      en: 'A serious accusation is circulating without a source and everyone is forwarding it.',
+    },
+    situation: {
+      el: 'Ένα ανώνυμο account ανεβάζει story που κατηγορεί έναν συμμαθητή ότι έκλεψε χρήματα από εκδρομή. Δεν υπάρχει απόδειξη στο post. Στην ομαδική αρχίζουν να το προωθούν λέγοντας «κάτι θα ξέρουν».',
+      en: 'An anonymous account posts a story accusing a classmate of stealing money on a trip. The post shows no evidence. In the group chat people start forwarding it, saying, “They must know something.”',
+    },
+    question: { el: 'Τι θα έκανες;', en: 'What would you do?' },
+    choices: [
+      {
+        id: 'reshare',
+        label: { el: 'Το προωθώ για να ενημερωθούν όλοι.', en: 'I forward it so everyone knows.' },
+        consequence: {
+          el: 'Η πληροφορία φτάνει γρήγορα σε περισσότερους, αλλά μαζί εξαπλώνεται και μια κατηγορία που δεν έχει επιβεβαιωθεί.',
+          en: 'The information reaches more people quickly, but so does an accusation that has not been verified.',
+        },
+        perspective: {
+          el: 'Το να αναπαράγεις μια κατηγορία δεν είναι ουδέτερο μόνο και μόνο επειδή δεν την έγραψες εσύ.',
+          en: 'Repeating an accusation is not neutral just because you did not write it yourself.',
+        },
+      },
+      {
+        id: 'pause',
+        label: { el: 'Δεν το προωθώ και ψάχνω αν υπάρχει αξιόπιστη πηγή.', en: 'I do not forward it and look for a reliable source.' },
+        consequence: {
+          el: 'Η ομαδική ίσως συνεχίσει χωρίς εσένα, αλλά δεν αυξάνεις την εμβέλεια μιας ανεπιβεβαίωτης πληροφορίας.',
+          en: 'The group may keep going without you, but you do not increase the reach of an unverified claim.',
+        },
+        perspective: {
+          el: 'Η έλλειψη πηγής είναι λόγος για περισσότερο έλεγχο, όχι για γρηγορότερο share.',
+          en: 'A missing source is a reason for more checking, not faster sharing.',
+        },
+      },
+      {
+        id: 'support',
+        label: { el: 'Δεν το διαδίδω και ενημερώνω υπεύθυνο ενήλικο αν φαίνεται ότι στοχοποιείται ο συμμαθητής.', en: 'I do not spread it and tell a responsible adult if the classmate is being targeted.' },
+        consequence: {
+          el: 'Μεταφέρεις το θέμα σε άνθρωπο που μπορεί να παρέμβει χωρίς να κάνεις την κατηγορία πιο δημόσια.',
+          en: 'You move the issue to someone who can intervene without making the accusation more public.',
+        },
+        perspective: {
+          el: 'Μπορείς να πάρεις σοβαρά μια πιθανή κατάσταση χωρίς να αντιμετωπίζεις το ανώνυμο post ως αποδεδειγμένο γεγονός.',
+          en: 'You can take a possible problem seriously without treating an anonymous post as proven fact.',
+        },
+      },
+    ],
+    reflection: [
+      { el: 'Τι αποδεικνύει — και τι δεν αποδεικνύει — το ότι ένα post το μοιράζονται πολλοί;', en: 'What does — and does not — get proved when many people share a post?' },
+      { el: 'Πώς μπορείς να ζητήσεις βοήθεια χωρίς να αυξήσεις το κοινό μιας φήμης;', en: 'How can you ask for help without increasing the audience for a rumour?' },
+    ],
+  },
+
 ];
 
 export const getScenario = (id: string | undefined) =>

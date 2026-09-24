@@ -37,6 +37,10 @@ const copy = {
     noLogin: 'Χωρίς login · χωρίς αποθήκευση · χωρίς κινητά μαθητών',
     libraryTitle: 'Διάλεξε δραστηριότητα',
     activityCount: 'δραστηριότητες',
+    ageFilterTitle: 'Ηλικιακή ζώνη',
+    allAges: 'Όλες 10–15',
+    younger: '10–12',
+    teens: '13–15',
     eae: 'Απλή γλώσσα / ΕΑΕ',
     scenarioEyebrow: 'Σενάριο τάξης',
     question: 'Τι θα έκανες;',
@@ -84,6 +88,10 @@ const copy = {
     noLogin: 'No login · no storage · no student phones',
     libraryTitle: 'Choose an activity',
     activityCount: 'activities',
+    ageFilterTitle: 'Age band',
+    allAges: 'All 10–15',
+    younger: '10–12',
+    teens: '13–15',
     eae: 'Simple language / SEN',
     scenarioEyebrow: 'Classroom scenario',
     question: 'What would you do?',
@@ -136,6 +144,7 @@ export const TeacherSession = () => {
   const c = copy[lang];
 
   const [scenarioId, setScenarioId] = useState(teacherScenarios[0].id);
+  const [ageFilter, setAgeFilter] = useState<'all' | '10-12' | '13-15'>('all');
   const [simpleMode, setSimpleMode] = useState(false);
   const [presentationMode, setPresentationMode] = useState(false);
   const [round, setRound] = useState<Round>('before');
@@ -146,6 +155,10 @@ export const TeacherSession = () => {
 
   const selectedScenario = getTeacherScenario(scenarioId);
   const s = selectedScenario[lang];
+  const filteredTeacherScenarios =
+    ageFilter === 'all'
+      ? teacherScenarios
+      : teacherScenarios.filter((scenario) => scenario.ageBand === ageFilter);
 
   const total = counts.reduce((sum, value) => sum + value, 0);
   const percentages = getPercentages(counts);
@@ -226,6 +239,13 @@ export const TeacherSession = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const changeAgeFilter = (nextFilter: 'all' | '10-12' | '13-15') => {
+    setAgeFilter(nextFilter);
+    if (nextFilter === 'all' || selectedScenario.ageBand === nextFilter) return;
+    const firstMatch = teacherScenarios.find((scenario) => scenario.ageBand === nextFilter);
+    if (firstMatch) changeScenario(firstMatch.id);
+  };
+
   const changeCount = (index: number, delta: number) => {
     setCounts((current) =>
       current.map((value, currentIndex) =>
@@ -301,12 +321,39 @@ export const TeacherSession = () => {
             </section>
 
             <section className="mb-8">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <h2 className="text-2xl font-extrabold">{c.libraryTitle}</h2>
-                <span className="text-sm font-bold text-ink-subtle">{teacherScenarios.length} {c.activityCount}</span>
+              <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+                <div>
+                  <h2 className="text-2xl font-extrabold mb-3">{c.libraryTitle}</h2>
+                  <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-ink-subtle mb-2">
+                    {c.ageFilterTitle}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      ['all', c.allAges],
+                      ['10-12', c.younger],
+                      ['13-15', c.teens],
+                    ].map(([value, label]) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => changeAgeFilter(value as 'all' | '10-12' | '13-15')}
+                        className={`rounded-full border px-4 py-2 text-sm font-bold transition-colors ${
+                          ageFilter === value
+                            ? 'bg-[#17233C] text-white border-[#17233C]'
+                            : 'bg-white text-ink-muted border-border-strong hover:text-ink'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <span className="text-sm font-bold text-ink-subtle">
+                  {filteredTeacherScenarios.length} {c.activityCount}
+                </span>
               </div>
               <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
-                {teacherScenarios.map((scenario) => {
+                {filteredTeacherScenarios.map((scenario) => {
                   const local = scenario[lang];
                   const active = scenario.id === scenarioId;
                   return (
@@ -321,8 +368,13 @@ export const TeacherSession = () => {
                           : 'border-border-strong bg-white hover:bg-subtle'
                       }`}
                     >
-                      <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-accent mb-2">
-                        {local.category}
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-accent">
+                          {local.category}
+                        </div>
+                        <span className="shrink-0 rounded-full bg-subtle px-2 py-1 text-[11px] font-extrabold text-ink-muted">
+                          {scenario.ageBand}
+                        </span>
                       </div>
                       <div className="font-extrabold leading-snug">{local.title}</div>
                     </button>
