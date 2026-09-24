@@ -18,6 +18,7 @@ import {
 import { LanguageToggle } from '../components/layout/LanguageToggle';
 import { useTranslation } from 'react-i18next';
 import type { LifeLocale } from '../data/lifeScenarios';
+import { getTeacherGuide } from '../data/teacherGuides';
 import {
   getTeacherScenario,
   teacherScenarios,
@@ -79,6 +80,12 @@ const copy = {
     exitPresentation: 'Έξοδος από προβολή',
     decrease: 'Μείωση ψήφων για',
     increase: 'Αύξηση ψήφων για',
+    quickPrep: 'Έτοιμο σε 30″',
+    prepGoal: 'Στόχος',
+    prepWatch: 'Πρόσεξε',
+    prepFocus: 'Ερώτηση-κλειδί',
+    prepPlan: 'Πλάνο 15′',
+    prepSteps: ['2′ · Διάβασε το σενάριο', '3′ · 1ος γύρος', '7′ · Συζήτηση / debrief', '3′ · 2ος γύρος + σύγκριση'],
   },
   en: {
     back: 'Home',
@@ -130,6 +137,12 @@ const copy = {
     exitPresentation: 'Exit presentation',
     decrease: 'Decrease votes for',
     increase: 'Increase votes for',
+    quickPrep: 'Ready in 30 seconds',
+    prepGoal: 'Goal',
+    prepWatch: 'Watch for',
+    prepFocus: 'Key question',
+    prepPlan: '15-minute plan',
+    prepSteps: ['2 min · Read the scenario', '3 min · Round 1', '7 min · Discussion / debrief', '3 min · Round 2 + compare'],
   },
 } as const;
 
@@ -155,6 +168,7 @@ export const TeacherSession = () => {
 
   const selectedScenario = getTeacherScenario(scenarioId);
   const s = selectedScenario[lang];
+  const guide = getTeacherGuide(scenarioId)[lang];
   const filteredTeacherScenarios =
     ageFilter === 'all'
       ? teacherScenarios
@@ -380,6 +394,44 @@ export const TeacherSession = () => {
                     </button>
                   );
                 })}
+              </div>
+            </section>
+
+            <section className="mb-8 rounded-3xl border border-[#D8DEF0] bg-white p-5 md:p-6 shadow-sm no-print">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.12em] font-extrabold text-accent mb-1">{c.quickPrep}</div>
+                  <h2 className="text-2xl font-extrabold">{s.title}</h2>
+                </div>
+                <span className="rounded-full bg-[#EEF2FF] text-[#4338CA] px-3 py-1.5 text-xs font-extrabold">
+                  {selectedScenario.ageBand}
+                </span>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-3 mb-4">
+                <div className="rounded-2xl bg-[#F8FAFC] border p-4">
+                  <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-[#475569] mb-2">{c.prepGoal}</div>
+                  <p className="text-sm leading-relaxed text-ink-muted">{guide.goal}</p>
+                </div>
+                <div className="rounded-2xl bg-[#FFF7ED] border border-[#FED7AA] p-4">
+                  <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-[#9A3412] mb-2">{c.prepWatch}</div>
+                  <p className="text-sm leading-relaxed text-ink-muted">{guide.watch}</p>
+                </div>
+                <div className="rounded-2xl bg-[#F5F3FF] border border-[#DDD6FE] p-4">
+                  <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-[#6D28D9] mb-2">{c.prepFocus}</div>
+                  <p className="text-sm leading-relaxed text-ink-muted">{guide.focus}</p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl bg-[#17233C] text-white p-4">
+                <div className="text-xs uppercase tracking-[0.1em] font-extrabold text-white/70 mb-3">{c.prepPlan}</div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                  {c.prepSteps.map((step, index) => (
+                    <div key={step} className="rounded-xl bg-white/10 px-3 py-3 text-sm font-semibold">
+                      <span className="text-white/60 mr-1">{index + 1}.</span> {step}
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
           </>
